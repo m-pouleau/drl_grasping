@@ -11,8 +11,8 @@ ros2 run drl_grasping dataset_set_test.bash 2> /dev/null
 SEED="77"
 
 ## Robot to use during training
-ROBOT_MODEL="panda"
-# ROBOT_MODEL="lunalab_summit_xl_gen"
+# ROBOT_MODEL="panda"
+ROBOT_MODEL="lunalab_summit_xl_gen"
 
 ## ID of the environment
 ## Reach
@@ -23,7 +23,7 @@ ROBOT_MODEL="panda"
 # ENV="Reach-OctreeWithIntensity-Gazebo-v0"
 # ENV="Reach-OctreeWithColor-Gazebo-v0"
 ## Grasp
-ENV="Grasp-Gazebo-v0"
+# ENV="Grasp-Gazebo-v0"
 # ENV="Grasp-Octree-Gazebo-v0"
 # ENV="Grasp-OctreeWithIntensity-Gazebo-v0"
 # ENV="Grasp-OctreeWithColor-Gazebo-v0"
@@ -35,13 +35,13 @@ ENV="Grasp-Gazebo-v0"
 # ENV="GraspPlanetary-DepthImageWithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-DepthImageWithColor-Gazebo-v0"
 # ENV="GraspPlanetary-Octree-Gazebo-v0"
-# ENV="GraspPlanetary-OctreeWithIntensity-Gazebo-v0"
+ENV="GraspPlanetary-OctreeWithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-OctreeWithColor-Gazebo-v0"
 
 ## Selection of RL algorithm
-ALGO="sac"
+# ALGO="sac"
 # ALGO="td3"
-# ALGO="tqc"
+ALGO="tqc"
 
 ## Path to logs directory
 LOG_FOLDER="${PWD}/drl_grasping_training/train/${ENV}/logs"
@@ -50,7 +50,7 @@ LOG_FOLDER="${PWD}/drl_grasping_training/train/${ENV}/logs"
 REWARD_LOG="${PWD}/drl_grasping_training/evaluate/${ENV}"
 
 ## Load checkpoint instead of last model (# steps)
-# LOAD_CHECKPOINT="0"
+LOAD_CHECKPOINT="330000"
 
 ### Arguments
 LAUNCH_ARGS=(
@@ -64,6 +64,7 @@ LAUNCH_ARGS=(
     "n_episodes:=200"
     "load_best:=false"
     "enable_rviz:=true"
+    "no_render:=true"
     "log_level:=error"
 )
 if [[ -n ${LOAD_CHECKPOINT} ]]; then

@@ -8,11 +8,11 @@ ros2 run drl_grasping dataset_set_train.bash 2> /dev/null
 
 ### Arguments
 ## Random seed to use for both the environment and agent (-1 for random)
-SEED="42"
+SEED="73"
 
 ## Robot to use during training
-ROBOT_MODEL="panda"
-# ROBOT_MODEL="lunalab_summit_xl_gen"
+# ROBOT_MODEL="panda"
+ROBOT_MODEL="lunalab_summit_xl_gen"
 
 ## ID of the environment
 ## Reach
@@ -23,7 +23,7 @@ ROBOT_MODEL="panda"
 # ENV="Reach-OctreeWithIntensity-Gazebo-v0"
 # ENV="Reach-OctreeWithColor-Gazebo-v0"
 ## Grasp
-ENV="Grasp-Gazebo-v0"
+# ENV="Grasp-Gazebo-v0"
 # ENV="Grasp-Octree-Gazebo-v0"
 # ENV="Grasp-OctreeWithIntensity-Gazebo-v0"
 # ENV="Grasp-OctreeWithColor-Gazebo-v0"
@@ -35,13 +35,13 @@ ENV="Grasp-Gazebo-v0"
 # ENV="GraspPlanetary-DepthImageWithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-DepthImageWithColor-Gazebo-v0"
 # ENV="GraspPlanetary-Octree-Gazebo-v0"
-# ENV="GraspPlanetary-OctreeWithIntensity-Gazebo-v0"
+ENV="GraspPlanetary-OctreeWithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-OctreeWithColor-Gazebo-v0"
 
 ## Selection of RL algorithm
-ALGO="sac"
+# ALGO="sac"
 # ALGO="td3"
-# ALGO="tqc"
+ALGO="tqc"
 
 ## Path to logs directory
 LOG_FOLDER="${PWD}/drl_grasping_training/train/${ENV}/logs"
@@ -50,12 +50,12 @@ LOG_FOLDER="${PWD}/drl_grasping_training/train/${ENV}/logs"
 TENSORBOARD_LOG="${PWD}/drl_grasping_training/train/${ENV}/tensorboard_logs"
 
 ## Path to a trained agent to continue training (`**.zip`)
-# TRAINED_AGENT_SESSION="1"
-# TRAINED_AGENT_STEPS="0"
-# TRAINED_AGENT="${LOG_FOLDER}/${ALGO}/${ENV}_${TRAINED_AGENT_SESSION}/rl_model_${TRAINED_AGENT_STEPS}_steps.zip"
+TRAINED_AGENT_SESSION="3"
+TRAINED_AGENT_STEPS="330000"
+TRAINED_AGENT="${LOG_FOLDER}/${ALGO}/${ENV}_${TRAINED_AGENT_SESSION}/rl_model_${TRAINED_AGENT_STEPS}_steps.zip"
 
 ## Path to a replay buffer that should be loaded before the training begins (`**.pkl`)
-# PRELOAD_REPLAY_BUFFER=""
+PRELOAD_REPLAY_BUFFER="${LOG_FOLDER}/${ALGO}/${ENV}_${TRAINED_AGENT_SESSION}"
 
 ### Arguments
 LAUNCH_ARGS=(

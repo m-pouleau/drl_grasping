@@ -375,7 +375,7 @@ class DepthImageCnnPolicy(SACPolicy):
         features_extractor_kwargs.update(
             {"separate_networks_for_stacks": separate_networks_for_stacks}
         )
-        super(OctreeCnnPolicy, self).__init__(
+        super(DepthImageCnnPolicy, self).__init__(
             observation_space,
             action_space,
             lr_schedule,

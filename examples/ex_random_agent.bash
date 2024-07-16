@@ -41,7 +41,7 @@ LAUNCH_ARGS=(
     "robot_model:=${ROBOT_MODEL}"
     "env:=${ENV}"
     "check_env:=false"
-    "render:=true"
+    "render:=false"
     "enable_rviz:=true"
     "log_level:=warn"
 )
