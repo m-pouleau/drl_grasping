@@ -1,0 +1,96 @@
+### SSH Connection to server ###
+1. Connecting to server 10.195.9.179:
+ $ ssh -X -i ~/.ssh/10_195_9_179 -l ubuntu 10.195.9.179
+
+2. Uploading file from local to server 10.195.9.179:
+ $ scp -i ~/.ssh/10_195_9_179 <~/path/to/file/to/upload> ubuntu@10.195.9.179:/home/ubuntu/Matthias/...
+ 
+3. Upload folder file from local to server 10.195.9.179:
+ $ scp -i ~/.ssh/10_195_9_179 -r <~/path/to/folder/to/upload> ubuntu@10.195.9.179:/home/ubuntu/Matthias/...
+
+4. Downloading file from server to local machine:
+ $ scp -i ~/.ssh/10_195_9_179 ubuntu@10.195.9.179:/home/ubuntu/Matthias/<file_to_download> ~/Downloads
+
+5. Downloading folder of training run from server to local machine:
+ $ scp -i ~/.ssh/10_195_9_179 -r ubuntu@10.195.9.179:/home/ubuntu/Matthias/drl_grasping_training_docker/train/<train_instance_folder> ~/Masterarbeit/drl_grasping_training_docker/train
+
+
+### How to connect to server VSCode ###
+1. Open VSCode and Connect to the Server:
+ - Open Visual Studio Code.
+ - Press F1 to open the command palette.
+ - Type "Remote-SSH: Connect to Host" and select it from the list.
+ - You should see your configured SSH host lrz_9_179 in the list. Select it to connect.
+
+2. Authenticate:
+ - VSCode will attempt to connect to the server using the SSH configuration you provided.
+ - If prompted, authenticate with the SSH private key you specified in the configuration file (10_195_9_179).
+
+3. Working with VSCode on the Server:
+ - Once connected, VSCode will open a new window connected to the server.
+ - You can now work with files and folders on the server as if they were on your local machine.
+ - You can edit files, run commands in the integrated terminal, install extensions, and more.
+
+4. File Transfer:
+ - Simply use the file explorer to navigate to the desired file or folder, right-click, and select "Upload" or "Download".
+
+5. Closing the Connection:
+ - To disconnect from the server, click on the green area at the bottom-left corner of the VSCode window where it says "SSH: lrz_9_179" and select "Close Remote Connection".
+
+
+### Docker container (remote ssh execution on lrz server) ###
+1. Connect to server 10.195.9.179:
+ $ ssh -X -i ~/.ssh/10_195_9_179 -l ubuntu 10.195.9.179
+
+2. Run the docker image inside "~/Matthias":
+ $ cd Matthias/drl_grasping
+ $ .docker/run_drl_grasping.bash
+
+3. Run random agents inside docker container:
+ $ ros2 run drl_grasping ex_random_agent.bash
+
+
+### Docker container (local execution) ###
+1. Run the docker image inside "~/Masterarbeit":
+ $ cd Masterarbeit/drl_grasping
+ $ .docker/run_drl_grasping_local.bash
+
+2. Run random agents inside docker container:
+ $ ros2 run drl_grasping ex_random_agent.bash
+ 
+ 
+### TMUX Session ###
+1. Start a tmux session:
+ $ tmux new -s <session_name>
+2. Start the process inside the tmux session:
+ $ .docker/run_drl_grasping.bash
+ $ ros2 run drl_grasping ex_train.bash
+3. Detach from tmux session:
+ > "Ctrl + b", then "d"
+4. Find name of tmux session by calling list of tmux sessions:
+ $ tmux ls
+5. Reattach to tmux session:
+ $ tmux attach -t <session_name>
+6. Once process is finished, close tmux session:
+ > "Ctrl + d"
+
+# Enter scrolling mode in tmux:
+ > "Ctrl + b", then "[" ("Alt Gr + 8") 
+# Leave scrolling mode in tmux:
+ > "q"
+ 
+### TENSORBOARD LOGS ###
+1. Run docker container:
+ $ .docker/run_drl_grasping.bash
+2. Set local folder Variable:
+ $ export TENSORBOARD_LOG=/root/drl_grasping_training/train/<ENV>/tensorboard_logs/<ENV>/<ALGO>
+ For example:
+ export TENSORBOARD_LOG=/root/drl_grasping_training/train/GraspPlanetary-OctreeWithIntensity-Gazebo-v0/tensorboard_logs/GraspPlanetary-OctreeWithIntensity-Gazebo-v0/TQC_1
+3. Visualize Tensorboard:
+ $ tensorboard --logdir ${TENSORBOARD_LOG}
+4. Export tensorboard log data to csv file:
+ $ cd drl_grasping/visualizations
+ $ python3 export_tensorboard_training_data.py
+5. Plot csv data with matplotlib plot:
+ $ python3 create_training_plots.py
+

@@ -75,7 +75,7 @@ def generate_launch_description() -> LaunchDescription:
         Node(
             package="drl_grasping",
             executable="evaluate.py",
-            output="log",
+            output="screen",
             arguments=[
                 "--env",
                 env,

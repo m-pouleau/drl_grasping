@@ -171,6 +171,10 @@ def main(args: Dict):
             f"+/- {np.std(success_episode_lengths):.2f}"
         )
 
+    if args.verbose > 0 and len(episode_lengths) > 0:
+        print("DONE.")
+        print("   ", flush=True)
+
     # Workaround for https://github.com/openai/gym/issues/893
     if not args.no_render:
         if args.n_envs == 1 and "Bullet" not in args.env and isinstance(env, VecEnv):
