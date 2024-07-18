@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 ENV = "GraspPlanetary-OctreeWithIntensity-Gazebo-v0"
 ALGO = "TQC_1"
-WINDOW_SIZE = 3
+WINDOW_SIZE = 1
 
 def moving_average(data, window_size):
     """Apply moving average filter to data."""

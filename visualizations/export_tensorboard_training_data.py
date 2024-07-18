@@ -19,6 +19,8 @@ ea.Reload()
 with open(f'/root/drl_grasping_training/train/{ENV}/{ALGO}_tensorboard_training_data.csv', 'w', newline='') as csvfile:
     csvwriter = csv.writer(csvfile)
     csvwriter.writerow(['Step'] + scalars)  # Write header
+    # add zero row at beginning
+    csvwriter.writerow([0, 0, 0])
 
     # Extract and write scalar data
     steps = ea.Scalars(scalars[0])
