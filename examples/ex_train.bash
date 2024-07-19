@@ -50,12 +50,12 @@ LOG_FOLDER="${PWD}/drl_grasping_training/train/${ENV}/logs"
 TENSORBOARD_LOG="${PWD}/drl_grasping_training/train/${ENV}/tensorboard_logs"
 
 ## Path to a trained agent to continue training (`**.zip`)
-TRAINED_AGENT_SESSION="3"
-TRAINED_AGENT_STEPS="330000"
-TRAINED_AGENT="${LOG_FOLDER}/${ALGO}/${ENV}_${TRAINED_AGENT_SESSION}/rl_model_${TRAINED_AGENT_STEPS}_steps.zip"
+# TRAINED_AGENT_SESSION="1"
+# TRAINED_AGENT_STEPS="0"
+# TRAINED_AGENT="${LOG_FOLDER}/${ALGO}/${ENV}_${TRAINED_AGENT_SESSION}/rl_model_${TRAINED_AGENT_STEPS}_steps.zip"
 
 ## Path to a replay buffer that should be loaded before the training begins (`**.pkl`)
-PRELOAD_REPLAY_BUFFER="${LOG_FOLDER}/${ALGO}/${ENV}_${TRAINED_AGENT_SESSION}"
+# PRELOAD_REPLAY_BUFFER="${LOG_FOLDER}/${ALGO}/${ENV}_${TRAINED_AGENT_SESSION}"
 
 ### Arguments
 LAUNCH_ARGS=(
