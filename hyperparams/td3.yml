@@ -110,7 +110,7 @@ Reach-PointNet-Gazebo-v0:
   noise_std: 0.025
   optimize_memory_usage: True
 
-Reach-PointNet++-Gazebo-v0:
+Reach-PointNet2-Gazebo-v0:
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
     features_extractor_class: "TODO"
@@ -217,7 +217,7 @@ Reach-PointNetWithIntensity-Gazebo-v0:
   noise_std: 0.025
   optimize_memory_usage: True
 
-Reach-PointNet++WithIntensity-Gazebo-v0:
+Reach-PointNet2WithIntensity-Gazebo-v0:
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
     features_extractor_class: "TODO"
@@ -324,7 +324,7 @@ Reach-PointNetWithColor-Gazebo-v0:
   noise_std: 0.025
   optimize_memory_usage: True
 
-Reach-PointNet++WithColor-Gazebo-v0:
+Reach-PointNet2WithColor-Gazebo-v0:
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
     features_extractor_class: "TODO"
@@ -459,7 +459,7 @@ Grasp-PointNet-Gazebo-v0:
   noise_std: 0.025
   optimize_memory_usage: True
 
-Grasp-PointNet++-Gazebo-v0:
+Grasp-PointNet2-Gazebo-v0:
   callback:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
@@ -573,7 +573,7 @@ Grasp-PointNetWithIntensity-Gazebo-v0:
   noise_std: 0.025
   optimize_memory_usage: True
 
-Grasp-PointNet++WithIntensity-Gazebo-v0:
+Grasp-PointNet2WithIntensity-Gazebo-v0:
   callback:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
@@ -687,7 +687,7 @@ Grasp-PointNetWithColor-Gazebo-v0:
   noise_std: 0.025
   optimize_memory_usage: True
 
-Grasp-PointNet++WithColor-Gazebo-v0:
+Grasp-PointNet2WithColor-Gazebo-v0:
   callback:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
@@ -964,7 +964,7 @@ GraspPlanetary-PointNet-Gazebo-v0:
   noise_std: 0.025
   optimize_memory_usage: True
 
-GraspPlanetary-PointNet++-Gazebo-v0:
+GraspPlanetary-PointNet2-Gazebo-v0:
   callback:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
@@ -1078,7 +1078,7 @@ GraspPlanetary-PointNetWithIntensity-Gazebo-v0:
   noise_std: 0.025
   optimize_memory_usage: True
 
-GraspPlanetary-PointNet++WithIntensity-Gazebo-v0:
+GraspPlanetary-PointNet2WithIntensity-Gazebo-v0:
   callback:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
@@ -1192,7 +1192,7 @@ GraspPlanetary-PointNetWithColor-Gazebo-v0:
   noise_std: 0.025
   optimize_memory_usage: True
 
-GraspPlanetary-PointNet++WithColor-Gazebo-v0:
+GraspPlanetary-PointNet2WithColor-Gazebo-v0:
   callback:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
