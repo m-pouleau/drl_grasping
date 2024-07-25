@@ -24,7 +24,7 @@ class ReachPointCloud(Reach, abc.ABC):
         pointcloud_include_color: bool,
         pointcloud_include_intensity: bool,
         pointcloud_n_stacked: int,
-        num_points: int,
+        num_points: int = 2048,
         camera_type: str = "rgbd_camera",
         **kwargs,
     ):
@@ -37,8 +37,6 @@ class ReachPointCloud(Reach, abc.ABC):
 
         # Store parameters for later use
         self._pointcloud_n_stacked = pointcloud_n_stacked
-        self._pointcloud_include_color = pointcloud_include_color
-        self._pointcloud_include_intensity = pointcloud_include_intensity        
         self._num_points = num_points
         # Define number of channels depending on color features
         if pointcloud_include_color:
@@ -68,7 +66,7 @@ class ReachPointCloud(Reach, abc.ABC):
             pointcloud_max_bound[2] + self.robot_model_class.BASE_LINK_Z_OFFSET,
         )
 
-        # Octree creator
+        # Pointcloud creator
         self.pointcloud_creator = PointCloudCreator(
             node=self,
             tf2_listener=self.tf2_listener,
@@ -88,7 +86,7 @@ class ReachPointCloud(Reach, abc.ABC):
         return gym.spaces.Box(
             low=-np.inf,
             high=np.inf,
-            shape=(self._num_points, self._num_pc_channels),
+            shape=(self._pointcloud_n_stacked, self._num_points, self._num_pc_channels),
             dtype=np.float64,
         )
 
