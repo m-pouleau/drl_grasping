@@ -97,14 +97,14 @@ class GraspPointCloud(Grasp, abc.ABC):
                 low=-np.inf,
                 high=np.inf,
                 shape=(self._pointcloud_n_stacked, self._num_points+self._aux_dim, self._num_pc_channels),
-                dtype=np.float64,
+                dtype=np.float32,
             )
         else:
             return gym.spaces.Box(
                 low=-np.inf,
                 high=np.inf,
                 shape=(self._pointcloud_n_stacked, self._num_points, self._num_pc_channels),
-                dtype=np.float64,
+                dtype=np.float32,
             )
 
 
@@ -125,7 +125,7 @@ class GraspPointCloud(Grasp, abc.ABC):
                 + ee_position
                 + ee_orientation[0]
                 + ee_orientation[1]
-            ), dtype=np.float64).reshape(10, 1)
+            ), dtype=np.float32).reshape(10, 1)
             observation_array = np.concatenate((observation_array, np.tile(aux_obs, (1, self._num_pc_channels))), axis=0)
         
         self.__stacked_observations.append(observation_array)
@@ -133,7 +133,7 @@ class GraspPointCloud(Grasp, abc.ABC):
         while not self.pointcloud_n_stacked == len(self.__stacked_observations):
             self.__stacked_observations.append(observation_array)
 
-        observation = Observation(np.array(self.__stacked_observations, dtype=np.float64))
+        observation = Observation(np.array(self.__stacked_observations, dtype=np.float32))
 
         self.get_logger().debug(f"\nobservation: {observation}")
 

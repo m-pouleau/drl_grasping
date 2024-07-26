@@ -87,7 +87,7 @@ class ReachPointCloud(Reach, abc.ABC):
             low=-np.inf,
             high=np.inf,
             shape=(self._pointcloud_n_stacked, self._num_points, self._num_pc_channels),
-            dtype=np.float64,
+            dtype=np.float32,
         )
 
     def get_observation(self) -> Observation:
@@ -104,7 +104,7 @@ class ReachPointCloud(Reach, abc.ABC):
             self.__stacked_pointclouds.append(np_pointcloud)
 
         # Create the observation
-        observation = Observation(np.array(self.__stacked_pointclouds, dtype=np.float64))
+        observation = Observation(np.array(self.__stacked_pointclouds, dtype=np.float32))
 
         self.get_logger().debug(f"\nobservation: {observation}")
 
