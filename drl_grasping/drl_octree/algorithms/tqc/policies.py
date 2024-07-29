@@ -13,10 +13,12 @@ from torch import nn
 from drl_grasping.drl_octree.features_extractor import (
     ImageCnnFeaturesExtractor,
     OctreeCnnFeaturesExtractor,
+    PointCloudCnnFeaturesExtractor,
 )
 from drl_grasping.drl_octree.replay_buffer import (
     preprocess_stacked_depth_image_batch,
     preprocess_stacked_octree_batch,
+    preprocess_stacked_pointcloud_batch,
 )
 
 
@@ -356,7 +358,7 @@ class PointCloudCnnPolicy(TQCPolicy):
         clip_mean: float = 2.0,
         features_extractor_class: Type[
             BaseFeaturesExtractor
-        ] = ImageCnnFeaturesExtractor,
+        ] = PointCloudCnnFeaturesExtractor,
         features_extractor_kwargs: Optional[Dict[str, Any]] = None,
         normalize_images: bool = True,
         optimizer_class: Type[th.optim.Optimizer] = th.optim.Adam,
@@ -432,15 +434,15 @@ class PointCloudCnnPolicy(TQCPolicy):
 
         vectorized_env = is_vectorized_observation(observation, self.observation_space)
 
-        # Make batch out of tensor (consisting of n-stacked images)
-        image_batch = preprocess_stacked_depth_image_batch(
+        # Make batch out of tensor (consisting of n-stacked pointclouds)
+        pointcloud_batch = preprocess_stacked_pointcloud_batch(
             observation,
             self.device,
             separate_batches=self._separate_networks_for_stacks,
         )
 
         with th.no_grad():
-            actions = self._predict(image_batch, deterministic=deterministic)
+            actions = self._predict(pointcloud_batch, deterministic=deterministic)
         # Convert to numpy
         actions = actions.cpu().numpy()
 

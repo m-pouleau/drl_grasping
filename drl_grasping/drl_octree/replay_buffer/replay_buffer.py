@@ -123,14 +123,14 @@ def _get_samples_with_support_for_octree(
     elif self.contains_pointcloud_obs:
         # Current observations
         obs = self.observations[batch_inds, 0, :]
-        obs = preprocess_stacked_depth_image_batch(obs, self.device, num_points = 2048)
+        obs = preprocess_stacked_pointcloud_batch(obs, self.device, num_points = 2048)
 
         # Next observations
         if self.optimize_memory_usage:
             next_obs = self.observations[(batch_inds + 1) % self.buffer_size, 0, :]
         else:
             next_obs = self.next_observations[batch_inds, 0, :]
-        next_obs = preprocess_stacked_depth_image_batch(next_obs, self.device, num_points = 2048)
+        next_obs = preprocess_stacked_pointcloud_batch(next_obs, self.device, num_points = 2048)
 
         return ReplayBufferSamples(
             observations=obs,

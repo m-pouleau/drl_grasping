@@ -86,8 +86,8 @@ Reach-Octree-Gazebo-v0:
 Reach-PointNet-Gazebo-v0:
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet"
       depth: null
       full_depth: null
       channels_in: null
@@ -125,8 +125,8 @@ Reach-PointNet-Gazebo-v0:
 Reach-PointNet2-Gazebo-v0:
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet2"
       depth: null
       full_depth: null
       channels_in: null
@@ -202,8 +202,8 @@ Reach-OctreeWithIntensity-Gazebo-v0:
 Reach-PointNetWithIntensity-Gazebo-v0:
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet"
       depth: null
       full_depth: null
       channels_in: null
@@ -241,8 +241,8 @@ Reach-PointNetWithIntensity-Gazebo-v0:
 Reach-PointNet2WithIntensity-Gazebo-v0:
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet2"
       depth: null
       full_depth: null
       channels_in: null
@@ -318,8 +318,8 @@ Reach-OctreeWithColor-Gazebo-v0:
 Reach-PointNetWithColor-Gazebo-v0:
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet"
       depth: null
       full_depth: null
       channels_in: null
@@ -357,8 +357,8 @@ Reach-PointNetWithColor-Gazebo-v0:
 Reach-PointNet2WithColor-Gazebo-v0:
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet2"
       depth: null
       full_depth: null
       channels_in: null
@@ -464,8 +464,8 @@ Grasp-PointNet-Gazebo-v0:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet"
       depth: null
       full_depth: null
       channels_in: null
@@ -505,8 +505,8 @@ Grasp-PointNet2-Gazebo-v0:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet2"
       depth: null
       full_depth: null
       channels_in: null
@@ -587,8 +587,8 @@ Grasp-PointNetWithIntensity-Gazebo-v0:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet"
       depth: null
       full_depth: null
       channels_in: null
@@ -628,8 +628,8 @@ Grasp-PointNet2WithIntensity-Gazebo-v0:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet2"
       depth: null
       full_depth: null
       channels_in: null
@@ -710,8 +710,8 @@ Grasp-PointNetWithColor-Gazebo-v0:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet"
       depth: null
       full_depth: null
       channels_in: null
@@ -751,8 +751,8 @@ Grasp-PointNet2WithColor-Gazebo-v0:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet2"
       depth: null
       full_depth: null
       channels_in: null
@@ -1010,8 +1010,8 @@ GraspPlanetary-PointNet-Gazebo-v0:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet"
       depth: null
       full_depth: null
       channels_in: null
@@ -1051,8 +1051,8 @@ GraspPlanetary-PointNet2-Gazebo-v0:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet2"
       depth: null
       full_depth: null
       channels_in: null
@@ -1133,8 +1133,8 @@ GraspPlanetary-PointNetWithIntensity-Gazebo-v0:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet"
       depth: null
       full_depth: null
       channels_in: null
@@ -1174,8 +1174,8 @@ GraspPlanetary-PointNet2WithIntensity-Gazebo-v0:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet2"
       depth: null
       full_depth: null
       channels_in: null
@@ -1256,8 +1256,8 @@ GraspPlanetary-PointNetWithColor-Gazebo-v0:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet"
       depth: null
       full_depth: null
       channels_in: null
@@ -1297,8 +1297,8 @@ GraspPlanetary-PointNet2WithColor-Gazebo-v0:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
   policy: "PointCloudCnnPolicy"
   policy_kwargs:
-    features_extractor_class: "TODO"
     features_extractor_kwargs:
+      extractor_backbone: "PointNet2"
       depth: null
       full_depth: null
       channels_in: null
