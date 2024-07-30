@@ -27,7 +27,9 @@ def __init___with_checking_for_stacked_images_and_octrees(
     n_envs: int = 1,
     optimize_memory_usage: bool = False,
     separate_networks_for_stacks: bool = True,
+    n_aux_obs: int = 10,
 ):
+    self._n_aux_obs = n_aux_obs
     __old__init__(
         self,
         buffer_size=buffer_size,
@@ -123,14 +125,14 @@ def _get_samples_with_support_for_octree(
     elif self.contains_pointcloud_obs:
         # Current observations
         obs = self.observations[batch_inds, 0, :]
-        obs = preprocess_stacked_pointcloud_batch(obs, self.device, num_points = 2048)
+        obs = preprocess_stacked_pointcloud_batch(obs, self.device, n_aux_obs = self._n_aux_obs)
 
         # Next observations
         if self.optimize_memory_usage:
             next_obs = self.observations[(batch_inds + 1) % self.buffer_size, 0, :]
         else:
             next_obs = self.next_observations[batch_inds, 0, :]
-        next_obs = preprocess_stacked_pointcloud_batch(next_obs, self.device, num_points = 2048)
+        next_obs = preprocess_stacked_pointcloud_batch(next_obs, self.device, n_aux_obs = self._n_aux_obs)
 
         return ReplayBufferSamples(
             observations=obs,

@@ -367,6 +367,7 @@ class PointCloudCnnPolicy(TQCPolicy):
         n_critics: int = 2,
         share_features_extractor: bool = True,
     ):
+        self._aux_obs_dim = features_extractor_kwargs['aux_obs_dim']
         features_extractor_kwargs.update(
             {"separate_networks_for_stacks": False}
         )
@@ -435,8 +436,7 @@ class PointCloudCnnPolicy(TQCPolicy):
         pointcloud_batch = preprocess_stacked_pointcloud_batch(
             observation,
             self.device,
-            num_points = 2048,
-            include_aux_obs=True,
+            n_aux_obs = self._aux_obs_dim,
         )
 
         with th.no_grad():

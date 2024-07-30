@@ -189,14 +189,11 @@ def preprocess_stacked_depth_image_batch(
 def preprocess_stacked_pointcloud_batch(
     observation: np.array,
     device,
-    num_points: int = 2048,
-    include_aux_obs=True,
+    n_aux_obs: int = 10,
 ) -> Dict[str, th.Tensor]:    
 
     # Get number of auxiliary observations and convert them to torch tensor
-    if include_aux_obs:
-        n_aux_obs = observation.shape[1] - num_points        
-        
+    if n_aux_obs != 0:
         aux_obs = observation[:, -n_aux_obs:, 0]
         aux_obs = th.tensor(aux_obs.reshape(1, observation.shape[1], n_aux_obs), requires_grad=False).to(device)
     else:

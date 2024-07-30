@@ -93,9 +93,6 @@ class OctreeCreator:
             normals_max_nn=self._normals_max_nn,
         )
 
-        #np_point_cloud = np.asarray(open3d_point_cloud.points)
-        #print("\n\nOpen 3D Point Cloud2:\n", np_point_cloud.shape, flush=True)
-
         # Draw if needed
         if self._debug_draw:
             open3d.visualization.draw_geometries(

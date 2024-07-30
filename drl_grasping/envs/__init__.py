@@ -1180,22 +1180,6 @@ register(
         "image_include_intensity": True,
     },
 )
-'''
-Remove PointCloudTest later
-'''
-register(
-    id="GraspPlanetary-PointCloudTest-v0",
-    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
-    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
-    kwargs={
-        "task_cls": tasks.GraspPlanetaryDepthImage,
-        **GRASP_PLANETARY_KWARGS,
-        **GRASP_PLANETARY_KWARGS_CURRICULUM,
-        **GRASP_PLANETARY_KWARGS_DEPTH_IMAGE,
-        "image_include_color": False,
-        "image_include_intensity": True,
-    },
-)
 register(
     id="GraspPlanetary-DepthImageWithColor-v0",
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
@@ -1386,23 +1370,6 @@ register(
     max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
     kwargs={
         "env": "GraspPlanetary-DepthImageWithIntensity-v0",
-        **GRASP_PLANETARY_KWARGS_SIM,
-        **GRASP_PLANETARY_KWARGS_RANDOMIZER,
-        **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,
-        "camera_type": "rgbd_camera",
-        "camera_publish_depth": True,
-        "camera_publish_color": True,
-    },
-)
-'''
-Remove PointCloudTest later
-'''
-register(
-    id="GraspPlanetary-PointCloudTest-Gazebo-v0",
-    entry_point=GRASP_PLANETARY_RANDOMIZER,
-    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
-    kwargs={
-        "env": "GraspPlanetary-PointCloudTest-v0",
         **GRASP_PLANETARY_KWARGS_SIM,
         **GRASP_PLANETARY_KWARGS_RANDOMIZER,
         **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,
