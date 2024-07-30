@@ -1,12 +1,13 @@
-import copy
-
 import gym
 import torch
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
-from torch import nn
+
 ######
-from drl_grasping.drl_octree.features_extractor.modules import *
-#from modules import *
+from drl_grasping.drl_octree.features_extractor.pointnet import *
+from drl_grasping.drl_octree.features_extractor.modules import LinearRelu
+
+#from modules import LinearRelu, LinearBnRelu
+#from pointnet import *
 ########
 
 class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
@@ -21,28 +22,16 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
     def __init__(
         self,
         observation_space: gym.spaces.Box,
-        channels_in: int = 3,
-        width: int = 128,
-        height: int = 128,
-        channel_multiplier: int = 40,
-        full_depth_conv1d: bool = True,
-        full_depth_channels: int = 8,
-        features_dim: int = 96,
+        channels_in: int = 7,
+        features_dim: int = 248,
         aux_obs_dim: int = 10,
-        aux_obs_features_dim: int = 16,
-        max_pool_kernel: int = 4,
-        separate_networks_for_stacks: bool = True,
+        aux_obs_features_dim: int = 8,
+        extractor_backbone: str = "PointNet",
         verbose: bool = False,
     ):
-
-        self._channels_in = channels_in
         self._aux_obs_dim = aux_obs_dim
         self._aux_obs_features_dim = aux_obs_features_dim
-        self._separate_networks_for_stacks = separate_networks_for_stacks
         self._verbose = verbose
-        self._width = width
-        self._height = height
-        self._features_dim = features_dim
 
         # Determine number of stacked based on observation space shape
         self._n_stacks = observation_space.shape[0]
@@ -52,83 +41,15 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
             observation_space, self._n_stacks * (features_dim + aux_obs_features_dim)
         )
 
-        resolution = width * height
-        flatten_dim = resolution // ((max_pool_kernel**2) ** 2) * full_depth_channels
+        # Initialize the right feature extractor
+        if extractor_backbone == "PointNet":
+            self._extractor_backbone = PointNetFeatureExtractor(feature_transform=True, k=channels_in, features_dim=features_dim)
 
-        if not self._separate_networks_for_stacks:
-            self.conv1 = ImageConvRelu(channels_in, channel_multiplier)
-            self.pool1 = nn.MaxPool2d(max_pool_kernel)
-            self.conv2 = ImageConvRelu(channel_multiplier, 2 * channel_multiplier)
-            self.pool2 = nn.MaxPool2d(max_pool_kernel)
-
-            self.full_depth_conv = ImageConvRelu(
-                2 * channel_multiplier,
-                full_depth_channels,
-                kernel_size=1 if full_depth_conv1d else 3,
-                padding=0,
+        # One linear layer for auxiliary observations
+        if self._aux_obs_dim != 0:
+            self.aux_obs_linear = LinearRelu(
+                self._aux_obs_dim, aux_obs_features_dim
             )
-
-            self.flatten = torch.nn.Flatten()
-
-            # Last linear layer of the extractor, applied to all (flattened) voxels at full depth
-            self.linear = LinearRelu(flatten_dim, features_dim)
-
-            # One linear layer for auxiliary observations
-            if self._aux_obs_dim != 0:
-                self.aux_obs_linear = LinearRelu(
-                    self._aux_obs_dim, aux_obs_features_dim
-                )
-
-        else:
-
-            self.conv1 = torch.nn.ModuleList(
-                [
-                    ImageConvRelu(channels_in, channel_multiplier)
-                    for _ in range(self._n_stacks)
-                ]
-            )
-            self.pool1 = torch.nn.ModuleList(
-                [nn.MaxPool2d(max_pool_kernel) for _ in range(self._n_stacks)]
-            )
-            self.conv2 = torch.nn.ModuleList(
-                [
-                    ImageConvRelu(channel_multiplier, 2 * channel_multiplier)
-                    for _ in range(self._n_stacks)
-                ]
-            )
-            self.pool2 = torch.nn.ModuleList(
-                [nn.MaxPool2d(max_pool_kernel) for _ in range(self._n_stacks)]
-            )
-
-            self.full_depth_conv = torch.nn.ModuleList(
-                [
-                    ImageConvRelu(
-                        2 * channel_multiplier,
-                        full_depth_channels,
-                        kernel_size=1 if full_depth_conv1d else 3,
-                        padding=0,
-                    )
-                    for _ in range(self._n_stacks)
-                ]
-            )
-
-            self.flatten = torch.nn.ModuleList(
-                [torch.nn.Flatten() for _ in range(self._n_stacks)]
-            )
-
-            # Last linear layer of the extractor, applied to all (flattened) voxels at full depth
-            self.linear = torch.nn.ModuleList(
-                [LinearRelu(flatten_dim, features_dim) for _ in range(self._n_stacks)]
-            )
-
-            # One linear layer for auxiliary observations
-            if self._aux_obs_dim != 0:
-                self.aux_obs_linear = torch.nn.ModuleList(
-                    [
-                        LinearRelu(self._aux_obs_dim, aux_obs_features_dim)
-                        for _ in range(self._n_stacks)
-                    ]
-                )
 
         number_of_learnable_parameters = sum(
             p.numel() for p in self.parameters() if p.requires_grad
@@ -144,80 +65,50 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
 
         data = obs[0]
         aux_obs = obs[1]
+            
+        # Pass the data through the pointnet-based feature extractor backbone
+        data = self._extractor_backbone(data)
 
-        if not self._separate_networks_for_stacks:
+        # Get a view that merges stacks into a single feature vector (original batches remain separated)
+        data = data.view(-1, self._n_stacks * data.shape[-1])
 
-            # Pass the data through all convolutional and polling layers
-            data = self.conv1(data)
-            data = self.pool1(data)
-            data = self.conv2(data)
-            data = self.pool2(data)
-            data = self.full_depth_conv(data)
-
-            # Flatten into a feature vector
-            data = self.flatten(data)
-
-            # Feed through the last linear layer
-            data = self.linear(data)
-
-            # Get a view that merges stacks into a single feature vector (original batches remain separated)
-            data = data.view(-1, self._n_stacks * data.shape[-1])
-
-            if self._aux_obs_dim != 0:
-                # Feed the data through linear layer
-                aux_data = self.aux_obs_linear(aux_obs.view(-1, self._aux_obs_dim))
-                # Get a view that merges aux feature stacks into a single feature vector (original batches remain separated)
-                aux_data = aux_data.view(
-                    -1, self._n_stacks * self._aux_obs_features_dim
-                )
-                # Concatenate auxiliary data
-                data = torch.cat((data, aux_data), dim=1)
-
-        else:
-
-            for i in range(self._n_stacks):
-
-                # Pass the data through all convolutional and polling layers
-                data[i] = self.conv1[i](data[i])
-                data[i] = self.pool1[i](data[i])
-                data[i] = self.conv2[i](data[i])
-                data[i] = self.pool2[i](data[i])
-                data[i] = self.full_depth_conv[i](data[i])
-
-                # Flatten into a feature vector
-                data[i] = self.flatten[i](data[i])
-
-                # Feed through the last linear layer
-                data[i] = self.linear[i](data[i])
-
-                if self._aux_obs_dim != 0:
-                    # Feed the data through linear layer
-                    aux_data = self.aux_obs_linear[i](aux_obs[:, i, :])
-                    # Concatenate auxiliary data
-                    data[i] = torch.cat((data[i], aux_data), dim=1)
-
-            # Concatenate with other stacks
-            data = torch.cat(data, dim=1)
+        if self._aux_obs_dim != 0:
+            # Feed the data through linear layer
+            aux_data = self.aux_obs_linear(aux_obs.view(-1, self._aux_obs_dim))
+            # Get a view that merges aux feature stacks into a single feature vector (original batches remain separated)
+            aux_data = aux_data.view(
+                -1, self._n_stacks * self._aux_obs_features_dim
+            )
+            # Concatenate auxiliary data
+            data = torch.cat((data, aux_data), dim=1)
 
         return data
 
 
-def main():
+if __name__ == "__main__":
     import numpy as np
-    pointcloud_input = torch.randn((2, 2048, 7), dtype=torch.float32)
-    aux_input = torch.randn((1, 2, 10), dtype=torch.float32)
-    mySpace = gym.spaces.Box(low=0, high=255, shape=(2, 128*128*2+11),dtype=np.float32)
-    MyExtractor = PointCloudCnnFeaturesExtractor(channels_in = 2,
+    # Input Parameters
+    num_frames = 2
+    num_channels = 7
+    num_points = 2048
+    proprioceptive_observations = True
+    # Model Input
+    pointcloud_input = torch.randn((num_frames, num_points, num_channels), dtype=torch.float32)
+    if proprioceptive_observations:
+        aux_dim = 10
+        aux_input = torch.randn((1, num_frames, aux_dim), dtype=torch.float32)
+    else:
+        aux_dim = 0
+    # Model Observation Space
+    mySpace = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(2, num_points+aux_dim, num_channels),dtype=np.float32)
+    # Defined Feature Extractor
+    MyExtractor = PointCloudCnnFeaturesExtractor(channels_in=num_channels,
                                                  observation_space=mySpace, 
-                                                 separate_networks_for_stacks=False,
-                                                 channel_multiplier=56,
-                                                 full_depth_channels=16,
                                                  features_dim=248,
                                                  aux_obs_dim=10,
-                                                 aux_obs_features_dim=16
+                                                 aux_obs_features_dim=8,
+                                                 extractor_backbone="PointNet",
                                                  )
+    # Data output
     data = MyExtractor((pointcloud_input, aux_input))
-    print(data.shape)
-
-if __name__ == "__main__":
-    main()
+    print("Final Output: ", data.shape)

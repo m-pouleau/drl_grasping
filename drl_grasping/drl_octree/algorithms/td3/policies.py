@@ -383,7 +383,8 @@ class PointCloudCnnPolicy(TD3Policy):
         pointcloud_batch = preprocess_stacked_pointcloud_batch(
             observation,
             self.device,
-            separate_batches=self._separate_networks_for_stacks,
+            num_points = 2048,
+            include_aux_obs=True,
         )
 
         with th.no_grad():

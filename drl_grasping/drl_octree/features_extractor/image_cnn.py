@@ -199,3 +199,20 @@ class ImageCnnFeaturesExtractor(BaseFeaturesExtractor):
             data = torch.cat(data, dim=1)
 
         return data
+
+if __name__ == "__main__":
+    import numpy as np
+    image_input = torch.randn((2, 2, 128, 128), dtype=torch.float32)
+    aux_input = torch.randn((1, 2, 10), dtype=torch.float32)
+    mySpace = gym.spaces.Box(low=0, high=255, shape=(2, 128*128*2+11),dtype=np.float32)
+    MyExtractor = ImageCnnFeaturesExtractor(channels_in = 2,
+                                            observation_space=mySpace, 
+                                            separate_networks_for_stacks=False,
+                                            channel_multiplier=56,
+                                            full_depth_channels=16,
+                                            features_dim=248,
+                                            aux_obs_dim=10,
+                                            aux_obs_features_dim=16
+                                            )
+    data = MyExtractor((image_input, aux_input))
+    print(data.shape)

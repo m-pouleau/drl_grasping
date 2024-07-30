@@ -45,6 +45,7 @@ class STNkd(nn.Module):
         x = x.view(-1, self.k, self.k)
         return x
 
+
 class PointNetfeat(nn.Module):
     def __init__(self, global_feat=True, feature_transform=True, k=7):
         super(PointNetfeat, self).__init__()
@@ -87,11 +88,12 @@ class PointNetfeat(nn.Module):
             x = x.view(-1, 1024, 1).repeat(1, 1, n_pts)
             return torch.cat([x, pointfeat], 1), trans, trans_feat
 
+
 class PointNetCls(nn.Module):
     def __init__(self, feature_transform=True, k=7, num_classes=10):
         super(PointNetCls, self).__init__()
         self.feature_transform = feature_transform
-        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform)
+        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=k)
         self.fc1 = nn.Linear(1024, 512)
         self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, num_classes)
@@ -113,7 +115,7 @@ class PointNetDenseCls(nn.Module):
         super(PointNetDenseCls, self).__init__()
         self.num_classes = num_classes
         self.feature_transform=feature_transform
-        self.feat = PointNetfeat(global_feat=False, feature_transform=feature_transform)
+        self.feat = PointNetfeat(global_feat=False, feature_transform=feature_transform, k=k)
         self.conv1 = torch.nn.Conv1d(1088, 512, 1)
         self.conv2 = torch.nn.Conv1d(512, 256, 1)
         self.conv3 = torch.nn.Conv1d(256, 128, 1)
@@ -134,6 +136,20 @@ class PointNetDenseCls(nn.Module):
         x = F.log_softmax(x.view(-1,self.num_classes), dim=-1)
         x = x.view(batchsize, n_pts, self.num_classes)
         return x, trans, trans_feat
+
+
+class PointNetFeatureExtractor(nn.Module):
+    def __init__(self, feature_transform=True, k=7, features_dim=248):
+        super(PointNetFeatureExtractor, self).__init__()
+        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=k)
+        self.fc = nn.Linear(1024, features_dim)
+        self.relu = nn.ReLU()
+
+    def forward(self, x):
+        x = x.permute(0, 2, 1)
+        x, _, _ = self.feat(x)
+        x = F.relu(self.fc(x))
+        return x
 
 
 def feature_transform_regularizer(trans):
@@ -165,3 +181,7 @@ if __name__ == '__main__':
     seg = PointNetDenseCls(k=7, num_classes=11)
     out, _, _ = seg(sim_data_7d)
     print('Segmentation: ', out.size())
+
+    feat = PointNetFeatureExtractor(k=7, features_dim=256)
+    out = feat(sim_data_7d)
+    print('Feature Extractor: ', out.size())

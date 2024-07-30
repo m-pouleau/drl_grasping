@@ -366,10 +366,9 @@ class PointCloudCnnPolicy(TQCPolicy):
         n_quantiles: int = 25,
         n_critics: int = 2,
         share_features_extractor: bool = True,
-        separate_networks_for_stacks: bool = True,
     ):
         features_extractor_kwargs.update(
-            {"separate_networks_for_stacks": separate_networks_for_stacks}
+            {"separate_networks_for_stacks": False}
         )
         super(PointCloudCnnPolicy, self).__init__(
             observation_space=observation_space,
@@ -391,8 +390,6 @@ class PointCloudCnnPolicy(TQCPolicy):
             n_critics=n_critics,
             share_features_extractor=share_features_extractor,
         )
-
-        self._separate_networks_for_stacks = separate_networks_for_stacks
 
     def make_actor(
         self, features_extractor: Optional[BaseFeaturesExtractor] = None
@@ -438,7 +435,8 @@ class PointCloudCnnPolicy(TQCPolicy):
         pointcloud_batch = preprocess_stacked_pointcloud_batch(
             observation,
             self.device,
-            separate_batches=self._separate_networks_for_stacks,
+            num_points = 2048,
+            include_aux_obs=True,
         )
 
         with th.no_grad():
