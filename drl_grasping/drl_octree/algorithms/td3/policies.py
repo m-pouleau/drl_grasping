@@ -318,10 +318,9 @@ class PointCloudCnnPolicy(TD3Policy):
         optimizer_kwargs: Optional[Dict[str, Any]] = None,
         n_critics: int = 2,
         share_features_extractor: bool = True,
-        separate_networks_for_stacks: bool = True,
     ):
         features_extractor_kwargs.update(
-            {"separate_networks_for_stacks": separate_networks_for_stacks}
+            {"separate_networks_for_stacks": False}
         )
         super(PointCloudCnnPolicy, self).__init__(
             observation_space,
@@ -337,8 +336,6 @@ class PointCloudCnnPolicy(TD3Policy):
             n_critics,
             share_features_extractor,
         )
-
-        self._separate_networks_for_stacks = separate_networks_for_stacks
 
     def make_actor(
         self, features_extractor: Optional[BaseFeaturesExtractor] = None
