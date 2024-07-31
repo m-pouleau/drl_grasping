@@ -1,1 +1,1 @@
-from .policies import OctreeCnnPolicy
+from .policies import OctreeCnnPolicy, PointCloudCnnPolicy

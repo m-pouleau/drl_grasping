@@ -79,21 +79,11 @@ Reach-PointNet-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 6
+      features_dim: 64
+      aux_obs_dim: 0
     n_critics: 2
     net_arch: [128, 128]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 50000
   buffer_size: 25000
@@ -115,21 +105,11 @@ Reach-PointNet2-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 6
+      features_dim: 64
+      aux_obs_dim: 0
     n_critics: 2
     net_arch: [128, 128]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 50000
   buffer_size: 25000
@@ -186,21 +166,11 @@ Reach-PointNetWithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 7
+      features_dim: 64
+      aux_obs_dim: 0
     n_critics: 2
     net_arch: [128, 128]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 50000
   buffer_size: 25000
@@ -222,21 +192,11 @@ Reach-PointNet2WithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 7
+      features_dim: 64
+      aux_obs_dim: 0
     n_critics: 2
     net_arch: [128, 128]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 50000
   buffer_size: 25000
@@ -293,21 +253,11 @@ Reach-PointNetWithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 9
+      features_dim: 64
+      aux_obs_dim: 0
     n_critics: 2
     net_arch: [128, 128]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 50000
   buffer_size: 25000
@@ -329,21 +279,11 @@ Reach-PointNet2WithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 9
+      features_dim: 64
+      aux_obs_dim: 0
     n_critics: 2
     net_arch: [128, 128]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 50000
   buffer_size: 25000
@@ -428,21 +368,12 @@ Grasp-PointNet-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 6
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
     n_critics: 2
     net_arch: [512, 512]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 500000
   buffer_size: 50000
@@ -466,21 +397,12 @@ Grasp-PointNet2-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 6
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
     n_critics: 2
     net_arch: [512, 512]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 500000
   buffer_size: 50000
@@ -542,21 +464,12 @@ Grasp-PointNetWithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 7
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
     n_critics: 2
     net_arch: [512, 512]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 500000
   buffer_size: 50000
@@ -580,21 +493,12 @@ Grasp-PointNet2WithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 7
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
     n_critics: 2
     net_arch: [512, 512]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 500000
   buffer_size: 50000
@@ -656,21 +560,12 @@ Grasp-PointNetWithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 9
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
     n_critics: 2
     net_arch: [512, 512]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 500000
   buffer_size: 50000
@@ -694,21 +589,12 @@ Grasp-PointNet2WithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 9
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
     n_critics: 2
     net_arch: [512, 512]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 500000
   buffer_size: 50000
@@ -898,21 +784,12 @@ GraspPlanetary-PointNet-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 6
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
     n_critics: 2
     net_arch: [512, 512]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 500000
   buffer_size: 50000
@@ -936,21 +813,12 @@ GraspPlanetary-PointNet2-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 6
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
     n_critics: 2
     net_arch: [512, 512]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 500000
   buffer_size: 50000
@@ -1012,21 +880,12 @@ GraspPlanetary-PointNetWithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 7
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
     n_critics: 2
     net_arch: [512, 512]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 500000
   buffer_size: 50000
@@ -1050,21 +909,12 @@ GraspPlanetary-PointNet2WithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 7
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
     n_critics: 2
     net_arch: [512, 512]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 500000
   buffer_size: 50000
@@ -1126,21 +976,12 @@ GraspPlanetary-PointNetWithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 9
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
     n_critics: 2
     net_arch: [512, 512]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 500000
   buffer_size: 50000
@@ -1164,21 +1005,12 @@ GraspPlanetary-PointNet2WithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      depth: null
-      full_depth: null
-      channels_in: null
-      channel_multiplier: null
-      full_depth_conv1d: null
-      full_depth_channels: null
-      features_dim: null
-      aux_obs_dim: null
-      fast_conv: null
-      batch_normalization: null
-      bn_eps: null
-      bn_momentum: null
+      channels_in: 9
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
     n_critics: 2
     net_arch: [512, 512]
-    separate_networks_for_stacks: False
     share_features_extractor: True
   n_timesteps: 500000
   buffer_size: 50000
