@@ -510,7 +510,7 @@ Grasp-PointNet2WithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      channels_in: 6
+      channels_in: 7
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8
