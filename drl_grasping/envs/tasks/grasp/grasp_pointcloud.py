@@ -41,16 +41,16 @@ class GraspPointCloud(Grasp, abc.ABC):
             callback_group=self._callback_group,
         )
 
-        # Offset octree bounds by the robot base offset
-        octree_min_bound = (
-            octree_min_bound[0],
-            octree_min_bound[1],
-            octree_min_bound[2] + self.robot_model_class.BASE_LINK_Z_OFFSET,
+        # Offset pointcloud bounds by the robot base offset
+        pointcloud_min_bound = (
+            pointcloud_min_bound[0],
+            pointcloud_min_bound[1],
+            pointcloud_min_bound[2] + self.robot_model_class.BASE_LINK_Z_OFFSET,
         )
-        octree_max_bound = (
-            octree_max_bound[0],
-            octree_max_bound[1],
-            octree_max_bound[2] + self.robot_model_class.BASE_LINK_Z_OFFSET,
+        pointcloud_max_bound = (
+            pointcloud_max_bound[0],
+            pointcloud_max_bound[1],
+            pointcloud_max_bound[2] + self.robot_model_class.BASE_LINK_Z_OFFSET,
         )
 
         # Pointcloud creator

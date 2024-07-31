@@ -320,9 +320,6 @@ class PointCloudCnnPolicy(TD3Policy):
         share_features_extractor: bool = True,
     ):
         self._aux_obs_dim = features_extractor_kwargs['aux_obs_dim']
-        features_extractor_kwargs.update(
-            {"separate_networks_for_stacks": False}
-        )
         super(PointCloudCnnPolicy, self).__init__(
             observation_space,
             action_space,

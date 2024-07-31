@@ -111,6 +111,7 @@ REACH_KWARGS_POINTCLOUD: Dict[str, any] = {
     "pointcloud_min_bound": (0.45 - 0.25, 0.0 - 0.25, 0.25 - 0.25),
     "pointcloud_max_bound": (0.45 + 0.25, 0.0 + 0.25, 0.25 + 0.25),
     "num_points": 2048,
+    "pointcloud_n_stacked": 2,
 }
 REACH_KWARGS_SIM: Dict[str, any] = {
     "physics_rate": 200.0,
@@ -528,6 +529,7 @@ GRASP_KWARGS_POINTCLOUD: Dict[str, any] = {
         0.11 + 0.12,
     ),
     "num_points": 2048,
+    "pointcloud_n_stacked": 3,
     "proprioceptive_observations": True,
 }
 
@@ -978,6 +980,7 @@ GRASP_PLANETARY_KWARGS_POINTCLOUD: Dict[str, any] = {
         0.14 + 0.2,
     ),
     "num_points": 2048,
+    "pointcloud_n_stacked": 2,
     "proprioceptive_observations": True,
 }
 GRASP_PLANETARY_KWARGS_SIM: Dict[str, any] = {

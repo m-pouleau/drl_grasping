@@ -368,9 +368,6 @@ class PointCloudCnnPolicy(TQCPolicy):
         share_features_extractor: bool = True,
     ):
         self._aux_obs_dim = features_extractor_kwargs['aux_obs_dim']
-        features_extractor_kwargs.update(
-            {"separate_networks_for_stacks": False}
-        )
         super(PointCloudCnnPolicy, self).__init__(
             observation_space=observation_space,
             action_space=action_space,
@@ -443,6 +440,7 @@ class PointCloudCnnPolicy(TQCPolicy):
             actions = self._predict(pointcloud_batch, deterministic=deterministic)
         # Convert to numpy
         actions = actions.cpu().numpy()
+        #print("got actions from model ...", flush=True)
 
         if isinstance(self.action_space, gym.spaces.Box):
             if self.squash_output:
