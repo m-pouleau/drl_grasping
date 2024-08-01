@@ -50,7 +50,7 @@ ROBOT_MODEL="lunalab_summit_xl_gen"
 # ENV="GraspPlanetary-PointNet-Gazebo-v0"
 # ENV="GraspPlanetary-PointNet2-Gazebo-v0"
 # ENV="GraspPlanetary-OctreeWithIntensity-Gazebo-v0"
-# ENV="GraspPlanetary-PointNetWithIntensity-Gazebo-v0"
+ENV="GraspPlanetary-PointNetWithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-PointNet2WithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-OctreeWithColor-Gazebo-v0"
 # ENV="GraspPlanetary-PointNetWithColor-Gazebo-v0"
@@ -68,7 +68,7 @@ LOG_FOLDER="${PWD}/drl_grasping_training/train/${ENV}/logs"
 REWARD_LOG="${PWD}/drl_grasping_training/evaluate/${ENV}"
 
 ## Load checkpoint instead of last model (# steps)
-LOAD_CHECKPOINT="330000"
+LOAD_CHECKPOINT="500000"
 
 ### Arguments
 LAUNCH_ARGS=(
