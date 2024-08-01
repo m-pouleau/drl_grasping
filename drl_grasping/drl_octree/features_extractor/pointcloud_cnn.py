@@ -55,7 +55,7 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
             p.numel() for p in self.parameters() if p.requires_grad
         )
         print(
-            "Initialised ImageCnnFeaturesExtractor with "
+            "Initialised PointCloudCnnFeaturesExtractor with "
             f"{number_of_learnable_parameters} parameters"
         )
         if verbose:

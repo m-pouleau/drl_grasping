@@ -100,7 +100,7 @@ class ReachPointCloud(Reach, abc.ABC):
 
         self.__stacked_pointclouds.append(np_pointcloud)
         # For the first buffer after reset, fill with identical observations until deque is full
-        while not self.pointcloud_n_stacked == len(self.__stacked_pointclouds):
+        while not self._pointcloud_n_stacked == len(self.__stacked_pointclouds):
             self.__stacked_pointclouds.append(np_pointcloud)
 
         # Create the observation

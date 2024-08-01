@@ -130,7 +130,7 @@ class GraspPointCloud(Grasp, abc.ABC):
         
         self.__stacked_observations.append(observation_array)
         # For the first buffer after reset, fill with identical observations until deque is full
-        while not self.pointcloud_n_stacked == len(self.__stacked_observations):
+        while not self._pointcloud_n_stacked == len(self.__stacked_observations):
             self.__stacked_observations.append(observation_array)
 
         observation = Observation(np.array(self.__stacked_observations, dtype=np.float32))
@@ -143,5 +143,5 @@ class GraspPointCloud(Grasp, abc.ABC):
 
     def reset_task(self):
 
-        self.__stacked_obs.clear()
+        self.__stacked_observations.clear()
         Grasp.reset_task(self)
