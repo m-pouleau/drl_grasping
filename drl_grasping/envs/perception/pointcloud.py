@@ -40,6 +40,7 @@ class PointCloudCreator:
         self._normals_radius = normals_radius
         self._normals_max_nn = normals_max_nn
         self._debug_draw = debug_draw
+        self.get_workspace_center_and_radius()
 
     def __call__(self, ros_point_cloud2: PointCloud2) -> np.ndarray:
 
@@ -73,13 +74,14 @@ class PointCloudCreator:
                 point_show_normal=True,
             )
 
-        # Convert open3d point cloud into octree points
+        # Convert open3d point cloud into numpy pointcloud & normalize xyz points to current workspace
         np_pointcloud = self.open3d_pointcloud_to_numpy_pointcloud(open3d_point_cloud=open3d_point_cloud)
 
         # Sample to fitting number of points
         np_pointcloud = self.adjust_pointcloud_size(np_pointcloud, self._num_points)
 
         return np_pointcloud
+
 
     def preprocess_point_cloud(
         self,
@@ -135,7 +137,8 @@ class PointCloudCreator:
         )
 
         return open3d_point_cloud
-    
+
+
     def open3d_pointcloud_to_numpy_pointcloud(self, open3d_point_cloud: open3d.geometry.PointCloud) -> np.ndarray:
         '''
         Gets an open3d pointcloud and creates a numpy array out of the points, normals and color featues
@@ -144,23 +147,28 @@ class PointCloudCreator:
             - n x 7 (only intensity value)
             - n x 9 (rgb value)
         '''
-        # Get the point & normal features from the pointcloud
+        # Get the point & normal features from the pointcloud, normalize xyz points to current workspace
         np_points = np.asarray(open3d_point_cloud.points)
+        norm_np_points = self.normalize_pointcloud_points(np_points)
         np_normals = np.asarray(open3d_point_cloud.normals)
 
         # Get the color features (if available) & concatenate with other features
         if self._include_color:
             np_colors = np.asarray(open3d_point_cloud.colors)
-            np_pointcloud = np.concatenate((np_points, np_normals, np_colors), axis=1)
+            np_pointcloud = np.concatenate((norm_np_points, np_normals, np_colors), axis=1)
         elif self._include_intensity:
             np_colors = np.asarray(open3d_point_cloud.colors)[:, 0].reshape(-1, 1)
-            np_pointcloud = np.concatenate((np_points, np_normals, np_colors), axis=1)
+            np_pointcloud = np.concatenate((norm_np_points, np_normals, np_colors), axis=1)
         else:
-            np_pointcloud = np.concatenate((np_points, np_normals), axis=1)
+            np_pointcloud = np.concatenate((norm_np_points, np_normals), axis=1)
 
         return np_pointcloud
 
+
     def adjust_pointcloud_size(self, pointcloud, desired_num_points=2048):
+        '''
+        Sample pointcloud, so that it fits the specified number of points
+        '''
         current_num_points, features = pointcloud.shape
         
         if current_num_points > desired_num_points:
@@ -173,3 +181,18 @@ class PointCloudCreator:
             pointcloud = np.vstack((pointcloud, padding))
         
         return pointcloud
+
+
+    def get_workspace_center_and_radius(self):
+        '''
+        Get center and radius of workspace from task to be able to normalize the pointcloud later
+        '''
+        self._ws_center = (np.array(self._min_bound) + np.array(self._max_bound)) / 2
+        self._ws_radius = np.linalg.norm(self._max_bound - self._ws_center)    
+
+
+    def normalize_pointcloud_points(self, xyz_points):
+        '''
+        Normalize xyz points of pointcloud, so that they are fitted to workspace center and radius
+        '''
+        return (xyz_points - self._ws_center) / self._ws_radius
