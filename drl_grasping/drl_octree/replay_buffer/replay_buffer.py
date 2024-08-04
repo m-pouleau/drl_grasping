@@ -136,7 +136,7 @@ def _get_samples_with_support_for_octree(
 
         return ReplayBufferSamples(
             observations=obs,
-            actions=self.to_torch(self.actions[batch_inds, :, :]),
+            actions=self.to_torch(self.actions[batch_inds, 0, :]),
             next_observations=next_obs,
             dones=self.to_torch(self.dones[batch_inds]),
             rewards=self.to_torch(
