@@ -248,7 +248,7 @@ class ExperimentManager(object):
         try:
             model.learn(self.n_timesteps, **kwargs)
         except Exception as e:
-            print(f"Caught an exception during training of the model: {e}")
+            print(f"Caught an exception during training of the model: {e}", flush=True)
             self.save_trained_model(model)
         finally:
             # Release resources

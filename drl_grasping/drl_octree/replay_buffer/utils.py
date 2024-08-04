@@ -192,17 +192,15 @@ def preprocess_stacked_pointcloud_batch(
     n_aux_obs: int = 10,
 ) -> Dict[str, th.Tensor]:    
 
-    observation = observation.squeeze(axis=0)   
-
     # Get number of auxiliary observations and convert them to torch tensor
     if n_aux_obs != 0:
-        aux_obs = observation[:, -n_aux_obs:, 0]
-        aux_obs = th.tensor(aux_obs.reshape(1, observation.shape[0], n_aux_obs), requires_grad=False).to(device)
+        aux_obs = observation[:, :, -n_aux_obs:, 0]
+        aux_obs = th.tensor(aux_obs, requires_grad=False).to(device)
     else:
         aux_obs = None
 
     # Convert to torch tensor
-    points = observation[:, :-n_aux_obs, :]
-    pointcloud_batch = th.tensor(points, requires_grad=False).to(device)
+    points = observation[:, :, :-n_aux_obs, :]
+    pointcloud_batch = th.tensor(points.reshape(-1, points.shape[2], points.shape[3]), requires_grad=False).to(device)
 
     return (pointcloud_batch, aux_obs)
