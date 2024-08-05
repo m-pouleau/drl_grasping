@@ -2,13 +2,10 @@ import gym
 import torch
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 
-######
 from drl_grasping.drl_octree.features_extractor.pointnet import *
+from drl_grasping.drl_octree.features_extractor.pointnet2 import *
 from drl_grasping.drl_octree.features_extractor.modules import LinearRelu
 
-#from modules import LinearRelu, LinearBnRelu
-#from pointnet import *
-########
 
 class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
     """
@@ -44,6 +41,8 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
         # Initialize the right feature extractor
         if extractor_backbone == "PointNet":
             self._extractor_backbone = PointNetFeatureExtractor(feature_transform=True, k=channels_in, features_dim=features_dim)
+        elif extractor_backbone == "PointNet2":
+            self._extractor_backbone = PointNet2FeatureExtractor(features_dim=features_dim, in_channel=channels_in)
 
         # One linear layer for auxiliary observations
         if self._aux_obs_dim != 0:
