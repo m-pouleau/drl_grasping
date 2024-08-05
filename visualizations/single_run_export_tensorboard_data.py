@@ -2,10 +2,10 @@ import csv
 from tensorboard.backend.event_processing import event_accumulator
 
 # Set environment
-ENV = "GraspPlanetary-OctreeWithIntensity-Gazebo-v0"
-ALGO = "TQC_1"
-FILE = "events.out.tfevents.1721043351.ubuntu.145.0" # "events.out.tfevents.1720050307.ubuntu.1740.0"
-FILE_INDEX = "145"
+ENV = "GraspPlanetary-PointNetWithIntensity-Gazebo-v0"
+ALGO = "TQC_3"
+FILE = "events.out.tfevents.zzzzzzzzz.ubuntu.xxx.y" # "events.out.tfevents.1720050307.ubuntu.1740.0"
+FILE_INDEX = "abc"
 
 # Path to the directory containing the TensorBoard logs
 log_dir = f'/root/drl_grasping_training/train/{ENV}/tensorboard_logs/{ENV}/{ALGO}/'

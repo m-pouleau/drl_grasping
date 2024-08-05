@@ -125,26 +125,24 @@ class PointNetFeatureExtractor(nn.Module):
 
 
 if __name__ == '__main__':
-    pointcloud = torch.rand(2, 2048, 7)
-    sim_data_7d = Variable(pointcloud.transpose(1, 2))
+    # Input from observation space
+    pointcloud = torch.rand(128, 2048, 7)
+    # Transposed input for base networks
+    sim_data_7d = Variable(pointcloud.permute(0, 2, 1))
     print('Input Data: ', sim_data_7d.size())
-
+    # Getting global features
     pointfeat = PointNetfeat(k=7)
     out, _, _ = pointfeat(sim_data_7d)
     print('Global Features:', out.size())
-
+    # Getting point features and local features
     pointfeat = PointNetfeat(global_feat=False, k=7)
     out, _, _ = pointfeat(sim_data_7d)
     print('Point Features:', out.size())
-
+    # Getting classes for each point cloud
     cls = PointNetCls(k = 7, num_classes=11)
     out, _, _ = cls(sim_data_7d)
     print('Classes: ', out.size())
-
-    seg = PointNetDenseCls(k=7, num_classes=11)
-    out, _, _ = seg(sim_data_7d)
-    print('Segmentation: ', out.size())
-
+    # Getting drl-features from observation space input
     feat = PointNetFeatureExtractor(k=7, features_dim=256)
-    out = feat(sim_data_7d)
+    out = feat(pointcloud)
     print('Feature Extractor: ', out.size())
