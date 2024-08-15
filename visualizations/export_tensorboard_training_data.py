@@ -3,7 +3,7 @@ from tensorboard.backend.event_processing import event_accumulator
 
 # Set environment
 ENV = "GraspPlanetary-PointNetWithIntensity-Gazebo-v0"
-ALGO = "TQC_3"
+ALGO = "TQC_1"
 
 # Path to the directory containing the TensorBoard logs
 log_dir = f'/root/drl_grasping_training/train/{ENV}/tensorboard_logs/{ENV}/{ALGO}'
