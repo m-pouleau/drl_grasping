@@ -10,6 +10,7 @@ from stable_baselines3.common.off_policy_algorithm import OffPolicyAlgorithm
 def _setup_model_with_separate_octree_batches_for_stacks(self) -> None:
     self._setup_lr_schedule()
     self.set_random_seed(self.seed)
+    n_aux_obs = self.policy_kwargs['features_extractor_kwargs']['aux_obs_dim']
     if "separate_networks_for_stacks" in self.policy_kwargs:
         self.replay_buffer = ReplayBuffer(
             self.buffer_size,
@@ -20,6 +21,7 @@ def _setup_model_with_separate_octree_batches_for_stacks(self) -> None:
             separate_networks_for_stacks=self.policy_kwargs[
                 "separate_networks_for_stacks"
             ],
+            n_aux_obs = n_aux_obs,
         )
     else:
         self.replay_buffer = ReplayBuffer(
@@ -28,6 +30,7 @@ def _setup_model_with_separate_octree_batches_for_stacks(self) -> None:
             self.action_space,
             self.device,
             optimize_memory_usage=self.optimize_memory_usage,
+            n_aux_obs = n_aux_obs,
         )
     self.policy = self.policy_class(  # pytype:disable=not-instantiable
         self.observation_space,

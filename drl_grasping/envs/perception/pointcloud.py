@@ -1,16 +1,14 @@
 from typing import List, Tuple
 
 import numpy as np
-import ocnn
 import open3d
-import torch
 from rclpy.node import Node
 from sensor_msgs.msg import PointCloud2
 
 from drl_grasping.envs.utils import Tf2Listener, conversions
 
 
-class OctreeCreator:
+class PointCloudCreator:
     def __init__(
         self,
         node: Node,
@@ -21,22 +19,10 @@ class OctreeCreator:
         include_color: bool = False,
         # Note: For efficiency, the first channel of RGB is used for intensity
         include_intensity: bool = False,
-        depth: int = 4,
-        full_depth: int = 2,
-        adaptive: bool = False,
-        adp_depth: int = 4,
+        num_points: int = 2048,
         normals_radius: float = 0.05,
         normals_max_nn: int = 10,
-        node_dis: bool = True,
-        node_feature: bool = False,
-        split_label: bool = False,
-        th_normal: float = 0.1,
-        th_distance: float = 2.0,
-        extrapolate: bool = False,
-        save_pts: bool = False,
-        key2xyz: bool = False,
         debug_draw: bool = False,
-        debug_write_octree: bool = False,
     ):
 
         self._node = node
@@ -50,30 +36,13 @@ class OctreeCreator:
         self._max_bound = max_bound
         self._include_color = include_color
         self._include_intensity = include_intensity
+        self._num_points = num_points
         self._normals_radius = normals_radius
         self._normals_max_nn = normals_max_nn
         self._debug_draw = debug_draw
-        self._debug_write_octree = debug_write_octree
+        self.get_workspace_center_and_radius()
 
-        # Create a converter between points and octree
-        self._points_to_octree = ocnn.Points2Octree(
-            depth=depth,
-            full_depth=full_depth,
-            node_dis=node_dis,
-            node_feature=node_feature,
-            split_label=split_label,
-            adaptive=adaptive,
-            adp_depth=adp_depth,
-            th_normal=th_normal,
-            th_distance=th_distance,
-            extrapolate=extrapolate,
-            save_pts=save_pts,
-            key2xyz=key2xyz,
-            bb_min=min_bound,
-            bb_max=max_bound,
-        )
-
-    def __call__(self, ros_point_cloud2: PointCloud2) -> torch.Tensor:
+    def __call__(self, ros_point_cloud2: PointCloud2) -> np.ndarray:
 
         # Convert to Open3D PointCloud
         open3d_point_cloud = conversions.pointcloud2_to_open3d(
@@ -105,18 +74,14 @@ class OctreeCreator:
                 point_show_normal=True,
             )
 
-        # Construct octree from such point cloud
-        octree = self.construct_octree(
-            open3d_point_cloud,
-            include_color=self._include_color,
-            include_intensity=self._include_intensity,
-        )
+        # Convert open3d point cloud into numpy pointcloud & normalize xyz points to current workspace
+        np_pointcloud = self.open3d_pointcloud_to_numpy_pointcloud(open3d_point_cloud=open3d_point_cloud)
 
-        # Write if needed
-        if self._debug_write_octree:
-            ocnn.write_octree(octree, "octree.octree")
+        # Sample to fitting number of points
+        np_pointcloud = self.adjust_pointcloud_size(np_pointcloud, self._num_points)
 
-        return octree
+        return np_pointcloud
+
 
     def preprocess_point_cloud(
         self,
@@ -173,39 +138,61 @@ class OctreeCreator:
 
         return open3d_point_cloud
 
-    def construct_octree(
-        self,
-        open3d_point_cloud: open3d.geometry.PointCloud,
-        include_color: bool,
-        include_intensity: bool,
-    ) -> torch.Tensor:
 
-        # In case the point cloud has no points, add a single point
-        # This is a workaround because I was not able to create an empty octree without getting a segfault
-        # TODO: Figure out a better way of making an empty octree (it does not occur if setup correctly, so probably not worth it)
-        if not open3d_point_cloud.has_points():
-            open3d_point_cloud.points.append(
-                (
-                    (self._min_bound[0] + self._max_bound[0]) / 2,
-                    (self._min_bound[1] + self._max_bound[1]) / 2,
-                    (self._min_bound[2] + self._max_bound[2]) / 2,
-                )
-            )
-            open3d_point_cloud.normals.append((0.0, 0.0, 0.0))
-            if include_color or include_intensity:
-                open3d_point_cloud.colors.append((0.0, 0.0, 0.0))
+    def open3d_pointcloud_to_numpy_pointcloud(self, open3d_point_cloud: open3d.geometry.PointCloud) -> np.ndarray:
+        '''
+        Gets an open3d pointcloud and creates a numpy array out of the points, normals and color featues
+        The dimension of the tensor can be:
+            - n x 6 (no color information)
+            - n x 7 (only intensity value)
+            - n x 9 (rgb value)
+        '''
+        # Get the point & normal features from the pointcloud, normalize xyz points to current workspace
+        np_points = np.asarray(open3d_point_cloud.points)
+        norm_np_points = self.normalize_pointcloud_points(np_points)
+        np_normals = np.asarray(open3d_point_cloud.normals)
 
-        # Convert open3d point cloud into octree points
-        octree_points = conversions.open3d_point_cloud_to_octree_points(
-            open3d_point_cloud=open3d_point_cloud,
-            include_color=include_color,
-            include_intensity=include_intensity,
-        )
+        # Get the color features (if available) & concatenate with other features
+        if self._include_color:
+            np_colors = np.asarray(open3d_point_cloud.colors)
+            np_pointcloud = np.concatenate((norm_np_points, np_normals, np_colors), axis=1)
+        elif self._include_intensity:
+            np_colors = np.asarray(open3d_point_cloud.colors)[:, 0].reshape(-1, 1)
+            np_pointcloud = np.concatenate((norm_np_points, np_normals, np_colors), axis=1)
+        else:
+            np_pointcloud = np.concatenate((norm_np_points, np_normals), axis=1)
 
-        # Convert octree points into 1D Tensor (via ndarray)
-        # Note: Copy of points here is necessary as ndarray would otherwise be immutable
-        octree_points_ndarray = np.frombuffer(np.copy(octree_points.buffer()), np.uint8)
-        octree_points_tensor = torch.from_numpy(octree_points_ndarray)
+        return np_pointcloud
 
-        # Finally, create an octree from the points
-        return self._points_to_octree(octree_points_tensor)
+
+    def adjust_pointcloud_size(self, pointcloud, desired_num_points=2048):
+        '''
+        Sample pointcloud, so that it fits the specified number of points
+        '''
+        current_num_points, features = pointcloud.shape
+        
+        if current_num_points > desired_num_points:
+            # Randomly sample 2048 rows without replacement
+            sampled_indices = np.random.choice(current_num_points, desired_num_points, replace=False)
+            pointcloud = pointcloud[sampled_indices]
+        elif current_num_points < desired_num_points:
+            # Pad with zeros to make up the difference
+            padding = np.zeros((desired_num_points - current_num_points, features))
+            pointcloud = np.vstack((pointcloud, padding))
+        
+        return pointcloud
+
+
+    def get_workspace_center_and_radius(self):
+        '''
+        Get center and radius of workspace from task to be able to normalize the pointcloud later
+        '''
+        self._ws_center = (np.array(self._min_bound) + np.array(self._max_bound)) / 2
+        self._ws_radius = np.linalg.norm(self._max_bound - self._ws_center)    
+
+
+    def normalize_pointcloud_points(self, xyz_points):
+        '''
+        Normalize xyz points of pointcloud, so that they are fitted to workspace center and radius
+        '''
+        return (xyz_points - self._ws_center) / self._ws_radius

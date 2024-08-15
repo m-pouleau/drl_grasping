@@ -1,0 +1,145 @@
+import torch
+import torch.nn as nn
+import torch.nn.parallel
+import torch.utils.data
+from torch.autograd import Variable
+import numpy as np
+import torch.nn.functional as F
+
+
+class STNkd(nn.Module):
+    def __init__(self, k=7):
+        super(STNkd, self).__init__()
+        self.conv1 = torch.nn.Conv1d(k, 64, 1)
+        self.conv2 = torch.nn.Conv1d(64, 128, 1)
+        self.conv3 = torch.nn.Conv1d(128, 1024, 1)
+        self.fc1 = nn.Linear(1024, 512)
+        self.fc2 = nn.Linear(512, 256)
+        self.fc3 = nn.Linear(256, k*k)
+
+        self.bn1 = nn.BatchNorm1d(64)
+        self.bn2 = nn.BatchNorm1d(128)
+        self.bn3 = nn.BatchNorm1d(1024)
+        self.bn4 = nn.BatchNorm1d(512)
+        self.bn5 = nn.BatchNorm1d(256)
+
+        self.k = k
+
+    def forward(self, x):
+        batchsize = x.size()[0]
+        x = F.relu(self.bn1(self.conv1(x)))
+        x = F.relu(self.bn2(self.conv2(x)))
+        x = F.relu(self.bn3(self.conv3(x)))
+        x = torch.max(x, 2, keepdim=True)[0]
+        x = x.view(-1, 1024)
+
+        x = F.relu(self.bn4(self.fc1(x)))
+        x = F.relu(self.bn5(self.fc2(x)))
+        x = self.fc3(x)
+
+        iden = Variable(torch.from_numpy(np.eye(self.k).flatten().astype(np.float32))).view(1,self.k*self.k).repeat(batchsize,1)
+        if x.is_cuda:
+            iden = iden.cuda()
+        x = x + iden
+        x = x.view(-1, self.k, self.k)
+        return x
+
+
+class PointNetfeat(nn.Module):
+    def __init__(self, global_feat=True, feature_transform=True, k=7):
+        super(PointNetfeat, self).__init__()
+        self.stn = STNkd(k=k)
+        self.conv1 = torch.nn.Conv1d(k, 64, 1)
+        self.conv2 = torch.nn.Conv1d(64, 128, 1)
+        self.conv3 = torch.nn.Conv1d(128, 1024, 1)
+        self.bn1 = nn.BatchNorm1d(64)
+        self.bn2 = nn.BatchNorm1d(128)
+        self.bn3 = nn.BatchNorm1d(1024)
+        self.global_feat = global_feat
+        self.feature_transform = feature_transform
+        if self.feature_transform:
+            self.fstn = STNkd(k=64)
+
+    def forward(self, x):
+        n_pts = x.size()[2]
+        trans = self.stn(x)
+        x = x.transpose(2, 1)
+        x = torch.bmm(x, trans)
+        x = x.transpose(2, 1)
+        x = F.relu(self.bn1(self.conv1(x)))
+
+        if self.feature_transform:
+            trans_feat = self.fstn(x)
+            x = x.transpose(2,1)
+            x = torch.bmm(x, trans_feat)
+            x = x.transpose(2,1)
+        else:
+            trans_feat = None
+
+        pointfeat = x
+        x = F.relu(self.bn2(self.conv2(x)))
+        x = self.bn3(self.conv3(x))
+        x = torch.max(x, 2, keepdim=True)[0]
+        x = x.view(-1, 1024)
+        if self.global_feat:
+            return x, trans, trans_feat
+        else:
+            x = x.view(-1, 1024, 1).repeat(1, 1, n_pts)
+            return torch.cat([x, pointfeat], 1), trans, trans_feat
+
+
+class PointNetCls(nn.Module):
+    def __init__(self, feature_transform=True, k=7, num_classes=10):
+        super(PointNetCls, self).__init__()
+        self.feature_transform = feature_transform
+        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=k)
+        self.fc1 = nn.Linear(1024, 512)
+        self.fc2 = nn.Linear(512, 256)
+        self.fc3 = nn.Linear(256, num_classes)
+        self.dropout = nn.Dropout(p=0.3)
+        self.bn1 = nn.BatchNorm1d(512)
+        self.bn2 = nn.BatchNorm1d(256)
+
+    def forward(self, x):
+        x, trans, trans_feat = self.feat(x)
+        x = F.relu(self.bn1(self.fc1(x)))
+        x = F.relu(self.bn2(self.dropout(self.fc2(x))))
+        x = self.fc3(x)
+        return F.log_softmax(x, dim=1), trans, trans_feat
+
+
+class PointNetFeatureExtractor(nn.Module):
+    def __init__(self, feature_transform=True, k=7, features_dim=248):
+        super(PointNetFeatureExtractor, self).__init__()
+        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=k)
+        self.fc = nn.Linear(1024, features_dim)
+
+    def forward(self, x):
+        x = x.permute(0, 2, 1)
+        x, _, _ = self.feat(x)
+        x = F.relu(self.fc(x))
+        return x
+
+
+if __name__ == '__main__':
+    # Input from observation space
+    pointcloud = torch.rand(128, 2048, 7)
+    # Transposed input for base networks
+    sim_data_7d = Variable(pointcloud.permute(0, 2, 1))
+    print('Input Data: ', sim_data_7d.size())
+    # Getting global features
+    pointfeat = PointNetfeat(k=7)
+    out, _, _ = pointfeat(sim_data_7d)
+    print('Global Features:', out.size())
+    # Getting point features and local features
+    pointfeat = PointNetfeat(global_feat=False, k=7)
+    out, _, _ = pointfeat(sim_data_7d)
+    print('Point Features:', out.size())
+    # Getting classes for each point cloud
+    cls = PointNetCls(k = 7, num_classes=11)
+    out, _, _ = cls(sim_data_7d)
+    print('Classes: ', out.size())
+    # Getting drl-features from observation space input
+    feat = PointNetFeatureExtractor(k=7, features_dim=256)
+    out = feat(pointcloud)
+    print('Feature Extractor: ', out.size())

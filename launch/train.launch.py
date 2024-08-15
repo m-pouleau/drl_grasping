@@ -83,7 +83,7 @@ def generate_launch_description() -> LaunchDescription:
         Node(
             package="drl_grasping",
             executable="train.py",
-            output="log",
+            output="screen",
             arguments=[
                 "--env",
                 env,

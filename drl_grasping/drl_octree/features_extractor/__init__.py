@@ -1,2 +1,3 @@
 from .image_cnn import ImageCnnFeaturesExtractor
 from .octree_cnn import OctreeCnnFeaturesExtractor
+from .pointcloud_cnn import PointCloudCnnFeaturesExtractor

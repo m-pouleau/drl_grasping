@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-ENV = "GraspPlanetary-OctreeWithIntensity-Gazebo-v0"
+ENV = "GraspPlanetary-PointNetWithIntensity-Gazebo-v0"
 ALGO = "TQC_1"
 WINDOW_SIZE = 1
 

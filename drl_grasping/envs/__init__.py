@@ -106,6 +106,13 @@ REACH_KWARGS_OCTREE: Dict[str, any] = {
     "octree_full_depth": 2,
     "octree_n_stacked": 2,
 }
+REACH_KWARGS_POINTCLOUD: Dict[str, any] = {
+    "pointcloud_reference_frame_id": "world",
+    "pointcloud_min_bound": (0.45 - 0.25, 0.0 - 0.25, 0.25 - 0.25),
+    "pointcloud_max_bound": (0.45 + 0.25, 0.0 + 0.25, 0.25 + 0.25),
+    "num_points": 2048,
+    "pointcloud_n_stacked": 2,
+}
 REACH_KWARGS_SIM: Dict[str, any] = {
     "physics_rate": 200.0,
     "real_time_factor": float(np.finfo(np.float32).max),
@@ -198,6 +205,30 @@ register(
     },
 )
 register(
+    id="Reach-PointNet-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.ReachPointCloud,
+        **REACH_KWARGS,
+        **REACH_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": False,
+        "pointcloud_include_intensity": False,
+    },
+)
+register(
+    id="Reach-PointNet2-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.ReachPointCloud,
+        **REACH_KWARGS,
+        **REACH_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": False,
+        "pointcloud_include_intensity": False,
+    },
+)
+register(
     id="Reach-Octree-v0",
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
     max_episode_steps=REACH_MAX_EPISODE_STEPS,
@@ -211,6 +242,30 @@ register(
     },
 )
 register(
+    id="Reach-PointNetWithIntensity-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.ReachPointCloud,
+        **REACH_KWARGS,
+        **REACH_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": False,
+        "pointcloud_include_intensity": True,
+    },
+)
+register(
+    id="Reach-PointNet2WithIntensity-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.ReachPointCloud,
+        **REACH_KWARGS,
+        **REACH_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": False,
+        "pointcloud_include_intensity": True,
+    },
+)
+register(
     id="Reach-OctreeWithIntensity-v0",
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
     max_episode_steps=REACH_MAX_EPISODE_STEPS,
@@ -221,6 +276,30 @@ register(
         "octree_include_color": False,
         "octree_include_intensity": True,
         "octree_max_size": 25000,
+    },
+)
+register(
+    id="Reach-PointNetWithColor-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.ReachPointCloud,
+        **REACH_KWARGS,
+        **REACH_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": True,
+        "pointcloud_include_intensity": False,
+    },
+)
+register(
+    id="Reach-PointNet2WithColor-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.ReachPointCloud,
+        **REACH_KWARGS,
+        **REACH_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": True,
+        "pointcloud_include_intensity": False,
     },
 )
 register(
@@ -288,6 +367,32 @@ register(
     },
 )
 register(
+    id="Reach-PointNet-Gazebo-v0",
+    entry_point=REACH_RANDOMIZER,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Reach-PointNet-v0",
+        **REACH_KWARGS_SIM,
+        **REACH_KWARGS_RANDOMIZER,
+        **REACH_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "depth_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="Reach-PointNet2-Gazebo-v0",
+    entry_point=REACH_RANDOMIZER,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Reach-PointNet2-v0",
+        **REACH_KWARGS_SIM,
+        **REACH_KWARGS_RANDOMIZER,
+        **REACH_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "depth_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
     id="Reach-OctreeWithIntensity-Gazebo-v0",
     entry_point=REACH_RANDOMIZER,
     max_episode_steps=REACH_MAX_EPISODE_STEPS,
@@ -302,11 +407,65 @@ register(
     },
 )
 register(
+    id="Reach-PointNetWithIntensity-Gazebo-v0",
+    entry_point=REACH_RANDOMIZER,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Reach-PointNetWithIntensity-v0",
+        **REACH_KWARGS_SIM,
+        **REACH_KWARGS_RANDOMIZER,
+        **REACH_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "rgbd_camera",
+        # "camera_image_format": "L8",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="Reach-PointNet2WithIntensity-Gazebo-v0",
+    entry_point=REACH_RANDOMIZER,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Reach-PointNet2WithIntensity-v0",
+        **REACH_KWARGS_SIM,
+        **REACH_KWARGS_RANDOMIZER,
+        **REACH_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "rgbd_camera",
+        # "camera_image_format": "L8",
+        "camera_publish_points": True,
+    },
+)
+register(
     id="Reach-OctreeWithColor-Gazebo-v0",
     entry_point=REACH_RANDOMIZER,
     max_episode_steps=REACH_MAX_EPISODE_STEPS,
     kwargs={
         "env": "Reach-OctreeWithColor-v0",
+        **REACH_KWARGS_SIM,
+        **REACH_KWARGS_RANDOMIZER,
+        **REACH_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "rgbd_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="Reach-PointNetWithColor-Gazebo-v0",
+    entry_point=REACH_RANDOMIZER,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Reach-PointNetWithColor-v0",
+        **REACH_KWARGS_SIM,
+        **REACH_KWARGS_RANDOMIZER,
+        **REACH_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "rgbd_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="Reach-PointNet2WithColor-Gazebo-v0",
+    entry_point=REACH_RANDOMIZER,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Reach-PointNet2WithColor-v0",
         **REACH_KWARGS_SIM,
         **REACH_KWARGS_RANDOMIZER,
         **REACH_KWARGS_RANDOMIZER_CAMERA,
@@ -357,6 +516,23 @@ GRASP_KWARGS_OCTREE: Dict[str, any] = {
     "octree_n_stacked": 3,
     "proprioceptive_observations": True,
 }
+GRASP_KWARGS_POINTCLOUD: Dict[str, any] = {
+    "pointcloud_reference_frame_id": "arm_base_link",
+    "pointcloud_min_bound": (
+        0.5 - 0.12,
+        0.0 - 0.12,
+        0.11 - 0.12,
+    ),
+    "pointcloud_max_bound": (
+        0.5 + 0.12,
+        0.0 + 0.12,
+        0.11 + 0.12,
+    ),
+    "num_points": 2048,
+    "pointcloud_n_stacked": 3,
+    "proprioceptive_observations": True,
+}
+
 GRASP_KWARGS_SIM: Dict[str, any] = {
     "physics_rate": 400.0,
     "real_time_factor": float(np.finfo(np.float32).max),
@@ -489,6 +665,32 @@ register(
     },
 )
 register(
+    id="Grasp-PointNet-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPointCloud,
+        **GRASP_KWARGS,
+        **GRASP_KWARGS_CURRICULUM,
+        **GRASP_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": False,
+        "pointcloud_include_intensity": False,
+    },
+)
+register(
+    id="Grasp-PointNet2-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPointCloud,
+        **GRASP_KWARGS,
+        **GRASP_KWARGS_CURRICULUM,
+        **GRASP_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": False,
+        "pointcloud_include_intensity": False,
+    },
+)
+register(
     id="Grasp-OctreeWithIntensity-v0",
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
     max_episode_steps=GRASP_MAX_EPISODE_STEPS,
@@ -503,6 +705,32 @@ register(
     },
 )
 register(
+    id="Grasp-PointNetWithIntensity-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPointCloud,
+        **GRASP_KWARGS,
+        **GRASP_KWARGS_CURRICULUM,
+        **GRASP_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": False,
+        "pointcloud_include_intensity": True,
+    },
+)
+register(
+    id="Grasp-PointNet2WithIntensity-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPointCloud,
+        **GRASP_KWARGS,
+        **GRASP_KWARGS_CURRICULUM,
+        **GRASP_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": False,
+        "pointcloud_include_intensity": True,
+    },
+)
+register(
     id="Grasp-OctreeWithColor-v0",
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
     max_episode_steps=GRASP_MAX_EPISODE_STEPS,
@@ -514,6 +742,32 @@ register(
         "octree_include_color": True,
         "octree_include_intensity": False,
         "octree_max_size": 75000,
+    },
+)
+register(
+    id="Grasp-PointNetWithColor-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPointCloud,
+        **GRASP_KWARGS,
+        **GRASP_KWARGS_CURRICULUM,
+        **GRASP_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": True,
+        "pointcloud_include_intensity": False,
+    },
+)
+register(
+    id="Grasp-PointNet2WithColor-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPointCloud,
+        **GRASP_KWARGS,
+        **GRASP_KWARGS_CURRICULUM,
+        **GRASP_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": True,
+        "pointcloud_include_intensity": False,
     },
 )
 # Gazebo wrapper
@@ -543,6 +797,34 @@ register(
     },
 )
 register(
+    id="Grasp-PointNet-Gazebo-v0",
+    entry_point=GRASP_RANDOMIZER,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Grasp-PointNet-v0",
+        **GRASP_KWARGS_SIM,
+        **GRASP_KWARGS_RANDOMIZER,
+        **GRASP_KWARGS_RANDOMIZER_CAMERA,
+        "terrain_type": "flat",
+        "camera_type": "depth_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="Grasp-PointNet2-Gazebo-v0",
+    entry_point=GRASP_RANDOMIZER,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Grasp-PointNet2-v0",
+        **GRASP_KWARGS_SIM,
+        **GRASP_KWARGS_RANDOMIZER,
+        **GRASP_KWARGS_RANDOMIZER_CAMERA,
+        "terrain_type": "flat",
+        "camera_type": "depth_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
     id="Grasp-OctreeWithIntensity-Gazebo-v0",
     entry_point=GRASP_RANDOMIZER,
     max_episode_steps=GRASP_MAX_EPISODE_STEPS,
@@ -558,11 +840,69 @@ register(
     },
 )
 register(
+    id="Grasp-PointNetWithIntensity-Gazebo-v0",
+    entry_point=GRASP_RANDOMIZER,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Grasp-PointNetWithIntensity-v0",
+        **GRASP_KWARGS_SIM,
+        **GRASP_KWARGS_RANDOMIZER,
+        **GRASP_KWARGS_RANDOMIZER_CAMERA,
+        "terrain_type": "random_flat",
+        "camera_type": "rgbd_camera",
+        # "camera_image_format": "L8",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="Grasp-PointNet2WithIntensity-Gazebo-v0",
+    entry_point=GRASP_RANDOMIZER,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Grasp-PointNet2WithIntensity-v0",
+        **GRASP_KWARGS_SIM,
+        **GRASP_KWARGS_RANDOMIZER,
+        **GRASP_KWARGS_RANDOMIZER_CAMERA,
+        "terrain_type": "random_flat",
+        "camera_type": "rgbd_camera",
+        # "camera_image_format": "L8",
+        "camera_publish_points": True,
+    },
+)
+register(
     id="Grasp-OctreeWithColor-Gazebo-v0",
     entry_point=GRASP_RANDOMIZER,
     max_episode_steps=GRASP_MAX_EPISODE_STEPS,
     kwargs={
         "env": "Grasp-OctreeWithColor-v0",
+        **GRASP_KWARGS_SIM,
+        **GRASP_KWARGS_RANDOMIZER,
+        **GRASP_KWARGS_RANDOMIZER_CAMERA,
+        "terrain_type": "random_flat",
+        "camera_type": "rgbd_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="Grasp-PointNetWithColor-Gazebo-v0",
+    entry_point=GRASP_RANDOMIZER,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Grasp-PointNetWithColor-v0",
+        **GRASP_KWARGS_SIM,
+        **GRASP_KWARGS_RANDOMIZER,
+        **GRASP_KWARGS_RANDOMIZER_CAMERA,
+        "terrain_type": "random_flat",
+        "camera_type": "rgbd_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="Grasp-PointNet2WithColor-Gazebo-v0",
+    entry_point=GRASP_RANDOMIZER,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Grasp-PointNet2WithColor-v0",
         **GRASP_KWARGS_SIM,
         **GRASP_KWARGS_RANDOMIZER,
         **GRASP_KWARGS_RANDOMIZER_CAMERA,
@@ -621,6 +961,26 @@ GRASP_PLANETARY_KWARGS_OCTREE: Dict[str, any] = {
     "octree_depth": 4,
     "octree_full_depth": 2,
     "octree_n_stacked": 2,
+    "proprioceptive_observations": True,
+}
+GRASP_PLANETARY_KWARGS_POINTCLOUD: Dict[str, any] = {
+    "pointcloud_reference_frame_id": "arm_base_link",
+    # ## Large volume around the robot
+    # "octree_min_bound": (0.1 - 0.6, 0.0 - 0.6, 0.0 - 0.6),
+    # "octree_max_bound": (0.1 + 0.6, 0.0 + 0.6, 0.0 + 0.6),
+    ## Front of robot
+    "pointcloud_min_bound": (
+        0.5 - 0.2,
+        0.0 - 0.2,
+        0.14 - 0.2,
+    ),
+    "pointcloud_max_bound": (
+        0.5 + 0.2,
+        0.0 + 0.2,
+        0.14 + 0.2,
+    ),
+    "num_points": 2048,
+    "pointcloud_n_stacked": 2,
     "proprioceptive_observations": True,
 }
 GRASP_PLANETARY_KWARGS_SIM: Dict[str, any] = {
@@ -851,6 +1211,32 @@ register(
     },
 )
 register(
+    id="GraspPlanetary-PointNet-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPlanetaryPointCloud,
+        **GRASP_PLANETARY_KWARGS,
+        **GRASP_PLANETARY_KWARGS_CURRICULUM,
+        **GRASP_PLANETARY_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": False,
+        "pointcloud_include_intensity": False,
+    },
+)
+register(
+    id="GraspPlanetary-PointNet2-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPlanetaryPointCloud,
+        **GRASP_PLANETARY_KWARGS,
+        **GRASP_PLANETARY_KWARGS_CURRICULUM,
+        **GRASP_PLANETARY_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": False,
+        "pointcloud_include_intensity": False,
+    },
+)
+register(
     id="GraspPlanetary-OctreeWithIntensity-v0",
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
     max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
@@ -865,6 +1251,32 @@ register(
     },
 )
 register(
+    id="GraspPlanetary-PointNetWithIntensity-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPlanetaryPointCloud,
+        **GRASP_PLANETARY_KWARGS,
+        **GRASP_PLANETARY_KWARGS_CURRICULUM,
+        **GRASP_PLANETARY_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": False,
+        "pointcloud_include_intensity": True,
+    },
+)
+register(
+    id="GraspPlanetary-PointNet2WithIntensity-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPlanetaryPointCloud,
+        **GRASP_PLANETARY_KWARGS,
+        **GRASP_PLANETARY_KWARGS_CURRICULUM,
+        **GRASP_PLANETARY_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": False,
+        "pointcloud_include_intensity": True,
+    },
+)
+register(
     id="GraspPlanetary-OctreeWithColor-v0",
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
     max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
@@ -876,6 +1288,32 @@ register(
         "octree_include_color": True,
         "octree_include_intensity": False,
         "octree_max_size": 60000,
+    },
+)
+register(
+    id="GraspPlanetary-PointNetWithColor-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPlanetaryPointCloud,
+        **GRASP_PLANETARY_KWARGS,
+        **GRASP_PLANETARY_KWARGS_CURRICULUM,
+        **GRASP_PLANETARY_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": True,
+        "pointcloud_include_intensity": False,
+    },
+)
+register(
+    id="GraspPlanetary-PointNet2WithColor-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPlanetaryPointCloud,
+        **GRASP_PLANETARY_KWARGS,
+        **GRASP_PLANETARY_KWARGS_CURRICULUM,
+        **GRASP_PLANETARY_KWARGS_POINTCLOUD,
+        "pointcloud_include_color": True,
+        "pointcloud_include_intensity": False,
     },
 )
 # Gazebo wrapper
@@ -971,11 +1409,65 @@ register(
     },
 )
 register(
+    id="GraspPlanetary-PointNet-Gazebo-v0",
+    entry_point=GRASP_PLANETARY_RANDOMIZER,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "GraspPlanetary-PointNet-v0",
+        **GRASP_PLANETARY_KWARGS_SIM,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "depth_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="GraspPlanetary-PointNet2-Gazebo-v0",
+    entry_point=GRASP_PLANETARY_RANDOMIZER,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "GraspPlanetary-PointNet2-v0",
+        **GRASP_PLANETARY_KWARGS_SIM,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "depth_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
     id="GraspPlanetary-OctreeWithIntensity-Gazebo-v0",
     entry_point=GRASP_PLANETARY_RANDOMIZER,
     max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
     kwargs={
         "env": "GraspPlanetary-OctreeWithIntensity-v0",
+        **GRASP_PLANETARY_KWARGS_SIM,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "rgbd_camera",
+        # "camera_image_format": "L8",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="GraspPlanetary-PointNetWithIntensity-Gazebo-v0",
+    entry_point=GRASP_PLANETARY_RANDOMIZER,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "GraspPlanetary-PointNetWithIntensity-v0",
+        **GRASP_PLANETARY_KWARGS_SIM,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "rgbd_camera",
+        # "camera_image_format": "L8",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="GraspPlanetary-PointNet2WithIntensity-Gazebo-v0",
+    entry_point=GRASP_PLANETARY_RANDOMIZER,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "GraspPlanetary-PointNet2WithIntensity-v0",
         **GRASP_PLANETARY_KWARGS_SIM,
         **GRASP_PLANETARY_KWARGS_RANDOMIZER,
         **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,
@@ -994,6 +1486,34 @@ register(
         **GRASP_PLANETARY_KWARGS_RANDOMIZER,
         **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,
         "camera_type": "rgbd_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="GraspPlanetary-PointNetWithColor-Gazebo-v0",
+    entry_point=GRASP_PLANETARY_RANDOMIZER,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "GraspPlanetary-PointNetWithColor-v0",
+        **GRASP_PLANETARY_KWARGS_SIM,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "rgbd_camera",
+        # "camera_image_format": "L8",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="GraspPlanetary-PointNet2WithColor-Gazebo-v0",
+    entry_point=GRASP_PLANETARY_RANDOMIZER,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "GraspPlanetary-PointNet2WithColor-v0",
+        **GRASP_PLANETARY_KWARGS_SIM,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "rgbd_camera",
+        # "camera_image_format": "L8",
         "camera_publish_points": True,
     },
 )
