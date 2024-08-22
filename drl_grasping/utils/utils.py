@@ -418,3 +418,35 @@ def empty_str2none(value: Optional[str]) -> Optional[str]:
     if not value:
         return None
     return value
+
+
+def remove_prefix(dictionary, prefix):
+    """
+    Given a dictionary, a given prefix is removed from all keys and a new, modified dictionary is returned.
+    Can be used to remove unwanted prefixes before loading a state_dict (pretrained model weights)
+    Author: Lukas Seitz
+
+    :param dictionary: input dictionary containing undesired prefixes in keys
+    :param prefix: string in dictionary keys to be removed
+    :returns: dictionary without given prefixes in keys
+    """
+    new_dictionary = {}
+    for key, value in dictionary.items():
+        if key.startswith(prefix):
+            new_key = key[len(prefix):]  # Remove the prefix
+        else:
+            new_key = key  # Keep the original key
+        new_dictionary[new_key] = value
+    return new_dictionary
+
+
+def delete_items_with_prefix(dictionary, prefix):
+    """
+    Given a dictionary, delete all items starting with a certain prefix.
+    Can be used to delete e.g. all entries related to a classifier, which is not needed for feature extraction.
+    Author: Lukas Seitz
+    """
+    keys_to_delete = [key for key in dictionary.keys() if key.startswith(prefix)]
+    for key in keys_to_delete:
+        del dictionary[key]
+    return dictionary
