@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 TASK = "GraspPlanetary"
-ENV = "Octree"
+ENV = "Pointcloud"
 WINDOW_SIZE = 1
 
 def moving_average(data, window_size):
@@ -57,7 +57,10 @@ plt.ylabel('Mean Reward')
 plt.title('Mean Episode Reward during Evaluation')
 plt.grid(True)
 plt.legend()
-plt.savefig(f'/root/drl_grasping_training/training_data/{TASK}/{ENV}_merged_mean_reward_plot.png')
+if WINDOW_SIZE == 1:
+    plt.savefig(f'/root/drl_grasping_training/training_data/{TASK}/{ENV}_merged_mean_reward_no_smoothing.png')
+else:
+    plt.savefig(f'/root/drl_grasping_training/training_data/{TASK}/{ENV}_merged_mean_reward_0{WINDOW_SIZE}_smoothing.png')
 plt.close()
 
 # Plot 2: 'eval/success_rate' vs 'Step'
@@ -68,7 +71,10 @@ plt.ylabel('Success Rate')
 plt.title('Mean Success Rate during Evaluation')
 plt.grid(True)
 plt.legend()
-plt.savefig(f'/root/drl_grasping_training/training_data/{TASK}/{ENV}_merged_success_rate_plot.png')
+if WINDOW_SIZE == 1:
+    plt.savefig(f'/root/drl_grasping_training/training_data/{TASK}/{ENV}_merged_success_rate_no_smoothing.png')
+else:
+    plt.savefig(f'/root/drl_grasping_training/training_data/{TASK}/{ENV}_merged_success_rate_0{WINDOW_SIZE}_smoothing.png')
 plt.close()
 
 print("Plots saved as mean_reward_plot.png and success_rate_plot.png")
