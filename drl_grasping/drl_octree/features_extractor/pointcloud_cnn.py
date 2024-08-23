@@ -89,7 +89,7 @@ if __name__ == "__main__":
     # Input Parameters
     num_frames = 2
     num_channels = 7
-    num_points = 2048
+    num_points = 1024
     proprioceptive_observations = True
     # Model Input
     pointcloud_input = torch.randn((num_frames, num_points, num_channels), dtype=torch.float32)

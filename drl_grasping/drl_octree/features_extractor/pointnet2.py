@@ -80,7 +80,7 @@ class PointNet2FeatureExtractor(nn.Module):
 if __name__ == '__main__':
     # Input from observation space
     batch_size = 2
-    num_points = 2048
+    num_points = 1024
     num_dimensions = 7
     pointcloud = torch.rand(batch_size, num_points, num_dimensions)
     # Transposed input for base networks

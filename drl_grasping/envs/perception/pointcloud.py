@@ -19,7 +19,7 @@ class PointCloudCreator:
         include_color: bool = False,
         # Note: For efficiency, the first channel of RGB is used for intensity
         include_intensity: bool = False,
-        num_points: int = 2048,
+        num_points: int = 1024,
         normals_radius: float = 0.05,
         normals_max_nn: int = 10,
         debug_draw: bool = False,
@@ -165,14 +165,14 @@ class PointCloudCreator:
         return np_pointcloud
 
 
-    def adjust_pointcloud_size(self, pointcloud, desired_num_points=2048):
+    def adjust_pointcloud_size(self, pointcloud, desired_num_points=1024):
         '''
         Sample pointcloud, so that it fits the specified number of points
         '''
         current_num_points, features = pointcloud.shape
         
         if current_num_points > desired_num_points:
-            # Randomly sample 2048 rows without replacement
+            # Randomly sample 1024 rows without replacement
             sampled_indices = np.random.choice(current_num_points, desired_num_points, replace=False)
             pointcloud = pointcloud[sampled_indices]
         elif current_num_points < desired_num_points:

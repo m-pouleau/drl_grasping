@@ -24,7 +24,7 @@ class ReachPointCloud(Reach, abc.ABC):
         pointcloud_include_color: bool,
         pointcloud_include_intensity: bool,
         pointcloud_n_stacked: int,
-        num_points: int = 2048,
+        num_points: int = 1024,
         camera_type: str = "rgbd_camera",
         **kwargs,
     ):

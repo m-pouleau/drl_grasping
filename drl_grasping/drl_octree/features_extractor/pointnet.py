@@ -1,3 +1,6 @@
+import sys
+sys.path.append("../../../../drl_grasping")
+import os
 import torch
 import torch.nn as nn
 import torch.nn.parallel
@@ -5,6 +8,7 @@ import torch.utils.data
 from torch.autograd import Variable
 import numpy as np
 import torch.nn.functional as F
+from drl_grasping.drl_octree.features_extractor.modules import remove_prefix, delete_items_without_prefix
 
 
 class STNkd(nn.Module):
@@ -109,37 +113,68 @@ class PointNetCls(nn.Module):
 
 
 class PointNetFeatureExtractor(nn.Module):
-    def __init__(self, feature_transform=True, k=7, features_dim=248):
+    def __init__(self, feature_transform=True, k=7, features_dim=248, file_path="./drl_grasping/drl_octree/features_extractor/pointnet_pretrained.pth"):
         super(PointNetFeatureExtractor, self).__init__()
         self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=k)
-        self.fc = nn.Linear(1024, features_dim)
+        # load weight dictionary remove unexpected / unused prefixes & items
+        state_dict = torch.load(file_path)['model_state_dict']
+        state_dict = delete_items_without_prefix(state_dict, "feat.")
+        state_dict = remove_prefix(state_dict, 'feat.')
+        self.feat.load_state_dict(state_dict)
+        # freeze weights of pretrained model
+        for param in self.feat.parameters():
+            param.requires_grad = False
+        # Additional unfrozen linear layers
+        self.fc1 = nn.Linear(1024, 512)
+        self.fc2 = nn.Linear(512, features_dim)
+        self.bn1 = nn.BatchNorm1d(512)
 
     def forward(self, x):
         x = x.permute(0, 2, 1)
         x, _, _ = self.feat(x)
-        x = F.relu(self.fc(x))
+        x = F.relu(self.bn1(self.fc1(x)))
+        x = self.fc2(x)
         return x
 
 
 if __name__ == '__main__':
+    # Set the device for the models
+    device = 'cuda'
+    # Get the weights from the state dictionary
+    base_init_path = os.path.abspath("../../../../drl_grasping")
+    file_path = "./drl_grasping/drl_octree/features_extractor/pointnet_pretrained.pth"
+    file_path = os.path.join(base_init_path, file_path)
+    state_dict = torch.load(file_path)['model_state_dict']
     # Input from observation space
-    pointcloud = torch.rand(128, 2048, 7)
+    pointcloud = torch.rand(128, 1024, 3)
     # Transposed input for base networks
-    sim_data_7d = Variable(pointcloud.permute(0, 2, 1))
-    print('Input Data: ', sim_data_7d.size())
-    # Getting global features
-    pointfeat = PointNetfeat(k=7)
-    out, _, _ = pointfeat(sim_data_7d)
-    print('Global Features:', out.size())
-    # Getting point features and local features
-    pointfeat = PointNetfeat(global_feat=False, k=7)
-    out, _, _ = pointfeat(sim_data_7d)
-    print('Point Features:', out.size())
+    sim_data_3d = Variable(pointcloud.permute(0, 2, 1)).to(device)
+    print('Input Data: ', sim_data_3d.size(), "   CUDA: ", sim_data_3d.is_cuda)
+
     # Getting classes for each point cloud
-    cls = PointNetCls(k = 7, num_classes=11)
-    out, _, _ = cls(sim_data_7d)
-    print('Classes: ', out.size())
+    classifier = PointNetCls(k = 3, num_classes=40).to(device)
+    classifier.load_state_dict(state_dict)
+    cls, _, _ = classifier(sim_data_3d)
+    print('Classes: ', cls.size())
+    
+    # Getting global features
+    feat_extractor = PointNetfeat(k=3).to(device)
+    # remove unexpected / unused prefixes & items from the loaded dictionary
+    new_dict = delete_items_without_prefix(state_dict, "feat.")
+    new_dict = remove_prefix(new_dict, 'feat.')
+    feat_extractor.load_state_dict(new_dict)
+    # freeze weights of pretrained model
+    for param in feat_extractor.parameters():
+        param.requires_grad = False
+    glob, _, _ = feat_extractor(sim_data_3d)
+    print('Global Features:', glob.size())
+    
+    # Getting point features and local features
+    pointfeat = PointNetfeat(global_feat=False, k=3).to(device)
+    points, _, _ = pointfeat(sim_data_3d)
+    print('Point Features:', points.size())
+    
     # Getting drl-features from observation space input
-    feat = PointNetFeatureExtractor(k=7, features_dim=256)
-    out = feat(pointcloud)
+    feat_drl = PointNetFeatureExtractor(k=3, features_dim=256, file_path=file_path).to(device)
+    out = feat_drl(pointcloud.to(device))
     print('Feature Extractor: ', out.size())
