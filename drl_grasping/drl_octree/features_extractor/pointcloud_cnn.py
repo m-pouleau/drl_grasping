@@ -38,9 +38,19 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
             observation_space, self._n_stacks * (features_dim + aux_obs_features_dim)
         )
 
+        # Determine if normals are used by network
+        if channels_in == 6:
+            normal_channel = True
+        elif channels_in == 3:
+            normal_channel = False
+        else:
+            normal_channel = None
+        
+        #TODO: Make all of the channel issues compatible
+
         # Initialize the right feature extractor
         if extractor_backbone == "PointNet":
-            self._extractor_backbone = PointNetFeatureExtractor(feature_transform=True, k=channels_in, features_dim=features_dim)
+            self._extractor_backbone = PointNetFeatureExtractor(normal_channel=normal_channel, k=channels_in, features_dim=features_dim)
         elif extractor_backbone == "PointNet2":
             self._extractor_backbone = PointNet2FeatureExtractor(features_dim=features_dim, in_channel=channels_in)
 

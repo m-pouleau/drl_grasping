@@ -93,10 +93,14 @@ class PointNetfeat(nn.Module):
 
 
 class PointNetCls(nn.Module):
-    def __init__(self, feature_transform=True, k=7, num_classes=10):
+    def __init__(self, num_classes=40, normal_channel=False, feature_transform=True):
         super(PointNetCls, self).__init__()
+        if normal_channel:
+            channel = 6
+        else:
+            channel = 3
         self.feature_transform = feature_transform
-        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=k)
+        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=channel)
         self.fc1 = nn.Linear(1024, 512)
         self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, num_classes)
@@ -113,9 +117,14 @@ class PointNetCls(nn.Module):
 
 
 class PointNetFeatureExtractor(nn.Module):
-    def __init__(self, feature_transform=True, k=7, features_dim=248, file_path="./drl_grasping/drl_octree/features_extractor/pointnet_pretrained.pth"):
+    def __init__(self, normal_channel=False, feature_transform=True, features_dim=248, file_path="./drl_grasping/drl_octree/features_extractor/pointnet_pretrained.pth"):
         super(PointNetFeatureExtractor, self).__init__()
-        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=k)
+        if normal_channel:
+            channel = 6
+        else:
+            channel = 3
+        self.feature_transform = feature_transform
+        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=channel)    
         # load weight dictionary remove unexpected / unused prefixes & items
         state_dict = torch.load(file_path)['model_state_dict']
         state_dict = delete_items_without_prefix(state_dict, "feat.")
@@ -146,18 +155,18 @@ if __name__ == '__main__':
     file_path = os.path.join(base_init_path, file_path)
     state_dict = torch.load(file_path)['model_state_dict']
     # Input from observation space
-    pointcloud = torch.rand(128, 1024, 3)
+    pointcloud = torch.rand(32, 1024, 3)
     # Transposed input for base networks
     sim_data_3d = Variable(pointcloud.permute(0, 2, 1)).to(device)
     print('Input Data: ', sim_data_3d.size(), "   CUDA: ", sim_data_3d.is_cuda)
 
     # Getting classes for each point cloud
-    classifier = PointNetCls(k = 3, num_classes=40).to(device)
+    classifier = PointNetCls(num_classes=40, normal_channel=False).to(device)
     classifier.load_state_dict(state_dict)
     cls, _, _ = classifier(sim_data_3d)
     print('Classes: ', cls.size())
     
-    # Getting global features
+    # Getting global features from pretrained base model
     feat_extractor = PointNetfeat(k=3).to(device)
     # remove unexpected / unused prefixes & items from the loaded dictionary
     new_dict = delete_items_without_prefix(state_dict, "feat.")
@@ -175,6 +184,6 @@ if __name__ == '__main__':
     print('Point Features:', points.size())
     
     # Getting drl-features from observation space input
-    feat_drl = PointNetFeatureExtractor(k=3, features_dim=256, file_path=file_path).to(device)
+    feat_drl = PointNetFeatureExtractor(normal_channel=False, features_dim=256, file_path=file_path).to(device)
     out = feat_drl(pointcloud.to(device))
     print('Feature Extractor: ', out.size())
