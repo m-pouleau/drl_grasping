@@ -37,7 +37,7 @@ ROBOT_MODEL="lunalab_summit_xl_gen"
 # ENV="GraspPlanetary-Octree-Gazebo-v0"
 ENV="GraspPlanetary-OctreeWithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-OctreeWithColor-Gazebo-v0"
-
+  
 ## Selection of RL algorithm
 # ALGO="sac"
 # ALGO="td3"
