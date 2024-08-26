@@ -39,20 +39,23 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
         )
 
         # Determine if normals are used by network
+        #TODO: Make all of the channel issues compatible
         if channels_in == 6:
             normal_channel = True
+            normal_prefix = "normals_"
         elif channels_in == 3:
             normal_channel = False
+            normal_prefix = ""
         else:
             normal_channel = None
-        
-        #TODO: Make all of the channel issues compatible
-
+            normal_prefix = None
         # Initialize the right feature extractor
         if extractor_backbone == "PointNet":
-            self._extractor_backbone = PointNetFeatureExtractor(normal_channel=normal_channel, k=channels_in, features_dim=features_dim)
+            weights_file_path = f"./drl_grasping/drl_octree/features_extractor/pointnet_{normal_prefix}pretrained.pth"
+            self._extractor_backbone = PointNetFeatureExtractor(normal_channel=normal_channel, features_dim=features_dim, file_path=weights_file_path)
         elif extractor_backbone == "PointNet2":
-            self._extractor_backbone = PointNet2FeatureExtractor(features_dim=features_dim, in_channel=channels_in)
+            weights_file_path = f"./drl_grasping/drl_octree/features_extractor/pointnet2_{normal_prefix}pretrained.pth"
+            self._extractor_backbone = PointNet2FeatureExtractor(normal_channel=normal_channel, features_dim=features_dim, file_path=weights_file_path)
 
         # One linear layer for auxiliary observations
         if self._aux_obs_dim != 0:
