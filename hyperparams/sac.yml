@@ -203,7 +203,7 @@ Reach-PointNet2WithIntensity-Gazebo-v0:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
       normal_channels: False
-      image_channels: 0
+      image_channels: 1
       features_dim: 64
       aux_obs_dim: 0
     n_critics: 2
