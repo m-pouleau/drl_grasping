@@ -18,6 +18,7 @@ class GraspPlanetaryPointCloud(GraspPlanetary, abc.ABC):
         pointcloud_reference_frame_id: str,
         pointcloud_min_bound: Tuple[float, float, float],
         pointcloud_max_bound: Tuple[float, float, float],
+        pointcloud_include_normals: bool,
         pointcloud_include_color: bool,
         pointcloud_include_intensity: bool,
         pointcloud_n_stacked: int,
@@ -60,6 +61,7 @@ class GraspPlanetaryPointCloud(GraspPlanetary, abc.ABC):
             reference_frame_id=self.substitute_special_frame(pointcloud_reference_frame_id),
             min_bound=pointcloud_min_bound,
             max_bound=pointcloud_max_bound,
+            include_normals=pointcloud_include_normals,
             include_color=pointcloud_include_color,
             include_intensity=pointcloud_include_intensity,
             num_points = num_points
@@ -70,13 +72,14 @@ class GraspPlanetaryPointCloud(GraspPlanetary, abc.ABC):
         self._pointcloud_n_stacked = pointcloud_n_stacked
         self._num_points = num_points
         self._aux_dim = 10
-        # Define number of channels depending on color features
+        # Define number of channels depending on color & normal features
+        self._num_pc_channels = 3
+        if pointcloud_include_normals:
+            self._num_pc_channels += 3
         if pointcloud_include_color:
-            self._num_pc_channels = 9
+            self._num_pc_channels += 3
         elif pointcloud_include_intensity:
-            self._num_pc_channels = 7
-        else:
-            self._num_pc_channels = 6
+            self._num_pc_channels += 1
 
         # List of all stacked observations
         self.__stacked_observations = deque([], maxlen=self._pointcloud_n_stacked)

@@ -1,5 +1,6 @@
 import ocnn
 import torch
+import re
 
 
 class OctreeConvRelu(torch.nn.Module):
@@ -181,7 +182,10 @@ def delete_items_without_prefix(dictionary, prefix):
     Given a dictionary, delete all items that do not start with a certain prefix.
     This can be useful to keep only specific entries in a dictionary.
     """
-    keys_to_delete = [key for key in dictionary.keys() if not key.startswith(prefix)]
+    # Compile the regex pattern
+    prefix_regex = re.compile(prefix)
+    
+    keys_to_delete = [key for key in dictionary.keys() if not prefix_regex.match(key)]
     for key in keys_to_delete:
         del dictionary[key]
     return dictionary

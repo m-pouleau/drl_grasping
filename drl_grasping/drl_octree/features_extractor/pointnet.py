@@ -139,11 +139,11 @@ class PointNetCls(nn.Module):
     def __init__(self, num_classes=40, normal_channel=True, feature_transform=True):
         super(PointNetCls, self).__init__()
         if normal_channel:
-            channel = 6
+            self.channel = 6
         else:
-            channel = 3
+            self.channel = 3
         self.feature_transform = feature_transform
-        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=channel)
+        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=self.channel)
         self.fc1 = nn.Linear(1024, 512)
         self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, num_classes)
@@ -152,7 +152,7 @@ class PointNetCls(nn.Module):
         self.bn2 = nn.BatchNorm1d(256)
 
     def forward(self, x):
-        x, trans, trans_feat = self.feat(x)
+        x, trans, trans_feat = self.feat(x[:, :self.channel, :])
         x = F.relu(self.bn1(self.fc1(x)))
         x = F.relu(self.bn2(self.dropout(self.fc2(x))))
         x = self.fc3(x)
@@ -163,11 +163,11 @@ class PointNetFeatureExtractor(nn.Module):
     def __init__(self, normal_channel=True, feature_transform=True, features_dim=248, file_path="./drl_grasping/drl_octree/features_extractor/pointnet_pretrained.pth"):
         super(PointNetFeatureExtractor, self).__init__()
         if normal_channel:
-            channel = 6
+            self.channel = 6
         else:
-            channel = 3
+            self.channel = 3
         self.feature_transform = feature_transform
-        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=channel)    
+        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=self.channel)    
         # load weight dictionary remove unexpected / unused prefixes & items
         state_dict = torch.load(file_path)['model_state_dict']
         state_dict = delete_items_without_prefix(state_dict, "feat.")
@@ -182,7 +182,7 @@ class PointNetFeatureExtractor(nn.Module):
         self.bn1 = nn.BatchNorm1d(512)
 
     def forward(self, x):
-        x = x.permute(0, 2, 1)
+        x = x.permute(0, 2, 1)[:, :self.channel, :]
         x, _, _ = self.feat(x)
         x = F.relu(self.bn1(self.fc1(x)))
         x = self.fc2(x)
@@ -195,19 +195,21 @@ if __name__ == '__main__':
     # decide if normals get used
     USE_NORMALS = False
     if USE_NORMALS:
-        num_channels = 6
+        NUM_CHANNELS = 6
         file_name = "pointnet_normals_pretrained"
     else:
-        num_channels = 3
+        NUM_CHANNELS = 3
         file_name = "pointnet_pretrained"
+    # Input from observation space
+    BATCH_SIZE = 32
+    NUM_POINTS = 1024
     # Get the weights from the state dictionary
     base_init_path = os.path.abspath("../../../../drl_grasping")
     file_path = f"./drl_grasping/drl_octree/features_extractor/{file_name}.pth"
     file_path = os.path.join(base_init_path, file_path)
-    print(file_path)
     state_dict = torch.load(file_path)['model_state_dict']
     # Input from observation space
-    pointcloud = torch.rand(32, 1024, num_channels)
+    pointcloud = torch.rand(BATCH_SIZE, NUM_POINTS, NUM_CHANNELS)
     # Transposed input for base networks
     sim_data_kd = Variable(pointcloud.permute(0, 2, 1)).to(DEVICE)
     print('Input Data: ', sim_data_kd.size(), "   CUDA: ", sim_data_kd.is_cuda)
@@ -219,7 +221,7 @@ if __name__ == '__main__':
     print('Classes: ', cls.size())
     
     # Getting global features from pretrained base model
-    feat_extractor = PointNetfeat(k=num_channels).to(DEVICE)
+    feat_extractor = PointNetfeat(k=NUM_CHANNELS).to(DEVICE)
     # remove unexpected / unused prefixes & items from the loaded dictionary
     new_dict = delete_items_without_prefix(state_dict, "feat.")
     new_dict = remove_prefix(new_dict, 'feat.')
@@ -231,7 +233,7 @@ if __name__ == '__main__':
     print('Global Features:', glob.size())
     
     # Getting point features and local features
-    pointfeat = PointNetfeat(global_feat=False, k=num_channels).to(DEVICE)
+    pointfeat = PointNetfeat(global_feat=False, k=NUM_CHANNELS).to(DEVICE)
     points, _, _ = pointfeat(sim_data_kd)
     print('Point Features:', points.size())
     

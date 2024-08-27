@@ -19,7 +19,7 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
     def __init__(
         self,
         observation_space: gym.spaces.Box,
-        channels_in: int = 7,
+        channels_in: int = 6,
         features_dim: int = 248,
         aux_obs_dim: int = 10,
         aux_obs_features_dim: int = 8,
@@ -38,23 +38,20 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
             observation_space, self._n_stacks * (features_dim + aux_obs_features_dim)
         )
 
-        # Determine if normals are used by network
-        #TODO: Make all of the channel issues compatible
-        if channels_in == 6:
+        # Determine if normals are used by network (color input isn't considered, as ModelNet40 doesn't have color features)
+        if channels_in > 3:
             normal_channel = True
             normal_prefix = "normals_"
-        elif channels_in == 3:
+        else:
             normal_channel = False
             normal_prefix = ""
-        else:
-            normal_channel = None
-            normal_prefix = None
+
         # Initialize the right feature extractor
         if extractor_backbone == "PointNet":
             weights_file_path = f"./drl_grasping/drl_octree/features_extractor/pointnet_{normal_prefix}pretrained.pth"
             self._extractor_backbone = PointNetFeatureExtractor(normal_channel=normal_channel, features_dim=features_dim, file_path=weights_file_path)
         elif extractor_backbone == "PointNet2":
-            weights_file_path = f"./drl_grasping/drl_octree/features_extractor/pointnet2_{normal_prefix}pretrained.pth"
+            weights_file_path = f"./drl_grasping/drl_octree/features_extractor/pointnet2_msg_{normal_prefix}pretrained.pth"
             self._extractor_backbone = PointNet2FeatureExtractor(normal_channel=normal_channel, features_dim=features_dim, file_path=weights_file_path)
 
         # One linear layer for auxiliary observations

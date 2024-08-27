@@ -16,6 +16,7 @@ class PointCloudCreator:
         reference_frame_id: str,
         min_bound: Tuple[float, float, float] = (-1.0, -1.0, -1.0),
         max_bound: Tuple[float, float, float] = (1.0, 1.0, 1.0),
+        include_normals: bool = False,
         include_color: bool = False,
         # Note: For efficiency, the first channel of RGB is used for intensity
         include_intensity: bool = False,
@@ -34,6 +35,7 @@ class PointCloudCreator:
         self._reference_frame_id = reference_frame_id
         self._min_bound = min_bound
         self._max_bound = max_bound
+        self._include_normals = include_normals
         self._include_color = include_color
         self._include_intensity = include_intensity
         self._num_points = num_points
@@ -125,16 +127,17 @@ class PointCloudCreator:
             return open3d_point_cloud
 
         # Estimate normal vector for each cloud point and orient these towards the camera
-        open3d_point_cloud.estimate_normals(
-            search_param=open3d.geometry.KDTreeSearchParamHybrid(
-                radius=normals_radius, max_nn=normals_max_nn
-            ),
-            fast_normal_computation=True,
-        )
+        if self._include_normals:
+            open3d_point_cloud.estimate_normals(
+                search_param=open3d.geometry.KDTreeSearchParamHybrid(
+                    radius=normals_radius, max_nn=normals_max_nn
+                ),
+                fast_normal_computation=True,
+            )
 
-        open3d_point_cloud.orient_normals_towards_camera_location(
-            camera_location=transform_mat[0:3, 3]
-        )
+            open3d_point_cloud.orient_normals_towards_camera_location(
+                camera_location=transform_mat[0:3, 3]
+            )
 
         return open3d_point_cloud
 
@@ -149,18 +152,18 @@ class PointCloudCreator:
         '''
         # Get the point & normal features from the pointcloud, normalize xyz points to current workspace
         np_points = np.asarray(open3d_point_cloud.points)
-        norm_np_points = self.normalize_pointcloud_points(np_points)
-        np_normals = np.asarray(open3d_point_cloud.normals)
+        np_pointcloud = self.normalize_pointcloud_points(np_points)
+        if self._include_normals:
+            np_normals = np.asarray(open3d_point_cloud.normals)
+            np_pointcloud = np.concatenate((np_pointcloud, np_normals), axis=1)
 
         # Get the color features (if available) & concatenate with other features
         if self._include_color:
             np_colors = np.asarray(open3d_point_cloud.colors)
-            np_pointcloud = np.concatenate((norm_np_points, np_normals, np_colors), axis=1)
+            np_pointcloud = np.concatenate((np_pointcloud, np_colors), axis=1)
         elif self._include_intensity:
             np_colors = np.asarray(open3d_point_cloud.colors)[:, 0].reshape(-1, 1)
-            np_pointcloud = np.concatenate((norm_np_points, np_normals, np_colors), axis=1)
-        else:
-            np_pointcloud = np.concatenate((norm_np_points, np_normals), axis=1)
+            np_pointcloud = np.concatenate((np_pointcloud, np_colors), axis=1)
 
         return np_pointcloud
 
