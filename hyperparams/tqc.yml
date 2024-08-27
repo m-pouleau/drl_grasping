@@ -88,7 +88,8 @@ Reach-PointNet-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      channels_in: 6
+      normal_channels: False
+      image_channels: 0
       features_dim: 64
       aux_obs_dim: 0
     n_quantiles: 25
@@ -117,7 +118,8 @@ Reach-PointNet2-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      channels_in: 6
+      normal_channels: False
+      image_channels: 0
       features_dim: 64
       aux_obs_dim: 0
     n_quantiles: 25
@@ -184,7 +186,8 @@ Reach-PointNetWithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      channels_in: 7
+      normal_channels: False
+      image_channels: 1
       features_dim: 64
       aux_obs_dim: 0
     n_quantiles: 25
@@ -213,7 +216,8 @@ Reach-PointNet2WithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      channels_in: 7
+      normal_channels: False
+      image_channels: 1
       features_dim: 64
       aux_obs_dim: 0
     n_quantiles: 25
@@ -280,7 +284,8 @@ Reach-PointNetWithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      channels_in: 9
+      normal_channels: False
+      image_channels: 3
       features_dim: 64
       aux_obs_dim: 0
     n_quantiles: 25
@@ -309,7 +314,8 @@ Reach-PointNet2WithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      channels_in: 9
+      normal_channels: False
+      image_channels: 3
       features_dim: 64
       aux_obs_dim: 0
     n_quantiles: 25
@@ -406,7 +412,8 @@ Grasp-PointNet-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      channels_in: 6
+      normal_channels: False
+      image_channels: 0
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8
@@ -438,7 +445,8 @@ Grasp-PointNet2-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      channels_in: 6
+      normal_channels: False
+      image_channels: 0
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8
@@ -511,7 +519,8 @@ Grasp-PointNetWithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      channels_in: 7
+      normal_channels: False
+      image_channels: 1
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8
@@ -543,7 +552,8 @@ Grasp-PointNet2WithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      channels_in: 7
+      normal_channels: False
+      image_channels: 1
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8
@@ -616,7 +626,8 @@ Grasp-PointNetWithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      channels_in: 9
+      normal_channels: False
+      image_channels: 3
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8
@@ -648,7 +659,8 @@ Grasp-PointNet2WithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      channels_in: 9
+      normal_channels: False
+      image_channels: 3
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8
@@ -860,7 +872,8 @@ GraspPlanetary-PointNet-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      channels_in: 6
+      normal_channels: False
+      image_channels: 0
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8
@@ -892,7 +905,8 @@ GraspPlanetary-PointNet2-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      channels_in: 6
+      normal_channels: False
+      image_channels: 0
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8
@@ -965,7 +979,8 @@ GraspPlanetary-PointNetWithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      channels_in: 7
+      normal_channels: False
+      image_channels: 1
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8
@@ -997,7 +1012,8 @@ GraspPlanetary-PointNet2WithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      channels_in: 7
+      normal_channels: False
+      image_channels: 1
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8
@@ -1070,7 +1086,8 @@ GraspPlanetary-PointNetWithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet"
-      channels_in: 9
+      normal_channels: False
+      image_channels: 3
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8
@@ -1102,7 +1119,8 @@ GraspPlanetary-PointNet2WithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
-      channels_in: 9
+      normal_channels: False
+      image_channels: 3
       features_dim: 248
       aux_obs_dim: 10
       aux_obs_features_dim: 8

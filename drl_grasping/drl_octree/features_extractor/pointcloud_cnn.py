@@ -10,7 +10,8 @@ from drl_grasping.drl_octree.features_extractor.modules import LinearRelu
 class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
     """
     :param observation_space:
-    :param channels_in: Number of input channels.
+    :param image_channels: Number of input image channels.
+    :param normal_channels: Bool variable if normal channels are used or not
     :param channel_multiplier: Multiplier for the number of channels after each pooling.
                                With this parameter set to 1, the channels are [1, 2, 4, 8, ...] for [depth, depth-1, ..., full_depth].
     :param features_dim: Dimension of output feature vector. Note that this number is multiplied by the number of stacked inside one observation.
@@ -19,7 +20,8 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
     def __init__(
         self,
         observation_space: gym.spaces.Box,
-        channels_in: int = 6,
+        normal_channels: bool = True, 
+        image_channels: int = 3,
         features_dim: int = 248,
         aux_obs_dim: int = 10,
         aux_obs_features_dim: int = 8,
@@ -39,20 +41,18 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
         )
 
         # Determine if normals are used by network (color input isn't considered, as ModelNet40 doesn't have color features)
-        if channels_in > 3:
-            normal_channel = True
+        if normal_channels:
             normal_prefix = "normals_"
         else:
-            normal_channel = False
             normal_prefix = ""
 
         # Initialize the right feature extractor
         if extractor_backbone == "PointNet":
             weights_file_path = f"./drl_grasping/drl_octree/features_extractor/pointnet_{normal_prefix}pretrained.pth"
-            self._extractor_backbone = PointNetFeatureExtractor(normal_channel=normal_channel, features_dim=features_dim, file_path=weights_file_path)
+            self._extractor_backbone = PointNetFeatureExtractor(normal_channel=normal_channels, features_dim=features_dim, file_path=weights_file_path)
         elif extractor_backbone == "PointNet2":
             weights_file_path = f"./drl_grasping/drl_octree/features_extractor/pointnet2_msg_{normal_prefix}pretrained.pth"
-            self._extractor_backbone = PointNet2FeatureExtractor(normal_channel=normal_channel, features_dim=features_dim, file_path=weights_file_path)
+            self._extractor_backbone = PointNet2FeatureExtractor(normal_channel=normal_channels, features_dim=features_dim, file_path=weights_file_path)
 
         # One linear layer for auxiliary observations
         if self._aux_obs_dim != 0:
