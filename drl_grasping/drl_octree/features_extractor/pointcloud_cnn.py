@@ -1,3 +1,4 @@
+import os
 import gym
 import torch
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
@@ -46,12 +47,15 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
         else:
             normal_prefix = ""
 
+        # Get relative path of directory for pretrained models
+        script_directory = os.path.dirname(os.path.abspath(__file__))
+
         # Initialize the right feature extractor
         if extractor_backbone == "PointNet":
-            weights_file_path = f"./drl_grasping/drl_octree/features_extractor/pointnet_{normal_prefix}pretrained.pth"
+            weights_file_path = f"{script_directory}/pointnet_{normal_prefix}pretrained.pth"
             self._extractor_backbone = PointNetFeatureExtractor(normal_channel=normal_channels, features_dim=features_dim, file_path=weights_file_path)
         elif extractor_backbone == "PointNet2":
-            weights_file_path = f"./drl_grasping/drl_octree/features_extractor/pointnet2_msg_{normal_prefix}pretrained.pth"
+            weights_file_path = f"{script_directory}/pointnet2_msg_{normal_prefix}pretrained.pth"
             self._extractor_backbone = PointNet2FeatureExtractor(normal_channel=normal_channels, features_dim=features_dim, file_path=weights_file_path)
 
         # One linear layer for auxiliary observations
@@ -74,7 +78,7 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
 
         data = obs[0]
         aux_obs = obs[1]
-            
+
         # Pass the data through the pointnet-based feature extractor backbone
         data = self._extractor_backbone(data)
 
