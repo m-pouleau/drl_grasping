@@ -2,7 +2,7 @@ import csv
 from tensorboard.backend.event_processing import event_accumulator
 
 # Set environment
-ENV = "GraspPlanetary-PointNetWithIntensity-Gazebo-v0"
+ENV = "GraspPlanetary-PointNet-Gazebo-v0"
 ALGO = "TQC_1"
 
 # Path to the directory containing the TensorBoard logs
@@ -20,7 +20,7 @@ with open(f'/root/drl_grasping_training/train/{ENV}/{ALGO}_tensorboard_training_
     csvwriter = csv.writer(csvfile)
     csvwriter.writerow(['Step'] + scalars)  # Write header
     # add zero row at beginning
-    csvwriter.writerow([0, 0, 0])
+    csvwriter.writerow([0, -10.0, 0])
 
     # Extract and write scalar data
     steps = ea.Scalars(scalars[0])
