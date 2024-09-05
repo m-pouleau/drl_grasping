@@ -14,14 +14,14 @@ ROBOT_MODEL="lunalab_summit_xl_gen"
 ## ID of the environment
 ## Reach
 # ENV="Reach-Gazebo-v0"
-# ENV="Reach-ColorImage-Gazebo-v0"
+ ENV="Reach-ColorImage-Gazebo-v0"
 # ENV="Reach-DepthImage-Gazebo-v0"
 # ENV="Reach-Octree-Gazebo-v0"
 # ENV="Reach-OctreeWithIntensity-Gazebo-v0"
 # ENV="Reach-OctreeWithColor-Gazebo-v0"
 ## Grasp
 # ENV="Grasp-Gazebo-v0"
- ENV="Grasp-Octree-Gazebo-v0"
+# ENV="Grasp-Octree-Gazebo-v0"
  #ENV="Grasp-OctreeWithIntensity-Gazebo-v0"
 # ENV="Grasp-OctreeWithColor-Gazebo-v0"
 ## GraspPlanetary
