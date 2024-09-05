@@ -14,7 +14,7 @@ ROBOT_MODEL="lunalab_summit_xl_gen"
 ## ID of the environment
 ## Reach
 # ENV="Reach-Gazebo-v0"
- ENV="Reach-ColorImage-Gazebo-v0"
+# ENV="Reach-ColorImage-Gazebo-v0"
 # ENV="Reach-DepthImage-Gazebo-v0"
 # ENV="Reach-Octree-Gazebo-v0"
 # ENV="Reach-OctreeWithIntensity-Gazebo-v0"
@@ -26,7 +26,7 @@ ROBOT_MODEL="lunalab_summit_xl_gen"
 # ENV="Grasp-OctreeWithColor-Gazebo-v0"
 ## GraspPlanetary
 # ENV="GraspPlanetary-Gazebo-v0"
-# ENV="GraspPlanetary-MonoImage-Gazebo-v0"
+ ENV="GraspPlanetary-MonoImage-Gazebo-v0"
 # ENV="GraspPlanetary-ColorImage-Gazebo-v0"
 # ENV="GraspPlanetary-DepthImage-Gazebo-v0"
 # ENV="GraspPlanetary-DepthImageWithIntensity-Gazebo-v0"
