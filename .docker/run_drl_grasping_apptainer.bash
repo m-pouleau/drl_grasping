@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TAG="andrejorsula_drl_grasping.sif"
+TAG="drl_grasping_apptainer.sif"
 
 ## Forward custom volumes and environment variables
 CUSTOM_VOLUMES=()
@@ -19,9 +19,9 @@ shift "$((OPTIND - 1))"
 
 ## GUI
 # To enable GUI, make sure processes in the container can connect to the x server
-XAUTH=/tmp/.docker.xauth
+XAUTH=/tmp/.apptainer.xauth
 
-# Always delete /tmp/.docker.xauth (regardless of type) and recreate it
+# Always delete /tmp/.apptainer.xauth (regardless of type) and recreate it
 if [ -e ${XAUTH} ]; then
     rm -rf ${XAUTH}
 fi
@@ -55,6 +55,12 @@ CUSTOM_VOLUMES+=("/etc/localtime:/etc/localtime:ro")
 # Persistent storage of logs
 CUSTOM_VOLUMES+=("$(dirname "${PWD}")/drl_grasping_training_docker:/root/drl_grasping_training")
 # Add directories from AndrejOrsula/drl_grasping
+CUSTOM_VOLUMES+=("/tmp/.ignition:/root/.ignition")
+CUSTOM_VOLUMES+=("/tmp/.pcg:/root/.pcg")
+CUSTOM_VOLUMES+=("/tmp/.ros:/root/.ros")
+CUSTOM_VOLUMES+=("/tmp/.rviz2:/root/.rviz2")
+CUSTOM_VOLUMES+=("/tmp/.config/matplotlib:/root/.config/matplotlib")
+CUSTOM_VOLUMES+=("/tmp/.cache/matplotlib:/root/.cache/matplotlib")
 CUSTOM_VOLUMES+=("${PWD}/visualizations:/root/visualizations")
 CUSTOM_VOLUMES+=("${PWD}/scripts:/root/ws/src/drl_grasping/scripts")
 CUSTOM_VOLUMES+=("${PWD}/launch:/root/ws/src/drl_grasping/launch")
@@ -75,13 +81,13 @@ fi
 
 DOCKER_RUN_CMD=(
     apptainer exec
-    --interactive
-    --tty
+    "--nv"
     "${GUI_VOLUMES[@]/#/"--bind "}"
     "${GUI_ENVS[@]/#/"--env "}"
     "${CUSTOM_VOLUMES[@]/#/"--bind "}"
     "${CUSTOM_ENVS[@]/#/"--env "}"
     "$(dirname "${PWD}")/${TAG}"
+    "/bin/bash"
 )
 
 echo -e "\033[1;30m${DOCKER_RUN_CMD[*]}\033[0m" | xargs

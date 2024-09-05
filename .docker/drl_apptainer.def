@@ -1,0 +1,34 @@
+Bootstrap: docker
+From: andrejorsula/drl_grasping:latest
+
+%post
+  # Ensure the entrypoint script is in place and executable
+  chmod +x /root/entrypoint.bash
+  # Set up directories for ros2 & gazebo
+  mkdir -p /tmp/.ros/log
+  mkdir -p /tmp/.pcg
+  mkdir -p /tmp/.rviz2
+  mkdir -p /tmp/.config/matplotlib
+  mkdir -p /tmp/.cache/matplotlib
+  mkdir -p /tmp/.ignition/gazebo
+  mkdir -p /tmp/.ignition/log
+  chmod 777 /tmp/.ros/log /tmp/.pcg /tmp/.rviz2 /tmp/.config/matplotlib /tmp/.cache/matplotlib /tmp/.ignition/gazebo /tmp/.ignition/log
+
+%environment
+  # Set working directories
+  export HOME=/root
+  export WORKDIR=/root/ws
+  export WS_SRC_DIR=/root/ws/src
+  export WS_BUILD_DIR=/root/ws/build
+  export WS_INSTALL_DIR=/root/ws/install
+  export WS_LOG_DIR=/root/ws/log
+  export ASSETS_DIR=/root/ws/assets
+  # set correct ros2 & gazebo version
+  export ROS_DISTRO=galactic
+  export IGNITION_VERSION=fortress
+  # Set gazebo path
+  export IGN_CONFIG_PATH=/usr/share/ignition
+
+%runscript
+  # Execute the entrypoint script
+  source /root/entrypoint.bash "$@"

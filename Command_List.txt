@@ -57,7 +57,19 @@
 
 2. Run random agents inside docker container:
  $ ros2 run drl_grasping ex_random_agent.bash
- 
+
+
+### Apptainer container ###
+1. Create an ".sif" container file from the Apptainer ".def" file (from "main" folder):
+ $ apptainer build drl_grasping_apptainer.sif drl_grasping/.docker/drl_apptainer.def
+
+2. Execute the Apptainer container with the corresponding bashscript (from "drl_grasping" folder):
+ $ .docker/run_drl_grasping_apptainer.bash
+ $ source /root/entrypoint.bash
+
+3. Run random agents inside apptainer container:
+ $ ros2 run drl_grasping ex_random_agent.bash
+
  
 ### TMUX Session ###
 1. Start a tmux session:

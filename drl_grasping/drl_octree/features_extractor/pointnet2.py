@@ -45,7 +45,7 @@ class PointNet2Classification(nn.Module):
 
 
 class PointNet2FeatureExtractor(nn.Module):
-    def __init__(self, normal_channel=True, features_dim=248, file_path="./drl_grasping/drl_octree/features_extractor/pointnet2_msg_pretrained.pth"):
+    def __init__(self, normal_channel=True, features_dim=248, device='cpu', file_path="./drl_grasping/drl_octree/features_extractor/pointnet2_msg_pretrained.pth"):
         super(PointNet2FeatureExtractor, self).__init__()
         self.in_channel = 3 if normal_channel else 0
         self.normal_channel = normal_channel
@@ -53,7 +53,7 @@ class PointNet2FeatureExtractor(nn.Module):
         self.sa2 = PointNetSetAbstractionMsg(128, [0.2, 0.4, 0.8], [32, 64, 128], 320,[[64, 64, 128], [128, 128, 256], [128, 128, 256]])
         self.sa3 = PointNetSetAbstraction(None, None, None, 640 + 3, [256, 512, 1024], True)        
         # load weight dictionary remove unexpected / unused prefixes & items
-        state_dict = torch.load(file_path)['model_state_dict']
+        state_dict = torch.load(file_path, map_location=torch.device(device))['model_state_dict']
         state_dict_1 = delete_items_without_prefix(state_dict.copy(), 'sa1.')
         state_dict_2 = delete_items_without_prefix(state_dict.copy(), 'sa2.')
         state_dict_3 = delete_items_without_prefix(state_dict.copy(), 'sa3.')
@@ -92,7 +92,11 @@ class PointNet2FeatureExtractor(nn.Module):
 
 if __name__ == '__main__':
     # Set the device for the models
-    DEVICE = 'cuda'
+    if torch.cuda.is_available():
+        DEVICE = 'cuda'
+    else:
+        DEVICE = 'cpu'
+    print("Device: ", DEVICE)
     # decide if normals get used
     USE_NORMALS = False
     if USE_NORMALS:
@@ -108,7 +112,7 @@ if __name__ == '__main__':
     base_init_path = os.path.abspath("../../../../drl_grasping")
     file_path = f"./drl_grasping/drl_octree/features_extractor/{file_name}.pth"
     file_path = os.path.join(base_init_path, file_path)
-    state_dict = torch.load(file_path)['model_state_dict']
+    state_dict = torch.load(file_path, map_location=torch.device(DEVICE))['model_state_dict']
     # Input from observation space
     pointcloud = torch.rand(BATCH_SIZE, NUM_POINTS, NUM_CHANNELS)
     # Transposed input for base networks
@@ -122,6 +126,6 @@ if __name__ == '__main__':
     print('Classes: ', cls.size())
 
     # Getting drl-features from observation space input
-    feat_drl = PointNet2FeatureExtractor(normal_channel=USE_NORMALS, features_dim=256, file_path=file_path).to(DEVICE)
+    feat_drl = PointNet2FeatureExtractor(normal_channel=USE_NORMALS, features_dim=256, file_path=file_path, device=DEVICE).to(DEVICE)
     out = feat_drl(pointcloud.to(DEVICE))
     print('Feature Extractor: ', out.size())

@@ -41,6 +41,12 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
             observation_space, self._n_stacks * (features_dim + aux_obs_features_dim)
         )
 
+        # Determine if feature extractor runs on gpu or cpu
+        if torch.cuda.is_available():
+            DEVICE = 'cuda'
+        else:
+            DEVICE = 'cpu'
+
         # Determine if normals are used by network (color input isn't considered, as ModelNet40 doesn't have color features)
         if normal_channels:
             normal_prefix = "normals_"
@@ -53,10 +59,10 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
         # Initialize the right feature extractor
         if extractor_backbone == "PointNet":
             weights_file_path = f"{script_directory}/pointnet_{normal_prefix}pretrained.pth"
-            self._extractor_backbone = PointNetFeatureExtractor(normal_channel=normal_channels, features_dim=features_dim, file_path=weights_file_path)
+            self._extractor_backbone = PointNetFeatureExtractor(normal_channel=normal_channels, features_dim=features_dim, file_path=weights_file_path, device=DEVICE)
         elif extractor_backbone == "PointNet2":
             weights_file_path = f"{script_directory}/pointnet2_msg_{normal_prefix}pretrained.pth"
-            self._extractor_backbone = PointNet2FeatureExtractor(normal_channel=normal_channels, features_dim=features_dim, file_path=weights_file_path)
+            self._extractor_backbone = PointNet2FeatureExtractor(normal_channel=normal_channels, features_dim=features_dim, file_path=weights_file_path, device=DEVICE)
 
         # One linear layer for auxiliary observations
         if self._aux_obs_dim != 0:

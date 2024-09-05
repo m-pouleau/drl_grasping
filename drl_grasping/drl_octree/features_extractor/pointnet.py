@@ -160,7 +160,7 @@ class PointNetCls(nn.Module):
 
 
 class PointNetFeatureExtractor(nn.Module):
-    def __init__(self, normal_channel=True, feature_transform=True, features_dim=248, file_path="./drl_grasping/drl_octree/features_extractor/pointnet_pretrained.pth"):
+    def __init__(self, normal_channel=True, feature_transform=True, features_dim=248, device='cpu', file_path="./drl_grasping/drl_octree/features_extractor/pointnet_pretrained.pth"):
         super(PointNetFeatureExtractor, self).__init__()
         if normal_channel:
             self.channel = 6
@@ -169,7 +169,7 @@ class PointNetFeatureExtractor(nn.Module):
         self.feature_transform = feature_transform
         self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=self.channel)    
         # load weight dictionary remove unexpected / unused prefixes & items
-        state_dict = torch.load(file_path)['model_state_dict']
+        state_dict = torch.load(file_path, map_location=torch.device(device))['model_state_dict']
         state_dict = delete_items_without_prefix(state_dict, "feat.")
         state_dict = remove_prefix(state_dict, 'feat.')
         self.feat.load_state_dict(state_dict)
@@ -191,7 +191,11 @@ class PointNetFeatureExtractor(nn.Module):
 
 if __name__ == '__main__':
     # Set the device for the models
-    DEVICE = 'cuda'
+    if torch.cuda.is_available():
+        DEVICE = 'cuda'
+    else:
+        DEVICE = 'cpu'
+    print("Device: ", DEVICE)
     # decide if normals get used
     USE_NORMALS = False
     if USE_NORMALS:
@@ -207,7 +211,7 @@ if __name__ == '__main__':
     base_init_path = os.path.abspath("../../../../drl_grasping")
     file_path = f"./drl_grasping/drl_octree/features_extractor/{file_name}.pth"
     file_path = os.path.join(base_init_path, file_path)
-    state_dict = torch.load(file_path)['model_state_dict']
+    state_dict = torch.load(file_path, map_location=torch.device(DEVICE))['model_state_dict']
     # Input from observation space
     pointcloud = torch.rand(BATCH_SIZE, NUM_POINTS, NUM_CHANNELS)
     # Transposed input for base networks
@@ -238,6 +242,6 @@ if __name__ == '__main__':
     print('Point Features:', points.size())
     
     # Getting drl-features from observation space input
-    feat_drl = PointNetFeatureExtractor(normal_channel=USE_NORMALS, features_dim=256, file_path=file_path).to(DEVICE)
+    feat_drl = PointNetFeatureExtractor(normal_channel=USE_NORMALS, features_dim=256, file_path=file_path, device=DEVICE).to(DEVICE)
     out = feat_drl(pointcloud.to(DEVICE))
     print('Feature Extractor: ', out.size())
