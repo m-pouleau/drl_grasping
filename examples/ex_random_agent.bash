@@ -8,8 +8,8 @@
 SEED="42"
 
 ## Robot to use during training
-# ROBOT_MODEL="panda"
-ROBOT_MODEL="lunalab_summit_xl_gen"
+ ROBOT_MODEL="panda"
+# ROBOT_MODEL="lunalab_summit_xl_gen"
 
 ## ID of the environment
 ## Reach
