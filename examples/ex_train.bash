@@ -39,9 +39,9 @@ ENV="GraspPlanetary-OctreeWithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-OctreeWithColor-Gazebo-v0"
   
 ## Selection of RL algorithm
-# ALGO="sac"
+ ALGO="sac"
 # ALGO="td3"
-ALGO="tqc"
+# ALGO="tqc"
 
 ## Path to logs directory
 LOG_FOLDER="${PWD}/drl_grasping_training/train/${ENV}/logs"
