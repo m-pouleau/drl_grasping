@@ -1,4 +1,14 @@
 #!/usr/bin/env bash
+pwd; hostname; date
+
+mkdir -p /tmp/.ros/log
+mkdir -p /tmp/.pcg
+mkdir -p /tmp/.rviz2
+mkdir -p /tmp/.config/matplotlib
+mkdir -p /tmp/.cache/matplotlib
+mkdir -p /tmp/.ignition/gazebo
+mkdir -p /tmp/.ignition/log
+chmod 777 /tmp/.ros/log /tmp/.pcg /tmp/.rviz2 /tmp/.config/matplotlib /tmp/.cache/matplotlib /tmp/.ignition/gazebo /tmp/.ignition/log
 
 TAG="drl_grasping_apptainer.sif"
 
@@ -47,6 +57,7 @@ GUI_ENVS=(
     XAUTHORITY="${XAUTH}"
     QT_X11_NO_MITSHM=1
     DISPLAY="${DISPLAY}"
+    #LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 )
 
 ## Additional volumes
@@ -81,13 +92,13 @@ fi
 
 DOCKER_RUN_CMD=(
     apptainer exec
-    "--nv"
+    --nv
     "${GUI_VOLUMES[@]/#/"--bind "}"
     "${GUI_ENVS[@]/#/"--env "}"
     "${CUSTOM_VOLUMES[@]/#/"--bind "}"
     "${CUSTOM_ENVS[@]/#/"--env "}"
     "$(dirname "${PWD}")/${TAG}"
-    "/bin/bash"
+    ./.docker/apptainer_commands.bash
 )
 
 echo -e "\033[1;30m${DOCKER_RUN_CMD[*]}\033[0m" | xargs
