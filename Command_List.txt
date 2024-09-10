@@ -59,16 +59,15 @@
  $ ros2 run drl_grasping ex_random_agent.bash
 
 
-### Apptainer container ###
+### Apptainer container using SLURM batch ###
 1. Create an ".sif" container file from the Apptainer ".def" file (from "main" folder):
+ $ mkdir -p /u/home/yaox/Matthias/my_tmp/
+ $ export TMPDIR=/u/home/yaox/Matthias/my_tmp/
  $ apptainer build drl_grasping_apptainer.sif drl_grasping/.docker/drl_apptainer.def
+ $ rm -rf /u/home/yaox/Matthias/my_tmp/
 
-2. Execute the Apptainer container with the corresponding bashscript (from "drl_grasping" folder):
- $ .docker/run_drl_grasping_apptainer.bash
- $ source /root/entrypoint.bash
-
-3. Run random agents inside apptainer container:
- $ ros2 run drl_grasping ex_random_agent.bash
+2. Start a SLURM process and execute the Apptainer container with the corresponding bashscript (from "drl_grasping" folder):
+ $ sbatch --partition=gpu-1-employee --gres=gpu:1 .docker/run_drl_grasping_apptainer.bash
 
  
 ### TMUX Session ###

@@ -32,6 +32,7 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
         self._aux_obs_dim = aux_obs_dim
         self._aux_obs_features_dim = aux_obs_features_dim
         self._verbose = verbose
+        self._cache_step = 1
 
         # Determine number of stacked based on observation space shape
         self._n_stacks = observation_space.shape[0]
@@ -81,6 +82,7 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
             print(self)
 
     def forward(self, obs):
+        self._cache_step += 1
 
         data = obs[0]
         aux_obs = obs[1]
@@ -100,6 +102,13 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
             )
             # Concatenate auxiliary data
             data = torch.cat((data, aux_data), dim=1)
+
+        if self._cache_step % 50 == 0:
+            print("PYTORCH_CUDA_ALLOC_CONF: ", os.getenv("PYTORCH_CUDA_ALLOC_CONF"), flush=True)
+            print("\nMemory Allocated: ", torch.cuda.memory_allocated() / (1024 ** 2), "MiB", flush=True)
+            print("Memory Reserved: ", torch.cuda.memory_reserved() / (1024 ** 2), "MiB", flush=True)
+            if torch.cuda.memory_allocated() / torch.cuda.memory_reserved() < 0.2:
+                torch.cuda.empty_cache()
 
         return data
 
