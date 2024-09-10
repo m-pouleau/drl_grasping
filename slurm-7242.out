@@ -1,0 +1,167 @@
+/u/home/yaox/Matthias/drl_grasping
+i6-gpu-1
+Tue Sep 10 10:05:56 UTC 2024
+Your system uses glibc newer than 2.31 which is used inside the container. Implementing --nv switch via a workaround. Let's hope it works!
+[1;30mapptainer exec -B /lib/x86_64-linux-gnu/libcuda.so.1 -B /lib/x86_64-linux-gnu/libcuda.so -B /lib/x86_64-linux-gnu/libEGL_nvidia.so.0 -B /lib/x86_64-linux-gnu/libGLESv1_CM_nvidia.so.1 -B /lib/x86_64-linux-gnu/libGLESv1_CM.so.1 -B /lib/x86_64-linux-gnu/libGLESv1_CM.so -B /lib/x86_64-linux-gnu/libGLESv2_nvidia.so.2 -B /lib/x86_64-linux-gnu/libGLESv2.so.2 -B /lib/x86_64-linux-gnu/libGLESv2.so -B /lib/x86_64-linux-gnu/libGLX_nvidia.so.0 -B /lib/x86_64-linux-gnu/libnvcuvid.so -B /lib/x86_64-linux-gnu/libnvcuvid.so.1 -B /lib/x86_64-linux-gnu/libnvidia-cfg.so.1 -B /lib/x86_64-linux-gnu/libnvidia-cfg.so -B /lib/x86_64-linux-gnu/libnvidia-compiler.so.530.41.03 -B /lib/x86_64-linux-gnu/libnvidia-eglcore.so.530.41.03 -B /lib/x86_64-linux-gnu/libnvidia-encode.so.1 -B /lib/x86_64-linux-gnu/libnvidia-encode.so -B /lib/x86_64-linux-gnu/libnvidia-fbc.so.1 -B /lib/x86_64-linux-gnu/libnvidia-fbc.so -B /lib/x86_64-linux-gnu/libnvidia-glcore.so.530.41.03 -B /lib/x86_64-linux-gnu/libnvidia-glsi.so.530.41.03 -B /lib/x86_64-linux-gnu/libnvidia-glvkspirv.so.530.41.03 -B /lib/libnvidia-gtk2.so.510.47.03 -B /lib/libnvidia-gtk3.so.510.47.03 -B /lib/x86_64-linux-gnu/libnvidia-ml.so -B /lib/x86_64-linux-gnu/libnvidia-ml.so.1 -B /lib/x86_64-linux-gnu/libnvidia-opencl.so.1 -B /lib/x86_64-linux-gnu/libnvidia-opticalflow.so.1 -B /lib/x86_64-linux-gnu/libnvidia-opticalflow.so -B /lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so.1 -B /lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so -B /lib/x86_64-linux-gnu/libnvidia-rtcore.so.530.41.03 -B /lib/x86_64-linux-gnu/libnvidia-tls.so.530.41.03 -B /lib/x86_64-linux-gnu/libnvoptix.so.1 -B /usr/share/glvnd/egl_vendor.d/10_nvidia.json --bind /dev/input:/dev/input --env LD_LIBRARY_PATH=/usr/local/cuda/lib64: --bind /etc/localtime:/etc/localtime:ro --bind /u/home/yaox/Matthias/drl_grasping_training_docker:/root/drl_grasping_training --bind /tmp/.ignition:/root/.ignition --bind /tmp/.pcg:/root/.pcg --bind /tmp/.ros:/root/.ros --bind /tmp/.rviz2:/root/.rviz2 --bind /tmp/.config/matplotlib:/root/.config/matplotlib --bind /tmp/.cache/matplotlib:/root/.cache/matplotlib --bind /u/home/yaox/Matthias/drl_grasping/visualizations:/root/visualizations --bind /u/home/yaox/Matthias/drl_grasping/scripts:/root/ws/src/drl_grasping/scripts --bind /u/home/yaox/Matthias/drl_grasping/launch:/root/ws/src/drl_grasping/launch --bind /u/home/yaox/Matthias/drl_grasping/examples:/root/ws/src/drl_grasping/examples --bind /u/home/yaox/Matthias/drl_grasping/hyperparams:/root/ws/src/drl_grasping/hyperparams --bind /u/home/yaox/Matthias/drl_grasping/rviz:/root/ws/src/drl_grasping/rviz --bind /u/home/yaox/Matthias/drl_grasping/drl_grasping:/root/ws/src/drl_grasping/drl_grasping /u/home/yaox/Matthias/drl_grasping_apptainer.sif ./.docker/apptainer_commands.bash[0m
+INFO:    underlay of /usr/lib/libnvidia-gtk2.so.510.47.03 required more than 50 (65) bind mounts
+INFO:    underlay of /usr/lib/x86_64-linux-gnu/libnvcuvid.so required more than 50 (1432) bind mounts
+Tue Sep 10 10:05:58 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 530.41.03              Driver Version: 530.41.03    CUDA Version: 12.1     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                  Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf            Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA RTX A5000                Off| 00000000:05:00.0 Off |                  Off |
+| 30%   56C    P2              231W / 230W|   9671MiB / 24564MiB |     59%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA RTX A5000                Off| 00000000:06:00.0 Off |                  Off |
+| 30%   50C    P2               92W / 230W|   9987MiB / 24564MiB |    100%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+|   2  NVIDIA RTX A5000                Off| 00000000:45:00.0 Off |                  Off |
+| 30%   33C    P8               25W / 230W|      1MiB / 24564MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+|   3  NVIDIA RTX A5000                Off| 00000000:46:00.0 Off |                  Off |
+| 30%   34C    P8               17W / 230W|      1MiB / 24564MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+|   4  NVIDIA RTX A5000                Off| 00000000:85:00.0 Off |                  Off |
+| 30%   25C    P8               22W / 230W|      1MiB / 24564MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+|   5  NVIDIA RTX A5000                Off| 00000000:86:00.0 Off |                  Off |
+| 30%   24C    P8               19W / 230W|      1MiB / 24564MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+|   6  NVIDIA RTX A5000                Off| 00000000:C5:00.0 Off |                  Off |
+| 30%   24C    P8               21W / 230W|      1MiB / 24564MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+|   7  NVIDIA RTX A5000                Off| 00000000:C6:00.0 Off |                  Off |
+| 30%   24C    P8               23W / 230W|      1MiB / 24564MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A   2533137      C   ...jio/miniconda3/envs/rgbx/bin/python     9668MiB |
+|    1   N/A  N/A   2533138      C   ...jio/miniconda3/envs/rgbx/bin/python     9984MiB |
++---------------------------------------------------------------------------------------+
+[1;30mros2 launch -a drl_grasping random_agent.launch.py seed:=42 robot_model:=lunalab_summit_xl_gen env:=GraspPlanetary-PointNetWithIntensity-Gazebo-v0 check_env:=false render:=false enable_rviz:=false log_level:=warn[0m
+[INFO] [launch]: All log files can be found below /root/.ros/log/2024-09-10-10-06-00-975006-i6-gpu-1-2989663
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: Bridge enabled between [ROS 2] /clock and [IGN] /world/drl_grasping_world/clock
+[INFO] [launch.user]: Bridge enabled between [ROS 2] /tf and [IGN] /model/lunalab_summit_xl_gen/pose
+[INFO] [launch.user]: Bridge enabled between [ROS 2] /lunalab_summit_xl_gen/cmd_vel and [IGN] /model/lunalab_summit_xl_gen/cmd_vel
+[INFO] [launch.user]: Configuring drl_grasping for Ignition Gazebo world drl_grasping_world
+	Robot model: lunalab_summit_xl_gen
+	Prefix: robot_
+[INFO] [robot_state_publisher-1]: process started with pid [2989673]
+[INFO] [move_group-2]: process started with pid [2989675]
+[INFO] [servo_node_main-3]: process started with pid [2989677]
+[INFO] [spawner-4]: process started with pid [2989679]
+[INFO] [spawner-5]: process started with pid [2989681]
+[INFO] [spawner-6]: process started with pid [2989685]
+[INFO] [static_transform_publisher-7]: process started with pid [2989688]
+[INFO] [parameter_bridge-8]: process started with pid [2989698]
+[INFO] [parameter_bridge-9]: process started with pid [2989701]
+[INFO] [parameter_bridge-10]: process started with pid [2989712]
+[INFO] [random_agent.py-11]: process started with pid [2989715]
+[robot_state_publisher-1] Link robot_summit_xl_base_link had 5 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_base had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_1 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_2 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_3 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_4 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_5 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_6 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_7 had 4 children
+[robot_state_publisher-1] Link robot_j2s7s300_end_effector had 0 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_finger_1 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_finger_tip_1 had 0 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_finger_2 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_finger_tip_2 had 0 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_finger_3 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_finger_tip_3 had 0 children
+[robot_state_publisher-1] Link robot_summit_xl_back_left_wheel had 0 children
+[robot_state_publisher-1] Link robot_summit_xl_back_right_wheel had 0 children
+[robot_state_publisher-1] Link robot_summit_xl_front_left_wheel had 0 children
+[robot_state_publisher-1] Link robot_summit_xl_front_right_wheel had 0 children
+[servo_node_main-3] [WARN] [1725962764.003202822] [moveit_servo.servo_node]: Intra-process communication is disabled, consider enabling it by adding: 
+[servo_node_main-3] extra_arguments=[{'use_intra_process_comms' : True}]
+[servo_node_main-3] to the Servo composable node in the launch file
+[move_group-2] Link robot_summit_xl_base_link had 5 children
+[move_group-2] Link robot_j2s7s300_link_base had 1 children
+[move_group-2] Link robot_j2s7s300_link_1 had 1 children
+[move_group-2] Link robot_j2s7s300_link_2 had 1 children
+[move_group-2] Link robot_j2s7s300_link_3 had 1 children
+[move_group-2] Link robot_j2s7s300_link_4 had 1 children
+[move_group-2] Link robot_j2s7s300_link_5 had 1 children
+[move_group-2] Link robot_j2s7s300_link_6 had 1 children
+[move_group-2] Link robot_j2s7s300_link_7 had 4 children
+[move_group-2] Link robot_j2s7s300_end_effector had 0 children
+[move_group-2] Link robot_j2s7s300_link_finger_1 had 1 children
+[move_group-2] Link robot_j2s7s300_link_finger_tip_1 had 0 children
+[move_group-2] Link robot_j2s7s300_link_finger_2 had 1 children
+[move_group-2] Link robot_j2s7s300_link_finger_tip_2 had 0 children
+[move_group-2] Link robot_j2s7s300_link_finger_3 had 1 children
+[move_group-2] Link robot_j2s7s300_link_finger_tip_3 had 0 children
+[move_group-2] Link robot_summit_xl_back_left_wheel had 0 children
+[move_group-2] Link robot_summit_xl_back_right_wheel had 0 children
+[move_group-2] Link robot_summit_xl_front_left_wheel had 0 children
+[move_group-2] Link robot_summit_xl_front_right_wheel had 0 children
+[servo_node_main-3] Link robot_summit_xl_base_link had 5 children
+[servo_node_main-3] Link robot_j2s7s300_link_base had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_1 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_2 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_3 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_4 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_5 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_6 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_7 had 4 children
+[servo_node_main-3] Link robot_j2s7s300_end_effector had 0 children
+[servo_node_main-3] Link robot_j2s7s300_link_finger_1 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_finger_tip_1 had 0 children
+[servo_node_main-3] Link robot_j2s7s300_link_finger_2 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_finger_tip_2 had 0 children
+[servo_node_main-3] Link robot_j2s7s300_link_finger_3 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_finger_tip_3 had 0 children
+[servo_node_main-3] Link robot_summit_xl_back_left_wheel had 0 children
+[servo_node_main-3] Link robot_summit_xl_back_right_wheel had 0 children
+[servo_node_main-3] Link robot_summit_xl_front_left_wheel had 0 children
+[servo_node_main-3] Link robot_summit_xl_front_right_wheel had 0 children
+[move_group-2] [WARN] [1725962764.370987002] [moveit.ros.occupancy_map_monitor.middleware_handle]: Resolution not specified for Octomap. Assuming resolution = 0.1 instead
+[move_group-2] [ERROR] [1725962764.371086842] [moveit.ros.occupancy_map_monitor.middleware_handle]: No 3D sensor plugin(s) defined for octomap updates
+[move_group-2] [96mLoading 'move_group/ApplyPlanningSceneService'...
+[move_group-2] [0m[96mLoading 'move_group/ClearOctomapService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupCartesianPathService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupExecuteTrajectoryAction'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupGetPlanningSceneService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupKinematicsService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupMoveAction'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupPlanService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupQueryPlannersService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupStateValidationService'...
+[move_group-2] [0m[92m
+[move_group-2] You can start planning now!
+[move_group-2] 
+[random_agent.py-11] Traceback (most recent call last):
+[random_agent.py-11]   File "/root/ws/install/lib/drl_grasping/random_agent.py", line 9, in <module>
+[random_agent.py-11]     from drl_grasping import envs as drl_grasping_envs
+[random_agent.py-11]   File "/root/ws/install/lib/python3.8/site-packages/drl_grasping/envs/__init__.py", line 2, in <module>
+[random_agent.py-11]     import open3d  # isort:skip
+[random_agent.py-11]   File "/usr/local/lib/python3.8/dist-packages/open3d/__init__.py", line 56, in <module>
+[random_agent.py-11]     _CDLL(str(next((_Path(__file__).parent / 'cpu').glob('pybind*'))))
+[random_agent.py-11]   File "/usr/lib/python3.8/ctypes/__init__.py", line 373, in __init__
+[random_agent.py-11]     self._handle = _dlopen(self._name, mode)
+[random_agent.py-11] OSError: /usr/lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.34' not found (required by /.singularity.d/libs/libGLdispatch.so.0)
+[ERROR] [random_agent.py-11]: process has died [pid 2989715, exit code 1, cmd '/root/ws/install/lib/drl_grasping/random_agent.py --env GraspPlanetary-PointNetWithIntensity-Gazebo-v0 --env-kwargs robot_model:"lunalab_summit_xl_gen" --env-kwargs robot_model:"lunalab_summit_xl_gen" --n-episodes 1000 --seed 42 --check-env false --render false --ros-args --log-level warn --ros-args --params-file /tmp/launch_params_we326yyq'].
+slurmstepd-i6-gpu-1: error: *** JOB 7242 ON i6-gpu-1 CANCELLED AT 2024-09-10T10:06:22 ***
+INFO:    Cleanup error: while unmounting /var/lib/apptainer/mnt/session/underlay/opt directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libzmq.so.5.2.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libz.so.1.2.11 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libwind.so.0.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libuuid.so.1.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libutil-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libunistring.so.2.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libtinyxml2.so.6.2.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libtinyxml.so.2.6.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.28 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libssl.so.1.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libssh.so.4.8.4 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libsqlite3.so.0.8.6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libspdlog.so.1.5.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libsodium.so.23.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libsasl2.so.2.0.25 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/librtmp.so.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/librt-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libroken.so.18.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libresolv-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libqhull_r.so.7.2.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libpython3.8.so.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libpthread-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libpsl.so.5.3.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libpgm-5.2.so.0.0.122 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libp11-kit.so.0.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libnss_files-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libnorm.so.1.5.8 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libnghttp2.so.14.19.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libnettle.so.7.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libminizip.so.1.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libm-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/liblzma.so.5.2.4 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libldap_r-2.4.so.2.10.12 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/liblber-2.4.so.2.10.12 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libkrb5.so.3.3 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libkrb5.so.26.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libkeyutils.so.1.8 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-transport11.so.11.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-msgs8.so.8.4.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-math6.so.6.10.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libidn2.so.0.3.6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libhx509.so.5.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libhogweed.so.5.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libheimntlm.so.0.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libheimbase.so.1.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libhcrypto.so.4.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgssapi.so.3.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgnutls.so.30.27.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgmp.so.10.4.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libffi.so.7.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libfcl.so.0.5.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libexpat.so.1.6.11 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libelf-0.176.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libdw-0.176.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libdl-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libcrypto.so.1.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libcrypt.so.1.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libcom_err.so.2.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libccd.so.2.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libc-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1.0.7 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1.0.7 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libboost_serialization.so.1.71.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libassimp.so.5.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libasn1.so.8.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libacl.so.1.1.2253 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/ld-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/gconv directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/python3.8 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/locale directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/local directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/final directory: device or resource busy

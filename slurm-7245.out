@@ -1,0 +1,531 @@
+/u/home/yaox/Matthias/drl_grasping
+i6-gpu-1
+Tue Sep 10 10:07:55 UTC 2024
+Your system uses glibc newer than 2.31 which is used inside the container. Implementing --nv switch via a workaround. Let's hope it works!
+[1;30mapptainer exec -B /lib/x86_64-linux-gnu/libcuda.so.1 -B /lib/x86_64-linux-gnu/libcuda.so -B /lib/x86_64-linux-gnu/libEGL_nvidia.so.0 -B /lib/x86_64-linux-gnu/libGLESv1_CM_nvidia.so.1 -B /lib/x86_64-linux-gnu/libGLESv1_CM.so -B /lib/x86_64-linux-gnu/libGLESv1_CM.so.1 -B /lib/x86_64-linux-gnu/libGLESv2_nvidia.so.2 -B /lib/x86_64-linux-gnu/libGLESv2.so -B /lib/x86_64-linux-gnu/libGLESv2.so.2 -B /lib/x86_64-linux-gnu/libGLX_nvidia.so.0 -B /lib/x86_64-linux-gnu/libnvcuvid.so -B /lib/x86_64-linux-gnu/libnvcuvid.so.1 -B /lib/x86_64-linux-gnu/libnvidia-cfg.so -B /lib/x86_64-linux-gnu/libnvidia-cfg.so.1 -B /lib/x86_64-linux-gnu/libnvidia-compiler.so.530.41.03 -B /lib/x86_64-linux-gnu/libnvidia-eglcore.so.530.41.03 -B /lib/x86_64-linux-gnu/libnvidia-encode.so.1 -B /lib/x86_64-linux-gnu/libnvidia-encode.so -B /lib/x86_64-linux-gnu/libnvidia-fbc.so -B /lib/x86_64-linux-gnu/libnvidia-fbc.so.1 -B /lib/x86_64-linux-gnu/libnvidia-glcore.so.530.41.03 -B /lib/x86_64-linux-gnu/libnvidia-glsi.so.530.41.03 -B /lib/x86_64-linux-gnu/libnvidia-glvkspirv.so.530.41.03 -B /lib/libnvidia-gtk2.so.510.47.03 -B /lib/libnvidia-gtk3.so.510.47.03 -B /lib/x86_64-linux-gnu/libnvidia-ml.so -B /lib/x86_64-linux-gnu/libnvidia-ml.so.1 -B /lib/x86_64-linux-gnu/libnvidia-opencl.so.1 -B /lib/x86_64-linux-gnu/libnvidia-opticalflow.so.1 -B /lib/x86_64-linux-gnu/libnvidia-opticalflow.so -B /lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so -B /lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so.1 -B /lib/x86_64-linux-gnu/libnvidia-rtcore.so.530.41.03 -B /lib/x86_64-linux-gnu/libnvidia-tls.so.530.41.03 -B /lib/x86_64-linux-gnu/libnvoptix.so.1 -B /usr/share/glvnd/egl_vendor.d/10_nvidia.json --bind /etc/localtime:/etc/localtime:ro --bind /u/home/yaox/Matthias/drl_grasping_training_docker:/root/drl_grasping_training --bind /tmp/.ignition:/root/.ignition --bind /tmp/.pcg:/root/.pcg --bind /tmp/.ros:/root/.ros --bind /tmp/.rviz2:/root/.rviz2 --bind /tmp/.config/matplotlib:/root/.config/matplotlib --bind /tmp/.cache/matplotlib:/root/.cache/matplotlib --bind /u/home/yaox/Matthias/drl_grasping/visualizations:/root/visualizations --bind /u/home/yaox/Matthias/drl_grasping/scripts:/root/ws/src/drl_grasping/scripts --bind /u/home/yaox/Matthias/drl_grasping/launch:/root/ws/src/drl_grasping/launch --bind /u/home/yaox/Matthias/drl_grasping/examples:/root/ws/src/drl_grasping/examples --bind /u/home/yaox/Matthias/drl_grasping/hyperparams:/root/ws/src/drl_grasping/hyperparams --bind /u/home/yaox/Matthias/drl_grasping/rviz:/root/ws/src/drl_grasping/rviz --bind /u/home/yaox/Matthias/drl_grasping/drl_grasping:/root/ws/src/drl_grasping/drl_grasping /u/home/yaox/Matthias/drl_grasping_apptainer.sif ./.docker/apptainer_commands.bash[0m
+INFO:    underlay of /usr/lib/libnvidia-gtk2.so.510.47.03 required more than 50 (65) bind mounts
+INFO:    underlay of /usr/lib/x86_64-linux-gnu/libnvcuvid.so required more than 50 (1432) bind mounts
+[1;30mros2 launch -a drl_grasping random_agent.launch.py seed:=42 robot_model:=lunalab_summit_xl_gen env:=GraspPlanetary-PointNetWithIntensity-Gazebo-v0 check_env:=false render:=false enable_rviz:=false log_level:=warn[0m
+[INFO] [launch]: All log files can be found below /root/.ros/log/2024-09-10-10-07-58-681551-i6-gpu-1-2993894
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: Bridge enabled between [ROS 2] /clock and [IGN] /world/drl_grasping_world/clock
+[INFO] [launch.user]: Bridge enabled between [ROS 2] /tf and [IGN] /model/lunalab_summit_xl_gen/pose
+[INFO] [launch.user]: Bridge enabled between [ROS 2] /lunalab_summit_xl_gen/cmd_vel and [IGN] /model/lunalab_summit_xl_gen/cmd_vel
+[INFO] [launch.user]: Configuring drl_grasping for Ignition Gazebo world drl_grasping_world
+	Robot model: lunalab_summit_xl_gen
+	Prefix: robot_
+[INFO] [robot_state_publisher-1]: process started with pid [2993904]
+[INFO] [move_group-2]: process started with pid [2993906]
+[INFO] [servo_node_main-3]: process started with pid [2993908]
+[INFO] [spawner-4]: process started with pid [2993910]
+[INFO] [spawner-5]: process started with pid [2993912]
+[INFO] [spawner-6]: process started with pid [2993916]
+[INFO] [static_transform_publisher-7]: process started with pid [2993926]
+[INFO] [parameter_bridge-8]: process started with pid [2993930]
+[INFO] [parameter_bridge-9]: process started with pid [2993932]
+[INFO] [parameter_bridge-10]: process started with pid [2993943]
+[INFO] [random_agent.py-11]: process started with pid [2993945]
+[robot_state_publisher-1] Link robot_summit_xl_base_link had 5 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_base had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_1 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_2 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_3 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_4 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_5 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_6 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_7 had 4 children
+[robot_state_publisher-1] Link robot_j2s7s300_end_effector had 0 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_finger_1 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_finger_tip_1 had 0 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_finger_2 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_finger_tip_2 had 0 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_finger_3 had 1 children
+[robot_state_publisher-1] Link robot_j2s7s300_link_finger_tip_3 had 0 children
+[robot_state_publisher-1] Link robot_summit_xl_back_left_wheel had 0 children
+[robot_state_publisher-1] Link robot_summit_xl_back_right_wheel had 0 children
+[robot_state_publisher-1] Link robot_summit_xl_front_left_wheel had 0 children
+[robot_state_publisher-1] Link robot_summit_xl_front_right_wheel had 0 children
+[servo_node_main-3] [WARN] [1725962881.698152923] [moveit_servo.servo_node]: Intra-process communication is disabled, consider enabling it by adding: 
+[servo_node_main-3] extra_arguments=[{'use_intra_process_comms' : True}]
+[servo_node_main-3] to the Servo composable node in the launch file
+[move_group-2] Link robot_summit_xl_base_link had 5 children
+[move_group-2] Link robot_j2s7s300_link_base had 1 children
+[move_group-2] Link robot_j2s7s300_link_1 had 1 children
+[move_group-2] Link robot_j2s7s300_link_2 had 1 children
+[move_group-2] Link robot_j2s7s300_link_3 had 1 children
+[move_group-2] Link robot_j2s7s300_link_4 had 1 children
+[move_group-2] Link robot_j2s7s300_link_5 had 1 children
+[move_group-2] Link robot_j2s7s300_link_6 had 1 children
+[move_group-2] Link robot_j2s7s300_link_7 had 4 children
+[move_group-2] Link robot_j2s7s300_end_effector had 0 children
+[move_group-2] Link robot_j2s7s300_link_finger_1 had 1 children
+[move_group-2] Link robot_j2s7s300_link_finger_tip_1 had 0 children
+[move_group-2] Link robot_j2s7s300_link_finger_2 had 1 children
+[move_group-2] Link robot_j2s7s300_link_finger_tip_2 had 0 children
+[move_group-2] Link robot_j2s7s300_link_finger_3 had 1 children
+[move_group-2] Link robot_j2s7s300_link_finger_tip_3 had 0 children
+[move_group-2] Link robot_summit_xl_back_left_wheel had 0 children
+[move_group-2] Link robot_summit_xl_back_right_wheel had 0 children
+[move_group-2] Link robot_summit_xl_front_left_wheel had 0 children
+[move_group-2] Link robot_summit_xl_front_right_wheel had 0 children
+[servo_node_main-3] Link robot_summit_xl_base_link had 5 children
+[servo_node_main-3] Link robot_j2s7s300_link_base had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_1 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_2 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_3 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_4 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_5 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_6 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_7 had 4 children
+[servo_node_main-3] Link robot_j2s7s300_end_effector had 0 children
+[servo_node_main-3] Link robot_j2s7s300_link_finger_1 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_finger_tip_1 had 0 children
+[servo_node_main-3] Link robot_j2s7s300_link_finger_2 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_finger_tip_2 had 0 children
+[servo_node_main-3] Link robot_j2s7s300_link_finger_3 had 1 children
+[servo_node_main-3] Link robot_j2s7s300_link_finger_tip_3 had 0 children
+[servo_node_main-3] Link robot_summit_xl_back_left_wheel had 0 children
+[servo_node_main-3] Link robot_summit_xl_back_right_wheel had 0 children
+[servo_node_main-3] Link robot_summit_xl_front_left_wheel had 0 children
+[servo_node_main-3] Link robot_summit_xl_front_right_wheel had 0 children
+[move_group-2] [WARN] [1725962882.092499221] [moveit.ros.occupancy_map_monitor.middleware_handle]: Resolution not specified for Octomap. Assuming resolution = 0.1 instead
+[move_group-2] [ERROR] [1725962882.093301543] [moveit.ros.occupancy_map_monitor.middleware_handle]: No 3D sensor plugin(s) defined for octomap updates
+[move_group-2] [96mLoading 'move_group/ApplyPlanningSceneService'...
+[move_group-2] [0m[96mLoading 'move_group/ClearOctomapService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupCartesianPathService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupExecuteTrajectoryAction'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupGetPlanningSceneService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupKinematicsService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupMoveAction'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupPlanService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupQueryPlannersService'...
+[move_group-2] [0m[96mLoading 'move_group/MoveGroupStateValidationService'...
+[move_group-2] [0m[92m
+[move_group-2] You can start planning now!
+[move_group-2] 
+[random_agent.py-11] [1;33m[Wrn] [ServerConfig.cc:900] [0m[1;33mIGN_GAZEBO_SERVER_CONFIG_PATH[0m[1;33m set but no file found,[0m[1;33m no plugins loaded[0m
+[random_agent.py-11] [INFO] [1725962896.199011992] [ignition_ros_control]: [ign_ros2_control] Fixed joint [robot_summit_xl_base_footprint_joint] (Entity=56)] is skipped
+[random_agent.py-11] [INFO] [1725962896.200483685] [ignition_ros_control]: [ign_ros2_control] Fixed joint [robot_j2s7s300_joint_base] (Entity=57)] is skipped
+[random_agent.py-11] [INFO] [1725962896.200913385] [ignition_ros_control]: [ign_ros2_control] Fixed joint [robot_j2s7s300_joint_end_effector] (Entity=65)] is skipped
+[random_agent.py-11] [INFO] [1725962896.210546529] [ignition_ros_control]: connected to service!! robot_state_publisher asking for robot_description
+[random_agent.py-11] [INFO] [1725962896.211178050] [ignition_ros_control]: Received URDF from param server
+[random_agent.py-11] [INFO] [1725962896.221828865] [ignition_ros_control]: Loading joint: robot_summit_xl_front_left_wheel_joint
+[random_agent.py-11] [INFO] [1725962896.221862045] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.221874815] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.221886905] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.221902615] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.221914715] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.221944265] [ignition_ros_control]: Loading joint: robot_summit_xl_back_left_wheel_joint
+[random_agent.py-11] [INFO] [1725962896.221957965] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.221968335] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.221978895] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.221989805] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.222001166] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.222025356] [ignition_ros_control]: Loading joint: robot_summit_xl_front_right_wheel_joint
+[random_agent.py-11] [INFO] [1725962896.222037636] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.222047906] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.222058466] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.222069036] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.222078826] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.222103356] [ignition_ros_control]: Loading joint: robot_summit_xl_back_right_wheel_joint
+[random_agent.py-11] [INFO] [1725962896.222116076] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.222126596] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.222138266] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.222150316] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.222162156] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [WARN] [1725962896.222271076] [ignition_ros_control]: On init...
+[random_agent.py-11] [INFO] [1725962896.222330096] [ignition_ros_control]: System Successfully configured!
+[random_agent.py-11] [INFO] [1725962896.222491586] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_1
+[random_agent.py-11] [INFO] [1725962896.222514596] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.222528646] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.222544546] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.222556936] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.222569326] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.222581876] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.222609736] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_2
+[random_agent.py-11] [INFO] [1725962896.222624766] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.222636866] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.222649076] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.222660836] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.222673396] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.222685546] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.222711747] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_3
+[random_agent.py-11] [INFO] [1725962896.222726167] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.222738367] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.222750777] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.222763167] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.222775507] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.222787387] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.222814107] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_4
+[random_agent.py-11] [INFO] [1725962896.222826637] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.222863367] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.222877317] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.222904507] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.222916837] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.222928587] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.222955057] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_5
+[random_agent.py-11] [INFO] [1725962896.222968927] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.222981297] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.222993297] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.223004577] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.223016017] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.223028887] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.223054527] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_6
+[random_agent.py-11] [INFO] [1725962896.223068207] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.223079817] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.223091077] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.223102427] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.223113707] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.223126197] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.223151677] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_7
+[random_agent.py-11] [INFO] [1725962896.223165057] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.223176487] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.223187977] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.223199487] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.223211017] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.223222457] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [WARN] [1725962896.223239417] [ignition_ros_control]: On init...
+[random_agent.py-11] [INFO] [1725962896.223261467] [ignition_ros_control]: System Successfully configured!
+[random_agent.py-11] [INFO] [1725962896.223423018] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_finger_1
+[random_agent.py-11] [INFO] [1725962896.223444588] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.223457028] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.223469228] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.223481248] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.223494218] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.223507078] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.223535118] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_finger_2
+[random_agent.py-11] [INFO] [1725962896.223550078] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.223562018] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.223574808] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.223586938] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.223599278] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.223612028] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.223641908] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_finger_3
+[random_agent.py-11] [INFO] [1725962896.223657068] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.223669618] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.223682178] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.223694248] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.223706508] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.223718648] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.223747818] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_finger_tip_1
+[random_agent.py-11] [INFO] [1725962896.223764558] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.223776798] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.223788848] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.223801338] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.223813838] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.223839488] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_finger_tip_2
+[random_agent.py-11] [INFO] [1725962896.223854308] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.223866438] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.223878448] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.223890698] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.223914088] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [INFO] [1725962896.223942568] [ignition_ros_control]: Loading joint: robot_j2s7s300_joint_finger_tip_3
+[random_agent.py-11] [INFO] [1725962896.223957138] [ignition_ros_control]: 	Command:
+[random_agent.py-11] [INFO] [1725962896.223969488] [ignition_ros_control]: 	State:
+[random_agent.py-11] [INFO] [1725962896.223981498] [ignition_ros_control]: 		 position
+[random_agent.py-11] [INFO] [1725962896.223993928] [ignition_ros_control]: 		 velocity
+[random_agent.py-11] [INFO] [1725962896.224009019] [ignition_ros_control]: 		 effort
+[random_agent.py-11] [WARN] [1725962896.224022949] [ignition_ros_control]: On init...
+[random_agent.py-11] [INFO] [1725962896.224040699] [ignition_ros_control]: System Successfully configured!
+[random_agent.py-11] [INFO] [1725962896.224068149] [ignition_ros_control]: Loading controller_manager
+[random_agent.py-11] [WARN] [1725962896.290133414] [ignition_ros_control]:  Desired controller update period (0.004 s) is slower than the gazebo simulation period (0 s).
+[random_agent.py-11] [1;33mWarning [GenericJoint.hpp:1480][0m [GenericJoint::setRestPosition] Value of _q0 [0], is out of the limit range [0.820305, 5.46288] for index [0] of Joint [Joint].
+[random_agent.py-11] [1;33mWarning [GenericJoint.hpp:1480][0m [GenericJoint::setRestPosition] Value of _q0 [0], is out of the limit range [0.523599, 5.75959] for index [0] of Joint [Joint].
+[random_agent.py-11] [1;33mWarning [GenericJoint.hpp:1480][0m [GenericJoint::setRestPosition] Value of _q0 [0], is out of the limit range [1.13446, 5.14872] for index [0] of Joint [Joint].
+[random_agent.py-11] [INFO] [1725962896.355519938] [joint_state_broadcaster]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[random_agent.py-11] [WARN] [1725962897.704725194] [drl_grasping_0]: Action server 'joint_trajectory_controller/follow_joint_trajectory' is not yet available. Better luck next time!
+[random_agent.py-11] [INFO] [1725962897.706163286] [drl_grasping_0]: Inserting camera into the environment...
+[random_agent.py-11] [1;33m[Wrn] [Ogre2RenderEngine.cc:399] [0m[1;33mUnable to open display: [0m[1;33m:0[0m[1;33m. Trying to run in headless mode.[0m[1;33m[0m
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD135: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD135: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD134: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD134: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD133: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD133: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD132: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD132: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD131: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD131: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD130: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD130: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD129: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD129: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD128: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] libEGL warning: failed to open /dev/dri/renderD128: Permission denied
+[random_agent.py-11] 
+[random_agent.py-11] [INFO] [1725962898.539710998] [parameter_bridge_rgbd_camera_points]: Creating IGN->ROS Bridge: [/rgbd_camera/points (ignition.msgs.PointCloudPacked) -> /rgbd_camera/points (sensor_msgs/msg/PointCloud2)] (Lazy 0)
+[random_agent.py-11] [INFO] [1725962899.127424996] [drl_grasping_0]: Inserting invisible plane below the terrain into the environment...
+[random_agent.py-11] [INFO] [1725962899.772230535] [drl_grasping_0]: Inserting invisible planes around the terrain into the environment...
+[random_agent.py-11] [WARN] [1725962901.612699220] [drl_grasping_0]: Action server 'joint_trajectory_controller/follow_joint_trajectory' is not yet available. Better luck next time!
+[random_agent.py-11] [INFO] [1725962902.133203871] [joint_trajectory_controller]: Command interfaces are [effort] and and state interfaces are [position velocity].
+[random_agent.py-11] [INFO] [1725962902.135681714] [joint_trajectory_controller]: Controller state will be published at 50.00 Hz.
+[random_agent.py-11] [INFO] [1725962902.137277346] [joint_trajectory_controller]: Action status changes will be monitored at 20.00 Hz.
+[random_agent.py-11] [INFO] [1725962902.168870812] [gripper_trajectory_controller]: Command interfaces are [effort] and and state interfaces are [position velocity].
+[random_agent.py-11] [INFO] [1725962902.171216215] [gripper_trajectory_controller]: Controller state will be published at 50.00 Hz.
+[random_agent.py-11] [INFO] [1725962902.173242919] [gripper_trajectory_controller]: Action status changes will be monitored at 20.00 Hz.
+[INFO] [spawner-6]: process has finished cleanly [pid 2993916]
+[INFO] [spawner-4]: process has finished cleanly [pid 2993910]
+[INFO] [spawner-5]: process has finished cleanly [pid 2993912]
+[random_agent.py-11] [1;33m[Wrn] [OBJLoader.cc:202] [0m[1;33mMissing material for shape[[0m[1;33mlunar_surface[0m[1;33m] [0m[1;33min OBJ file[[0m[1;33m/root/ws/assets/sdf_models/terrains/lunar_surface/lunar_surface50/meshes/visual/lunar_surface50.obj[0m[1;33m][0m[1;33m[0m
+[random_agent.py-11] [1;33m[Wrn] [OBJLoader.cc:202] [0m[1;33mMissing material for shape[[0m[1;33mlunar_surface_pebbles[0m[1;33m] [0m[1;33min OBJ file[[0m[1;33m/root/ws/assets/sdf_models/terrains/lunar_surface/lunar_surface50/meshes/visual/lunar_surface50.obj[0m[1;33m][0m[1;33m[0m
+[random_agent.py-11] [INFO] [1725962904.491502542] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.505542302] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.522081336] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.534604524] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.547887513] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.561475893] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.571682408] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.578087797] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.584111306] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.590586665] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.596801294] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.603280933] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.608734451] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.615279060] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.621673040] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.629538361] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.635740460] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.643061731] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.649413050] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.656464700] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.663470110] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.670035229] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.675881298] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.682355377] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.688230026] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.695518256] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.701424965] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.707428794] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.713470882] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.722337125] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.729272625] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.735798794] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.742371454] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.749051153] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.754872191] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.761714441] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.767230389] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.773191378] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.779197177] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.785580686] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.791998835] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.798087754] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.803484362] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.810622782] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.816741311] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.828295137] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.848922887] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.857287869] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.862467187] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [INFO] [1725962904.867562614] [drl_grasping_0]: Objects overlapping, trying new positions
+[random_agent.py-11] [WARN] [1725962904.872254981] [drl_grasping_0]: Objects could not be spawned without any overlapping. The workspace might be too crowded!
+[random_agent.py-11] [INFO] [1725962904.882145315] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962904.882244085] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962904.938536716] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962904.938622546] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962905.645435726] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962905.645498066] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962905.709137538] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962905.709196238] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962906.443744977] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962906.444555078] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962906.456625026] [drl_grasping_0]: Action 'gripper_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962906.460801242] [drl_grasping_0]: Action 'gripper_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962906.507941600] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962906.507980960] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962907.242740619] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962907.249622109] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962907.348528272] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962907.348590312] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962907.502573164] [gripper_trajectory_controller]: Goal reached, success!
+[random_agent.py-11] [ERROR] [1725962908.004622228] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962908.006048820] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962908.006851591] [drl_grasping_0]: Action 'gripper_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962908.013624501] [drl_grasping_0]: Action 'gripper_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962908.017809997] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962908.017850297] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962908.072921177] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962908.072980267] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962908.740755370] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962908.749250512] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962908.757744354] [drl_grasping_0]: [Curriculum] An object is now closer than the required distance of 0.1
+[random_agent.py-11] [INFO] [1725962908.801875048] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962908.802608609] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962908.939504136] [gripper_trajectory_controller]: Goal reached, success!
+[random_agent.py-11] [ERROR] [1725962909.416686324] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962909.420834970] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962909.507601515] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962909.508434117] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962910.173261035] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962910.179559834] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962910.259726780] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962910.260497681] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962910.939686041] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962910.940132811] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962910.944211257] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962910.944675618] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962910.984766416] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962910.984810576] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962911.666800259] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962911.682440442] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962911.746674555] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962911.747427096] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962911.926970414] [gripper_trajectory_controller]: Goal reached, success!
+[random_agent.py-11] [ERROR] [1725962912.469589537] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962912.473454312] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962912.532624538] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962912.532679278] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962913.186973221] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962913.192685890] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962913.228069411] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962913.228819212] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962913.901291852] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962913.906184849] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962913.970836752] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962913.970876962] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962914.594621251] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962914.598032956] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962914.676972580] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962914.677023510] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962915.275853734] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962915.279838299] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962915.304522995] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962915.305051956] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962915.356833750] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962915.358969923] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962915.900998485] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962915.904955171] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962915.967184561] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962915.967956762] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962916.128414933] [gripper_trajectory_controller]: Goal reached, success!
+[random_agent.py-11] [ERROR] [1725962916.571459342] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962916.581985227] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962916.601318205] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962916.601850316] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962916.653613361] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962916.654323522] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962917.321116253] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962917.332396569] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962917.332841100] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962917.339716320] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962917.373348178] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962917.373429809] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962918.022208784] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962918.029468805] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962918.067873840] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962918.068656851] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962918.219701629] [gripper_trajectory_controller]: Goal reached, success!
+[random_agent.py-11] [ERROR] [1725962918.723347275] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962918.727441721] [drl_grasping_0]: Action 'gripper_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962918.728634853] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962918.733523480] [drl_grasping_0]: Action 'gripper_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962918.806076055] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962918.806127625] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962919.485066384] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962919.485760335] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962919.494207157] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962919.494682038] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962919.564383938] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962919.565127569] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962920.185953545] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962920.195125838] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962920.214565596] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962920.214611286] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962920.268241264] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962920.268976465] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962920.939906762] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962920.948033554] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962920.963755466] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962920.963811126] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962920.975840974] [drl_grasping_0]: Action 'gripper_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962920.978304907] [drl_grasping_0]: Action 'gripper_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962921.015807282] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962921.016567353] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962921.648799444] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962921.652043869] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962921.687524590] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962921.688356471] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962921.697403054] [drl_grasping_0]: Action 'gripper_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962921.704650255] [drl_grasping_0]: Action 'gripper_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962921.748492038] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962921.748546828] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962922.368690933] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962922.373766050] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962922.428996780] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962922.429767561] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962922.578013115] [gripper_trajectory_controller]: Goal reached, success!
+[random_agent.py-11] [ERROR] [1725962923.024722099] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962923.025836120] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962923.030655497] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962923.030691837] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962923.032622090] [drl_grasping_0]: Action 'gripper_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962923.037257387] [drl_grasping_0]: Action 'gripper_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962923.094541489] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962923.094586479] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962923.702586706] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962923.705549820] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962923.790613533] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962923.791159114] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962923.966865447] [gripper_trajectory_controller]: Goal reached, success!
+[random_agent.py-11] [ERROR] [1725962924.465127236] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962924.468673821] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962924.513121045] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962924.513897286] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962924.565283530] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962924.566036171] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962925.202435769] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962925.206531375] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962925.305582258] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962925.305628988] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962925.474930632] [gripper_trajectory_controller]: Goal reached, success!
+[random_agent.py-11] [ERROR] [1725962925.932895313] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962925.936919808] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962925.978256318] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962925.980189131] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962926.611335031] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962926.615222236] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962926.645307460] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962926.645916801] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962926.693262129] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962926.693885650] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962927.327482464] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962927.331742610] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962927.403402754] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962927.404245235] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962927.559003068] [gripper_trajectory_controller]: Goal reached, success!
+[random_agent.py-11] [ERROR] [1725962928.022854387] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962928.036861507] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962928.036902297] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962928.040131552] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962928.085140447] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962928.085178677] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [ERROR] [1725962928.697768760] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962928.707369724] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962928.786740158] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962928.787503089] [joint_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962928.954548390] [gripper_trajectory_controller]: Goal reached, success!
+[random_agent.py-11] [ERROR] [1725962929.451712397] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962929.452225578] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [INFO] [1725962929.454325251] [gripper_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962929.454739422] [gripper_trajectory_controller]: Accepted new action goal
+[random_agent.py-11] [INFO] [1725962929.519804466] [joint_trajectory_controller]: Received new action goal
+[random_agent.py-11] [INFO] [1725962929.520769957] [joint_trajectory_controller]: Accepted new action goal
+slurmstepd-i6-gpu-1: error: *** JOB 7245 ON i6-gpu-1 CANCELLED AT 2024-09-10T10:08:49 ***
+[random_agent.py-11] [ERROR] [1725962930.345178116] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+[random_agent.py-11] [ERROR] [1725962930.346453657] [drl_grasping_0]: Action 'joint_trajectory_controller/follow_joint_trajectory' was unsuccessful: 5.
+INFO:    Cleanup error: while unmounting /var/lib/apptainer/mnt/session/underlay/opt directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libzzip-0.so.13.0.62 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libzmq.so.5.2.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libzip.so.5.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libz.so.1.2.11 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libyaml-0.so.2.0.6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libxslt.so.1.1.34 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libxshmfence.so.1.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libxcb-xfixes.so.0.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libxcb-sync.so.1.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libxcb-present.so.0.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libxcb-dri3.so.0.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libxcb-dri2.so.0.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libwind.so.0.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libwebpmux.so.3.0.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libwebp.so.6.0.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libwayland-server.so.0.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libwayland-client.so.0.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libuuid.so.1.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libutil-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libunistring.so.2.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libudev.so.1.6.17 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libtinyxml2.so.6.2.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libtinyxml.so.2.6.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libtiff.so.5.5.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.28 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libssl.so.1.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libssh.so.4.8.4 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libsqlite3.so.0.8.6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libspdlog.so.1.5.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libsodium.so.23.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libsdformat12.so.12.4.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libsasl2.so.2.0.25 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/librtmp.so.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/librt-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libroken.so.18.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libresolv-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libraw.so.19.0.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libqhull_r.so.7.2.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libpython3.8.so.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libpthread-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libpsl.so.5.3.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libprotobuf.so.17.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libpng16.so.16.37.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libpgm-5.2.so.0.0.122 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libpcre.so.3.13.3 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libp11-kit.so.0.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libopenjp2.so.2.3.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libode.so.8.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libnss_files-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libnorm.so.1.5.8 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libnghttp2.so.14.19.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libnettle.so.7.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libmpdec.so.2.4.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libminizip.so.1.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libm-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/liblzma.so.5.2.4 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libldap_r-2.4.so.2.10.12 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/liblcms2.so.2.0.8 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/liblber-2.4.so.2.10.12 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libkrb5.so.3.3 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libkrb5.so.26.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libkeyutils.so.1.8 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libjxrglue.so.1.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libjsoncpp.so.1.7.4 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libjpegxr.so.1.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libjpeg.so.8.2.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libjbig.so.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-transport11.so.11.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-sensors6.so.6.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-sensors6-thermal_camera.so.6.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-sensors6-segmentation_camera.so.6.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-sensors6-rgbd_camera.so.6.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-sensors6-rendering.so.6.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-sensors6-lidar.so.6.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-sensors6-gpu_lidar.so.6.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-sensors6-depth_camera.so.6.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-sensors6-camera.so.6.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-rendering6.so.6.3.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-plugin1.so.1.2.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-plugin1-loader.so.1.2.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-physics5.so.5.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-msgs8.so.8.4.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-math6.so.6.10.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-gazebo6.so.6.9.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-gazebo6-rendering.so.6.9.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-fuel_tools7.so.7.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-common4.so.4.5.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-common4-graphics.so.4.5.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libignition-common4-events.so.4.5.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libidn2.so.0.3.6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libicuuc.so.66.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libicui18n.so.66.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libicudata.so.66.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libhx509.so.5.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libhogweed.so.5.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libheimntlm.so.0.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libheimbase.so.1.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libhcrypto.so.4.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgts-0.7.so.5.0.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0.6400.6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgssapi.so.3.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgpg-error.so.0.28.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgnutls.so.30.27.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgmp.so.10.4.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.6400.6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgcrypt.so.20.2.5 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libgbm.so.1.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libfreetype.so.6.17.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libfreeimage-3.18.0.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libffi.so.7.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libfcl.so.0.5.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libexslt.so.0.8.20 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libexpat.so.1.6.11 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libelf-0.176.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libedit.so.2.0.63 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libdw-0.176.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libdrm.so.2.4.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libdl-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libdart.so.6.9.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libdart-external-odelcpsolver.so.6.9.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libdart-collision-ode.so.6.9.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libdart-collision-bullet.so.6.9.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libcrypto.so.1.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libcrypt.so.1.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libcom_err.so.2.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libccd.so.2.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libc-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libbsd.so.0.10.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1.0.7 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1.0.7 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libboost_serialization.so.1.71.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libassimp.so.5.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libasn1.so.8.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libacl.so.1.1.2253 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libXt.so.6.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libXrender.so.1.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libXrandr.so.2.2.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libXpm.so.4.11.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libXmu.so.6.2.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libXext.so.6.4.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libXaw7.so.7.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libXau.so.6.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libX11.so.6.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libX11-xcb.so.1.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libSM.so.6.0.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libOpenGL.so.0.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libOgreOverlay.so.2.2.6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libOgreMain.so.2.2.6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libOgreHlmsUnlit.so.2.2.6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libOgreHlmsPbs.so.2.2.6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libLinearMath.so.2.88 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libLLVM-12.so.1 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libIlmThread-2_3.so.24.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libIlmImf-2_3.so.24.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libIex-2_3.so.24.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libICE.so.6.3.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libHalf.so.24.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libGL.so.1.7.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/libBulletCollision.so.2.88 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/ld-2.31.so directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/ign-rendering-6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/ign-physics-5 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/ign-gazebo-6 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/gconv directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/x86_64-linux-gnu/OGRE-2.2 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/python3.8 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/python3 directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/lib/locale directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/underlay/usr/local directory: device or resource busy, while unmounting /var/lib/apptainer/mnt/session/final directory: device or resource busy
