@@ -5,3 +5,6 @@
 
 # Python
 **/__pycache__
+
+# Slurm runs
+slurm-*
