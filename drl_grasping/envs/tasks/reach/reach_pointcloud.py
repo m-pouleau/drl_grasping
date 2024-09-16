@@ -41,12 +41,12 @@ class ReachPointCloud(Reach, abc.ABC):
         self._num_points = num_points
         # Define number of channels depending on color & normal features
         self._num_pc_channels = 3
-        if pointcloud_include_normals:
-            self._num_pc_channels += 3
         if pointcloud_include_color:
-            self._num_pc_channels += 3
+            self._num_pc_channels += 6
         elif pointcloud_include_intensity:
-            self._num_pc_channels += 1
+            self._num_pc_channels += 4
+        elif pointcloud_include_normals:
+            self._num_pc_channels += 3
 
         # Perception (RGB-D camera - point cloud)
         self.camera_sub = CameraSubscriber(

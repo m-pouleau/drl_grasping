@@ -152,18 +152,23 @@ class PointCloudCreator:
         '''
         # Get the point & normal features from the pointcloud, normalize xyz points to current workspace
         np_points = np.asarray(open3d_point_cloud.points)
-        np_pointcloud = self.normalize_pointcloud_points(np_points)
-        if self._include_normals:
-            np_normals = np.asarray(open3d_point_cloud.normals)
-            np_pointcloud = np.concatenate((np_pointcloud, np_normals), axis=1)
 
-        # Get the color features (if available) & concatenate with other features
+        # Cases where the pretrained segmentation network is used as encoder
+        # Get the color features & concatenate with other features
         if self._include_color:
+            xyz, normed_xyz = self.normalize_pointcloud_points(np_points)
             np_colors = np.asarray(open3d_point_cloud.colors)
-            np_pointcloud = np.concatenate((np_pointcloud, np_colors), axis=1)
+            np_pointcloud = np.concatenate((xyz, np_colors, normed_xyz), axis=1)
         elif self._include_intensity:
+            xyz, normed_xyz = self.normalize_pointcloud_points(np_points)
             np_colors = np.asarray(open3d_point_cloud.colors)[:, 0].reshape(-1, 1)
-            np_pointcloud = np.concatenate((np_pointcloud, np_colors), axis=1)
+            np_pointcloud = np.concatenate((xyz, np_colors, normed_xyz), axis=1)
+        # Cases where the pretrained classifier is used as encoder
+        else:
+            np_pointcloud = self.pc_normalize(np_points)
+            if self._include_normals:
+                np_normals = np.asarray(open3d_point_cloud.normals)
+                np_pointcloud = np.concatenate((np_pointcloud, np_normals), axis=1)
 
         return np_pointcloud
 
@@ -194,8 +199,18 @@ class PointCloudCreator:
         self._ws_radius = np.linalg.norm(self._max_bound - self._ws_center)    
 
 
-    def normalize_pointcloud_points(self, xyz_points):
+    def pc_normalize(self, xyz_points):
         '''
         Normalize xyz points of pointcloud, so that they are fitted to workspace center and radius
         '''
         return (xyz_points - self._ws_center) / self._ws_radius
+    
+    def normalize_pointcloud_points(self, points):
+        '''
+        Normalize xyz points of pointcloud, so that they are fitting to pretrained segmentation model
+        '''
+        xyz_points = points - self._ws_center
+        
+        xyz_normalized = points / np.array(self._max_bound)
+        
+        return xyz_points, xyz_normalized

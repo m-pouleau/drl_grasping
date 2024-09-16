@@ -74,12 +74,12 @@ class GraspPlanetaryPointCloud(GraspPlanetary, abc.ABC):
         self._aux_dim = 10
         # Define number of channels depending on color & normal features
         self._num_pc_channels = 3
-        if pointcloud_include_normals:
-            self._num_pc_channels += 3
         if pointcloud_include_color:
-            self._num_pc_channels += 3
+            self._num_pc_channels += 6
         elif pointcloud_include_intensity:
-            self._num_pc_channels += 1
+            self._num_pc_channels += 4
+        elif pointcloud_include_normals:
+            self._num_pc_channels += 3
 
         # List of all stacked observations
         self.__stacked_observations = deque([], maxlen=self._pointcloud_n_stacked)

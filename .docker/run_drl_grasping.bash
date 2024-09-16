@@ -63,9 +63,6 @@ CUSTOM_VOLUMES+=("/etc/localtime:/etc/localtime:ro")
 # Persistent storage of logs
 CUSTOM_VOLUMES+=("$(dirname "${PWD}")/drl_grasping_training_docker:/root/drl_grasping_training")
 # Add directories from AndrejOrsula/drl_grasping
-
-CUSTOM_VOLUMES+=("$(dirname "${PWD}")/test_repo_abc:/root/abc")
-
 CUSTOM_VOLUMES+=("${PWD}/visualizations:/root/visualizations")
 CUSTOM_VOLUMES+=("${PWD}/scripts:/root/ws/src/drl_grasping/scripts")
 CUSTOM_VOLUMES+=("${PWD}/launch:/root/ws/src/drl_grasping/launch")

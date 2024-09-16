@@ -186,14 +186,9 @@ class PointNetSeg(nn.Module):
 
 
 class PointNetFeatureExtractor(nn.Module):
-    def __init__(self, normal_channel=False, color_channel=False, features_dim=248, device='cpu', file_path="./drl_grasping/drl_octree/features_extractor/pointnet_pretrained.pth"):
+    def __init__(self, num_channels=9, features_dim=248, device='cpu', file_path="./drl_grasping/drl_octree/features_extractor/pointnet_pretrained.pth"):
         super(PointNetFeatureExtractor, self).__init__()
-        if color_channel:
-            self.channel = 9
-        elif normal_channel:
-            self.channel = 6
-        else:
-            self.channel = 3
+        self.channel = num_channels
         self.feat = PointNetEncoder(global_feat=True, feature_transform=True, k=self.channel)    
         # load weight dictionary remove unexpected / unused prefixes & items
         state_dict = torch.load(file_path, map_location=torch.device(device))['model_state_dict']
@@ -223,7 +218,7 @@ if __name__ == '__main__':
     else:
         DEVICE = 'cpu'
     print("Device: ", DEVICE)
-    # decide if normals get used
+    # decide if normals and colors get used
     USE_COLORS = True
     USE_NORMALS = False
     if USE_COLORS:
@@ -279,6 +274,6 @@ if __name__ == '__main__':
     print('Point Features:', points.size())
 
     # Getting drl-features from observation space input
-    feat_drl = PointNetFeatureExtractor(normal_channel=USE_NORMALS, color_channel=USE_COLORS, features_dim=256, file_path=file_path, device=DEVICE).to(DEVICE)
+    feat_drl = PointNetFeatureExtractor(num_channels=NUM_CHANNELS, features_dim=256, file_path=file_path, device=DEVICE).to(DEVICE)
     out = feat_drl(pointcloud.to(DEVICE))
     print('Feature Extractor: ', out.size())

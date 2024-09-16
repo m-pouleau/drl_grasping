@@ -47,22 +47,27 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
         else:
             DEVICE = 'cpu'
 
-        # Determine if normals are used by network (color input isn't considered, as ModelNet40 doesn't have color features)
-        if normal_channels:
-            normal_prefix = "normals_"
+        # Determine if normals are used by network (color input isn't considered, as ModelNet40 doesn't have color features)        
+        if image_channels == 3:
+            prefix = "seg_"
+            num_channels = 9
+        elif normal_channels:
+            prefix = "normals_"
+            num_channels = 6
         else:
-            normal_prefix = ""
+            prefix = ""
+            num_channels = 3
 
         # Get relative path of directory for pretrained models
         script_directory = os.path.dirname(os.path.abspath(__file__))
 
         # Initialize the right feature extractor
         if extractor_backbone == "PointNet":
-            weights_file_path = f"{script_directory}/pointnet_{normal_prefix}pretrained.pth"
-            self._extractor_backbone = PointNetFeatureExtractor(normal_channel=normal_channels, features_dim=features_dim, file_path=weights_file_path, device=DEVICE)
+            weights_file_path = f"{script_directory}/pointnet_{prefix}pretrained.pth"
+            self._extractor_backbone = PointNetFeatureExtractor(num_channels=num_channels, features_dim=features_dim, file_path=weights_file_path, device=DEVICE)
         elif extractor_backbone == "PointNet2":
-            weights_file_path = f"{script_directory}/pointnet2_msg_{normal_prefix}pretrained.pth"
-            self._extractor_backbone = PointNet2FeatureExtractor(normal_channel=normal_channels, features_dim=features_dim, file_path=weights_file_path, device=DEVICE)
+            weights_file_path = f"{script_directory}/pointnet2_msg_{prefix}pretrained.pth"
+            self._extractor_backbone = PointNet2FeatureExtractor(num_channels=num_channels, features_dim=features_dim, file_path=weights_file_path, device=DEVICE)
 
         # One linear layer for auxiliary observations
         if self._aux_obs_dim != 0:
@@ -106,28 +111,50 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
 
 if __name__ == "__main__":
     import numpy as np
-    # Input Parameters
-    num_frames = 2
-    num_channels = 7
-    num_points = 1024
-    proprioceptive_observations = True
-    # Model Input
-    pointcloud_input = torch.randn((num_frames, num_points, num_channels), dtype=torch.float32)
-    if proprioceptive_observations:
-        aux_dim = 10
-        aux_input = torch.randn((1, num_frames, aux_dim), dtype=torch.float32)
+    
+    # Set the device for the models
+    if torch.cuda.is_available():
+        DEVICE = 'cuda'
     else:
-        aux_dim = 0
+        DEVICE = 'cpu'
+    print("Device: ", DEVICE)    
+
+    # Input Parameters
+    COLORS_CHANNELS = 3
+    USE_NORMALS = False
+    if COLORS_CHANNELS == 3:
+        NUM_CHANNELS = 9
+    elif USE_NORMALS:
+        NUM_CHANNELS = 6
+    else:
+        NUM_CHANNELS = 3
+    NUM_FRAMES = 2
+    NUM_POINTS = 4096
+    PROPRIOCEPTIVE_OBSERVATIONS = True
+
+    # Model Input
+    pointcloud_input = torch.randn((NUM_FRAMES, NUM_POINTS, NUM_CHANNELS), dtype=torch.float32)
+    print(pointcloud_input.shape)
+    if PROPRIOCEPTIVE_OBSERVATIONS:
+        AUX_DIM = 10
+        aux_input = torch.randn((1, NUM_FRAMES, AUX_DIM), dtype=torch.float32)
+    else:
+        AUX_DIM = 0
+        aux_input = None
+
     # Model Observation Space
-    mySpace = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(2, num_points+aux_dim, num_channels),dtype=np.float32)
-    # Defined Feature Extractor
-    MyExtractor = PointCloudCnnFeaturesExtractor(channels_in=num_channels,
-                                                 observation_space=mySpace, 
+    mySpace = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(2, NUM_POINTS+AUX_DIM, NUM_CHANNELS),dtype=np.float32)
+
+    # Define Feature Extractor
+    MyExtractor = PointCloudCnnFeaturesExtractor(observation_space=mySpace,
+                                                 image_channels=COLORS_CHANNELS,
+                                                 normal_channels=USE_NORMALS, 
                                                  features_dim=248,
-                                                 aux_obs_dim=10,
+                                                 aux_obs_dim=AUX_DIM,
                                                  aux_obs_features_dim=8,
                                                  extractor_backbone="PointNet",
                                                  )
+
     # Data output
     data = MyExtractor((pointcloud_input, aux_input))
     print("Final Output: ", data.shape)
