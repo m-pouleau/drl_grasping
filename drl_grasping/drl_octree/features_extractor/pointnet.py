@@ -87,9 +87,9 @@ class STNkd(nn.Module):
         return x
 
 
-class PointNetfeat(nn.Module):
-    def __init__(self, global_feat=True, feature_transform=True, k=7):
-        super(PointNetfeat, self).__init__()
+class PointNetEncoder(nn.Module):
+    def __init__(self, global_feat=True, feature_transform=True, k=3):
+        super(PointNetEncoder, self).__init__()
         self.stn = STN3d(k=k)
         self.conv1 = torch.nn.Conv1d(k, 64, 1)
         self.conv2 = torch.nn.Conv1d(64, 128, 1)
@@ -136,14 +136,13 @@ class PointNetfeat(nn.Module):
 
 
 class PointNetCls(nn.Module):
-    def __init__(self, num_classes=40, normal_channel=True, feature_transform=True):
+    def __init__(self, num_classes=40, normal_channel=False):
         super(PointNetCls, self).__init__()
         if normal_channel:
             self.channel = 6
         else:
             self.channel = 3
-        self.feature_transform = feature_transform
-        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=self.channel)
+        self.feat = PointNetEncoder(global_feat=True, feature_transform=True, k=self.channel)
         self.fc1 = nn.Linear(1024, 512)
         self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, num_classes)
@@ -159,15 +158,43 @@ class PointNetCls(nn.Module):
         return F.log_softmax(x, dim=1), trans, trans_feat
 
 
+class PointNetSeg(nn.Module):
+    def __init__(self, num_classes=13):
+        super(PointNetSeg, self).__init__()
+        self.k = num_classes
+        self.feat = PointNetEncoder(global_feat=False, feature_transform=True, k=9)
+        self.conv1 = torch.nn.Conv1d(1088, 512, 1)
+        self.conv2 = torch.nn.Conv1d(512, 256, 1)
+        self.conv3 = torch.nn.Conv1d(256, 128, 1)
+        self.conv4 = torch.nn.Conv1d(128, self.k, 1)
+        self.bn1 = nn.BatchNorm1d(512)
+        self.bn2 = nn.BatchNorm1d(256)
+        self.bn3 = nn.BatchNorm1d(128)
+
+    def forward(self, x):
+        batchsize = x.size()[0]
+        n_pts = x.size()[2]
+        x, trans, trans_feat = self.feat(x)
+        x = F.relu(self.bn1(self.conv1(x)))
+        x = F.relu(self.bn2(self.conv2(x)))
+        x = F.relu(self.bn3(self.conv3(x)))
+        x = self.conv4(x)
+        x = x.transpose(2,1).contiguous()
+        x = F.log_softmax(x.view(-1,self.k), dim=-1)
+        x = x.view(batchsize, n_pts, self.k)
+        return x, trans_feat
+
+
 class PointNetFeatureExtractor(nn.Module):
-    def __init__(self, normal_channel=True, feature_transform=True, features_dim=248, device='cpu', file_path="./drl_grasping/drl_octree/features_extractor/pointnet_pretrained.pth"):
+    def __init__(self, normal_channel=False, color_channel=False, features_dim=248, device='cpu', file_path="./drl_grasping/drl_octree/features_extractor/pointnet_pretrained.pth"):
         super(PointNetFeatureExtractor, self).__init__()
-        if normal_channel:
+        if color_channel:
+            self.channel = 9
+        elif normal_channel:
             self.channel = 6
         else:
             self.channel = 3
-        self.feature_transform = feature_transform
-        self.feat = PointNetfeat(global_feat=True, feature_transform=feature_transform, k=self.channel)    
+        self.feat = PointNetEncoder(global_feat=True, feature_transform=True, k=self.channel)    
         # load weight dictionary remove unexpected / unused prefixes & items
         state_dict = torch.load(file_path, map_location=torch.device(device))['model_state_dict']
         state_dict = delete_items_without_prefix(state_dict, "feat.")
@@ -197,8 +224,12 @@ if __name__ == '__main__':
         DEVICE = 'cpu'
     print("Device: ", DEVICE)
     # decide if normals get used
+    USE_COLORS = True
     USE_NORMALS = False
-    if USE_NORMALS:
+    if USE_COLORS:
+        NUM_CHANNELS = 9
+        file_name = "pointnet_seg_pretrained"
+    elif USE_NORMALS:
         NUM_CHANNELS = 6
         file_name = "pointnet_normals_pretrained"
     else:
@@ -218,14 +249,20 @@ if __name__ == '__main__':
     sim_data_kd = Variable(pointcloud.permute(0, 2, 1)).to(DEVICE)
     print('Input Data: ', sim_data_kd.size(), "   CUDA: ", sim_data_kd.is_cuda)
 
-    # Getting classes for each point cloud
-    classifier = PointNetCls(num_classes=40, normal_channel=USE_NORMALS).to(DEVICE)
-    classifier.load_state_dict(state_dict)
-    cls, _, _ = classifier(sim_data_kd)
-    print('Classes: ', cls.size())
-    
+    # Getting classes for each point cloud / for each point
+    if not USE_COLORS:
+        classifier = PointNetCls(num_classes=40, normal_channel=USE_NORMALS).to(DEVICE)
+        classifier.load_state_dict(state_dict)
+        cls, _, _ = classifier(sim_data_kd)
+        print('Object Classes: ', cls.size())
+    else:
+        segmenter = PointNetSeg(num_classes=13).to(DEVICE)
+        segmenter.load_state_dict(state_dict)
+        out, _ = segmenter(sim_data_kd)
+        print('Point Classes: ', out.size())
+
     # Getting global features from pretrained base model
-    feat_extractor = PointNetfeat(k=NUM_CHANNELS).to(DEVICE)
+    feat_extractor = PointNetEncoder(k=NUM_CHANNELS).to(DEVICE)
     # remove unexpected / unused prefixes & items from the loaded dictionary
     new_dict = delete_items_without_prefix(state_dict, "feat.")
     new_dict = remove_prefix(new_dict, 'feat.')
@@ -237,11 +274,11 @@ if __name__ == '__main__':
     print('Global Features:', glob.size())
     
     # Getting point features and local features
-    pointfeat = PointNetfeat(global_feat=False, k=NUM_CHANNELS).to(DEVICE)
+    pointfeat = PointNetEncoder(global_feat=False, k=NUM_CHANNELS).to(DEVICE)
     points, _, _ = pointfeat(sim_data_kd)
     print('Point Features:', points.size())
-    
+
     # Getting drl-features from observation space input
-    feat_drl = PointNetFeatureExtractor(normal_channel=USE_NORMALS, features_dim=256, file_path=file_path, device=DEVICE).to(DEVICE)
+    feat_drl = PointNetFeatureExtractor(normal_channel=USE_NORMALS, color_channel=USE_COLORS, features_dim=256, file_path=file_path, device=DEVICE).to(DEVICE)
     out = feat_drl(pointcloud.to(DEVICE))
     print('Feature Extractor: ', out.size())
