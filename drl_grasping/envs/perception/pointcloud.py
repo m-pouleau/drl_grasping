@@ -196,7 +196,8 @@ class PointCloudCreator:
         Get center and radius of workspace from task to be able to normalize the pointcloud later
         '''
         self._ws_center = (np.array(self._min_bound) + np.array(self._max_bound)) / 2
-        self._ws_radius = np.linalg.norm(self._max_bound - self._ws_center)    
+        self._ws_radius = np.linalg.norm(self._max_bound - self._ws_center)
+        self._adjusted_ws_max_bound = np.array(self._max_bound) - np.array(self._min_bound)
 
 
     def pc_normalize(self, xyz_points):
@@ -208,9 +209,11 @@ class PointCloudCreator:
     def normalize_pointcloud_points(self, points):
         '''
         Normalize xyz points of pointcloud, so that they are fitting to pretrained segmentation model
-        '''
-        xyz_points = points - self._ws_center
-        
-        xyz_normalized = points / np.array(self._max_bound)
-        
+        '''        
+        xyz_points = points.copy()
+        xyz_points[:, 0] -= self._ws_center[0]
+        xyz_points[:, 1] -= self._ws_center[1]
+
+        xyz_normalized = (points - np.array(self._min_bound)) / self._adjusted_ws_max_bound
+
         return xyz_points, xyz_normalized
