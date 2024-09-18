@@ -186,7 +186,7 @@ class PointNetSeg(nn.Module):
 
 
 class PointNetFeatureExtractor(nn.Module):
-    def __init__(self, num_channels=9, features_dim=248, device='cpu', file_path="./drl_grasping/drl_octree/features_extractor/pointnet_pretrained.pth"):
+    def __init__(self, num_channels=9, features_dim=248, device='cpu', file_path=".."):
         super(PointNetFeatureExtractor, self).__init__()
         self.channel = num_channels
         self.feat = PointNetEncoder(global_feat=True, feature_transform=True, k=self.channel)    
@@ -232,11 +232,10 @@ if __name__ == '__main__':
         file_name = "pointnet_pretrained"
     # Input from observation space
     BATCH_SIZE = 32
-    NUM_POINTS = 1024
+    NUM_POINTS = 2048
     # Get the weights from the state dictionary
-    base_init_path = os.path.abspath("../../../../drl_grasping")
-    file_path = f"./drl_grasping/drl_octree/features_extractor/{file_name}.pth"
-    file_path = os.path.join(base_init_path, file_path)
+    script_directory = os.path.dirname(os.path.abspath(__file__))
+    file_path = f"{script_directory}/weights/{file_name}.pth"
     state_dict = torch.load(file_path, map_location=torch.device(DEVICE))['model_state_dict']
     # Input from observation space
     pointcloud = torch.rand(BATCH_SIZE, NUM_POINTS, NUM_CHANNELS)

@@ -63,10 +63,10 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
 
         # Initialize the right feature extractor
         if extractor_backbone == "PointNet":
-            weights_file_path = f"{script_directory}/pointnet_{prefix}pretrained.pth"
+            weights_file_path = f"{script_directory}/weights/pointnet_{prefix}pretrained.pth"
             self._extractor_backbone = PointNetFeatureExtractor(num_channels=num_channels, features_dim=features_dim, file_path=weights_file_path, device=DEVICE)
         elif extractor_backbone == "PointNet2":
-            weights_file_path = f"{script_directory}/pointnet2_msg_{prefix}pretrained.pth"
+            weights_file_path = f"{script_directory}/weights/pointnet2_msg_{prefix}pretrained.pth"
             self._extractor_backbone = PointNet2FeatureExtractor(num_channels=num_channels, features_dim=features_dim, file_path=weights_file_path, device=DEVICE)
 
         # One linear layer for auxiliary observations
