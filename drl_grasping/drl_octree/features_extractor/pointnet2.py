@@ -169,7 +169,7 @@ if __name__ == '__main__':
         file_name = "pointnet2_msg_pretrained"
     # Input from observation space
     BATCH_SIZE = 8
-    NUM_POINTS = 2048
+    NUM_POINTS = 1024
     # Get the weights from the state dictionary
     script_directory = os.path.dirname(os.path.abspath(__file__))
     file_path = f"{script_directory}/weights/{file_name}.pth"

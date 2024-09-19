@@ -129,7 +129,7 @@ if __name__ == "__main__":
     else:
         NUM_CHANNELS = 3
     NUM_FRAMES = 2
-    NUM_POINTS = 2048
+    NUM_POINTS = 1024
     PROPRIOCEPTIVE_OBSERVATIONS = True
 
     # Model Input

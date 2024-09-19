@@ -3,9 +3,6 @@
 #### When this script is called, the corresponding launch string is printed to STDOUT. Therefore, feel free to modify and use such command directly.
 #### To view all arguments, run `ros2 launch drl_grasping train.launch.py --show-args`.
 
-# Check if the FILTER_OUTPUT variable is passed
-FILTER_OUTPUT=${FILTER_OUTPUT:-false}
-
 ## Enable training dataset
 ros2 run drl_grasping dataset_set_train.bash 2> /dev/null
 
@@ -111,8 +108,4 @@ LAUNCH_CMD=(
 echo -e "\033[1;30m${LAUNCH_CMD[*]}\033[0m" | xargs
 
 # shellcheck disable=SC2048
-if [ "$FILTER_OUTPUT" = true ]; then
-    exec ${LAUNCH_CMD[*]} 2>&1 | grep -v -E "Goal reached, success!|Received new action goal|Accepted new action goal|was unsuccessful: 5."
-else
-    exec ${LAUNCH_CMD[*]}
-fi
+exec ${LAUNCH_CMD[*]}
