@@ -112,7 +112,7 @@ echo -e "\033[1;30m${LAUNCH_CMD[*]}\033[0m" | xargs
 
 # shellcheck disable=SC2048
 if [ "$FILTER_OUTPUT" = true ]; then
-    exec ${LAUNCH_CMD[*]} 2>&1 | grep -v -E "Objects overlapping, trying new positions|Goal reached, success!|Received new action goal|Accepted new action goal|was unsuccessful: 5."
+    exec ${LAUNCH_CMD[*]} 2>&1 | grep -v -E "Goal reached, success!|Received new action goal|Accepted new action goal|was unsuccessful: 5."
 else
     exec ${LAUNCH_CMD[*]}
 fi
