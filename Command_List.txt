@@ -67,7 +67,8 @@
  $ rm -rf /u/home/yaox/Matthias/my_tmp/
 
 2. Start a SLURM process and execute the Apptainer container with the corresponding bashscript (from "drl_grasping" folder):
- $ sbatch --partition=gpu-1-employee --gres=gpu:1 .docker/run_drl_grasping_apptainer.bash
+ $ tmux new -s <session_name>
+ $ srun --partition=gpu-1-employee --gres=gpu:1 .docker/run_drl_grasping_apptainer.bash
 
  
 ### TMUX Session ###

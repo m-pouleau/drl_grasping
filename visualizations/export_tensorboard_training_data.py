@@ -2,7 +2,7 @@ import csv
 from tensorboard.backend.event_processing import event_accumulator
 
 # Set environment
-ENV = "GraspPlanetary-PointNet2-Gazebo-v0"
+ENV = "GraspPlanetary-PointNetWithColor-Gazebo-v0"
 ALGO = "TQC_1"
 
 # Path to the directory containing the TensorBoard logs
