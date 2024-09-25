@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-ENV = "GraspPlanetary-PointNet2-Gazebo-v0"
+ENV = "GraspPlanetary-PointNetWithColor-Gazebo-v0"
 ALGO = "TQC_1"
 WINDOW_SIZE = 1
 
