@@ -383,10 +383,6 @@ class ManipulationGazeboEnvRandomizer(
         # TODO: Something in post-randomization causes GUI client to freeze during reset (the simulation server still works fine)
         self.post_randomization(task, gazebo)
 
-        print("Task - workspace volume: ", task.workspace_volume)
-        print("Task - workspace center: ", task.task.workspace_centre)
-        print("Task - random ws center bool: ", self._object_random_spawn_position_update_workspace_centre, flush=True)
-
     ###################
     # Randomizer impl #
     ###################

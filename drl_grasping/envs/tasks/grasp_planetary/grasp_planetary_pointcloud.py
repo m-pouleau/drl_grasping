@@ -73,7 +73,7 @@ class GraspPlanetaryPointCloud(GraspPlanetary, abc.ABC):
         self._num_points = num_points
         self._aux_dim = 10
         # Define number of channels depending on color & normal features
-        self._num_pc_channels = 3
+        self._num_pc_channels = 6
         if pointcloud_include_color:
             self._num_pc_channels += 6
         elif pointcloud_include_intensity:
