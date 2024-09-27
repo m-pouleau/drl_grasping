@@ -156,21 +156,21 @@ class PointCloudCreator:
         # Cases where the pretrained segmentation network is used as encoder
         # Get the color features & concatenate with other features
         if self._include_color:
-            xyz, normed_xyz, xyz_centered = self.normalize_pointcloud_points(np_points)
+            xyz, normed_xyz, xyz_skip = self.normalize_pointcloud_points(np_points)
             np_colors = np.asarray(open3d_point_cloud.colors)
-            np_pointcloud = np.concatenate((xyz, np_colors, normed_xyz, xyz_centered), axis=1)
+            np_pointcloud = np.concatenate((xyz, np_colors, normed_xyz, xyz_skip), axis=1)
         elif self._include_intensity:
-            xyz, normed_xyz, xyz_centered = self.normalize_pointcloud_points(np_points)
+            xyz, normed_xyz, xyz_skip = self.normalize_pointcloud_points(np_points)
             np_colors = np.asarray(open3d_point_cloud.colors)[:, 0].reshape(-1, 1)
-            np_pointcloud = np.concatenate((xyz, np_colors, normed_xyz, xyz_centered), axis=1)
+            np_pointcloud = np.concatenate((xyz, np_colors, normed_xyz, xyz_skip), axis=1)
         # Cases where the pretrained classifier is used as encoder
         else:
-            xyz_norm, xyz_points = self.pc_normalize(np_points)
+            xyz_norm, xyz_skip = self.pc_normalize(np_points)
             if self._include_normals:
                 np_normals = np.asarray(open3d_point_cloud.normals)
-                np_pointcloud = np.concatenate((xyz_norm, np_normals, xyz_points), axis=1)
+                np_pointcloud = np.concatenate((xyz_norm, np_normals, xyz_skip), axis=1)
             else:
-                np_pointcloud = np.concatenate((xyz_norm, xyz_points), axis=1)
+                np_pointcloud = np.concatenate((xyz_norm, xyz_skip), axis=1)
 
         return np_pointcloud
 
@@ -207,8 +207,9 @@ class PointCloudCreator:
         Normalize xyz points of pointcloud, so that they are fitted to workspace center and radius
         '''
         xyz_points -= self._ws_center
-        xyz_norm = xyz_points.copy() / self._ws_radius 
-        return xyz_norm, xyz_points
+        xyz_norm = xyz_points.copy() / self._ws_radius
+        xyz_skip = xyz_points.copy() / (self._adjusted_ws_max_bound * 0.5)
+        return xyz_norm, xyz_skip
 
     def normalize_pointcloud_points(self, points):
         '''
@@ -217,9 +218,11 @@ class PointCloudCreator:
         xyz_points = points.copy()
         xyz_points[:, 0] -= self._ws_center[0]
         xyz_points[:, 1] -= self._ws_center[1]
-        xyz_centered = xyz_points.copy()
-        xyz_centered[:, 2] -= self._ws_center[2]
+
+        xyz_skip = xyz_points.copy()
+        xyz_skip[:, 2] -= self._ws_center[2]
+        xyz_skip = xyz_skip / (self._adjusted_ws_max_bound * 0.5)
 
         xyz_normalized = (points - np.array(self._min_bound)) / self._adjusted_ws_max_bound
 
-        return xyz_points, xyz_normalized, xyz_centered
+        return xyz_points, xyz_normalized, xyz_skip
