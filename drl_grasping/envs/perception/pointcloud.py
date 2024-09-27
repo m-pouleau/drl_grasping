@@ -156,13 +156,13 @@ class PointCloudCreator:
         # Cases where the pretrained segmentation network is used as encoder
         # Get the color features & concatenate with other features
         if self._include_color:
-            xyz, normed_xyz = self.normalize_pointcloud_points(np_points)
+            xyz, normed_xyz, xyz_centered = self.normalize_pointcloud_points(np_points)
             np_colors = np.asarray(open3d_point_cloud.colors)
-            np_pointcloud = np.concatenate((xyz, np_colors, normed_xyz), axis=1)
+            np_pointcloud = np.concatenate((xyz, np_colors, normed_xyz, xyz_centered), axis=1)
         elif self._include_intensity:
-            xyz, normed_xyz = self.normalize_pointcloud_points(np_points)
+            xyz, normed_xyz, xyz_centered = self.normalize_pointcloud_points(np_points)
             np_colors = np.asarray(open3d_point_cloud.colors)[:, 0].reshape(-1, 1)
-            np_pointcloud = np.concatenate((xyz, np_colors, normed_xyz), axis=1)
+            np_pointcloud = np.concatenate((xyz, np_colors, normed_xyz, xyz_centered), axis=1)
         # Cases where the pretrained classifier is used as encoder
         else:
             np_pointcloud = self.pc_normalize(np_points)
@@ -213,7 +213,9 @@ class PointCloudCreator:
         xyz_points = points.copy()
         xyz_points[:, 0] -= self._ws_center[0]
         xyz_points[:, 1] -= self._ws_center[1]
+        xyz_centered = xyz_points.copy()
+        xyz_centered[:, 2] -= self._ws_center[2]
 
         xyz_normalized = (points - np.array(self._min_bound)) / self._adjusted_ws_max_bound
 
-        return xyz_points, xyz_normalized
+        return xyz_points, xyz_normalized, xyz_centered
