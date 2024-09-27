@@ -165,10 +165,12 @@ class PointCloudCreator:
             np_pointcloud = np.concatenate((xyz, np_colors, normed_xyz, xyz_centered), axis=1)
         # Cases where the pretrained classifier is used as encoder
         else:
-            np_pointcloud = self.pc_normalize(np_points)
+            xyz_norm, xyz_points = self.pc_normalize(np_points)
             if self._include_normals:
                 np_normals = np.asarray(open3d_point_cloud.normals)
-                np_pointcloud = np.concatenate((np_pointcloud, np_normals), axis=1)
+                np_pointcloud = np.concatenate((xyz_norm, np_normals, xyz_points), axis=1)
+            else:
+                np_pointcloud = np.concatenate((xyz_norm, xyz_points), axis=1)
 
         return np_pointcloud
 
@@ -204,8 +206,10 @@ class PointCloudCreator:
         '''
         Normalize xyz points of pointcloud, so that they are fitted to workspace center and radius
         '''
-        return (xyz_points - self._ws_center) / self._ws_radius
-    
+        xyz_points -= self._ws_center
+        xyz_norm = xyz_points.copy() / self._ws_radius 
+        return xyz_norm, xyz_points
+
     def normalize_pointcloud_points(self, points):
         '''
         Normalize xyz points of pointcloud, so that they are fitting to pretrained segmentation model

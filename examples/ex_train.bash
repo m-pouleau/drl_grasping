@@ -8,7 +8,7 @@ ros2 run drl_grasping dataset_set_train.bash 2> /dev/null
 
 ### Arguments
 ## Random seed to use for both the environment and agent (-1 for random)
-SEED="42"
+SEED="73"
 
 ## Robot to use during training
 # ROBOT_MODEL="panda"
