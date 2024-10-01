@@ -123,21 +123,22 @@ if __name__ == "__main__":
     COLORS_CHANNELS = 3
     USE_NORMALS = False
     if COLORS_CHANNELS == 3:
-        NUM_CHANNELS = 9
+        NUM_CHANNELS = 12
     elif USE_NORMALS:
-        NUM_CHANNELS = 6
+        NUM_CHANNELS = 9
     else:
-        NUM_CHANNELS = 3
+        NUM_CHANNELS = 6
     NUM_FRAMES = 2
     NUM_POINTS = 1024
     PROPRIOCEPTIVE_OBSERVATIONS = True
 
     # Model Input
-    pointcloud_input = torch.randn((NUM_FRAMES, NUM_POINTS, NUM_CHANNELS), dtype=torch.float32)
-    print(pointcloud_input.shape)
+    pointcloud_input = torch.randn((NUM_FRAMES, NUM_POINTS, NUM_CHANNELS), dtype=torch.float32).to(DEVICE)
+    print("Pointcloud: ", pointcloud_input.shape, "   CUDA: ", pointcloud_input.is_cuda)
     if PROPRIOCEPTIVE_OBSERVATIONS:
         AUX_DIM = 10
-        aux_input = torch.randn((1, NUM_FRAMES, AUX_DIM), dtype=torch.float32)
+        aux_input = torch.randn((1, NUM_FRAMES, AUX_DIM), dtype=torch.float32).to(DEVICE)
+        print("Auxiliary Input: ", aux_input.shape, "   CUDA: ", aux_input.is_cuda)
     else:
         AUX_DIM = 0
         aux_input = None
@@ -153,7 +154,7 @@ if __name__ == "__main__":
                                                  aux_obs_dim=AUX_DIM,
                                                  aux_obs_features_dim=8,
                                                  extractor_backbone="PointNet",
-                                                 )
+                                                 ).to(DEVICE)
 
     # Data output
     data = MyExtractor((pointcloud_input, aux_input))
