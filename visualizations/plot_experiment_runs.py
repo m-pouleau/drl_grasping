@@ -3,11 +3,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 EXP_LIST = [
-    "Octree with Intensity - OCNN",
-    "PointNet with Intensity - Training Plain Network",
-    "PointNet - Using Pretrained Classification Network",
+    # "Octree with Intensity - OCNN",
+    # "PointNet with Intensity - Training Plain Network",
+    "Octree without Color - OCNN",
+    "Octree with Color - OCNN",
+    "PointNet without Color - Using Pretrained Classification Network",
+    "PointNet with Color - Using Pretrained Segmentation Network",
+    # "PointNet with Color - Using Pretrained Segmentation Network with Pointwise Features",
     ]
-SMOOTHING_VALUES = [3, 3, 1]
+SMOOTHING_VALUES = [1, 1, 1, 1]
 
 def moving_average(data, window_size):
     """Apply centered moving average filter to data with padding."""
@@ -15,7 +19,7 @@ def moving_average(data, window_size):
         raise ValueError("Window size must be odd to center the window.")
     
     pad_width = window_size // 2
-    padded_data = np.concatenate((np.zeros(pad_width), data.to_numpy()))
+    padded_data = np.concatenate([np.repeat(data.to_numpy()[0], pad_width), data.to_numpy()])
     
     weights = np.repeat(1.0, window_size) / window_size
     return np.convolve(padded_data, weights, 'valid')

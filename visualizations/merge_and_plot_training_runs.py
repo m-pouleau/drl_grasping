@@ -14,7 +14,7 @@ def moving_average(data, window_size):
         raise ValueError("Window size must be odd to center the window.")
     
     pad_width = window_size // 2
-    padded_data = np.concatenate((np.zeros(pad_width), data.to_numpy()))
+    padded_data = np.concatenate([np.repeat(data.to_numpy()[0], pad_width), data.to_numpy()])
     
     weights = np.repeat(1.0, window_size) / window_size
     return np.convolve(padded_data, weights, 'valid')
