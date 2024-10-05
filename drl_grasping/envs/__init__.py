@@ -112,6 +112,13 @@ REACH_KWARGS_POINTCLOUD: Dict[str, any] = {
     "pointcloud_max_bound": (0.45 + 0.25, 0.0 + 0.25, 0.25 + 0.25),
     "pointcloud_n_stacked": 2,
 }
+REACH_KWARGS_RGBD_POINTCLOUD: Dict[str, any] = {
+    "pointcloud_reference_frame_id": "world",
+    "pointcloud_min_bound": (0.45 - 0.25, 0.0 - 0.25, 0.25 - 0.25),
+    "pointcloud_max_bound": (0.45 + 0.25, 0.0 + 0.25, 0.25 + 0.25),
+    "pointcloud_n_stacked": 2,
+    "depth_max_distance": 1.0,
+}
 REACH_KWARGS_SIM: Dict[str, any] = {
     "physics_rate": 200.0,
     "real_time_factor": float(np.finfo(np.float32).max),
@@ -300,6 +307,20 @@ register(
     },
 )
 register(
+    id="Reach-RGBDPointNetWithColor-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.ReachPointCloud,
+        **REACH_KWARGS,
+        **REACH_KWARGS_RGBD_POINTCLOUD,
+        "num_points": 1024,
+        "pointcloud_include_normals": False,
+        "pointcloud_include_color": True,
+        "pointcloud_include_intensity": False,
+    },
+)
+register(
     id="Reach-PointNet2WithColor-v0",
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
     max_episode_steps=REACH_MAX_EPISODE_STEPS,
@@ -472,6 +493,19 @@ register(
     },
 )
 register(
+    id="Reach-RGBDPointNetWithColor-Gazebo-v0",
+    entry_point=REACH_RANDOMIZER,
+    max_episode_steps=REACH_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Reach-RGBDPointNetWithColor-v0",
+        **REACH_KWARGS_SIM,
+        **REACH_KWARGS_RANDOMIZER,
+        **REACH_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "rgbd_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
     id="Reach-PointNet2WithColor-Gazebo-v0",
     entry_point=REACH_RANDOMIZER,
     max_episode_steps=REACH_MAX_EPISODE_STEPS,
@@ -541,6 +575,22 @@ GRASP_KWARGS_POINTCLOUD: Dict[str, any] = {
     ),
     "pointcloud_n_stacked": 3,
     "proprioceptive_observations": True,
+}
+GRASP_KWARGS_RGBD_POINTCLOUD: Dict[str, any] = {
+    "pointcloud_reference_frame_id": "arm_base_link",
+    "pointcloud_min_bound": (
+        0.5 - 0.12,
+        0.0 - 0.12,
+        0.11 - 0.12,
+    ),
+    "pointcloud_max_bound": (
+        0.5 + 0.12,
+        0.0 + 0.12,
+        0.11 + 0.12,
+    ),
+    "pointcloud_n_stacked": 3,
+    "proprioceptive_observations": True,
+    "depth_max_distance": 1.0,
 }
 
 GRASP_KWARGS_SIM: Dict[str, any] = {
@@ -778,6 +828,21 @@ register(
     },
 )
 register(
+    id="Grasp-RGBDPointNetWithColor-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPointCloud,
+        **GRASP_KWARGS,
+        **GRASP_KWARGS_CURRICULUM,
+        **GRASP_KWARGS_RGBD_POINTCLOUD,
+        "num_points": 1024,
+        "pointcloud_include_normals": False,
+        "pointcloud_include_color": True,
+        "pointcloud_include_intensity": False,
+    },
+)
+register(
     id="Grasp-PointNet2WithColor-v0",
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
     max_episode_steps=GRASP_MAX_EPISODE_STEPS,
@@ -920,6 +985,20 @@ register(
     },
 )
 register(
+    id="Grasp-PointNetWithColor-Gazebo-v0",
+    entry_point=GRASP_RANDOMIZER,
+    max_episode_steps=GRASP_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "Grasp-RGBDPointNetWithColor-v0",
+        **GRASP_KWARGS_SIM,
+        **GRASP_KWARGS_RANDOMIZER,
+        **GRASP_KWARGS_RANDOMIZER_CAMERA,
+        "terrain_type": "random_flat",
+        "camera_type": "rgbd_camera",
+        "camera_publish_points": True,
+    },
+)
+register(
     id="Grasp-PointNet2WithColor-Gazebo-v0",
     entry_point=GRASP_RANDOMIZER,
     max_episode_steps=GRASP_MAX_EPISODE_STEPS,
@@ -1003,6 +1082,26 @@ GRASP_PLANETARY_KWARGS_POINTCLOUD: Dict[str, any] = {
     ),
     "pointcloud_n_stacked": 2,
     "proprioceptive_observations": True,
+}
+GRASP_PLANETARY_KWARGS_RGBD_POINTCLOUD: Dict[str, any] = {
+    "pointcloud_reference_frame_id": "arm_base_link",
+    # ## Large volume around the robot
+    # "octree_min_bound": (0.1 - 0.6, 0.0 - 0.6, 0.0 - 0.6),
+    # "octree_max_bound": (0.1 + 0.6, 0.0 + 0.6, 0.0 + 0.6),
+    ## Front of robot
+    "pointcloud_min_bound": (
+        0.5 - 0.2,
+        0.0 - 0.2,
+        0.14 - 0.2,
+    ),
+    "pointcloud_max_bound": (
+        0.5 + 0.2,
+        0.0 + 0.2,
+        0.14 + 0.2,
+    ),
+    "pointcloud_n_stacked": 2,
+    "proprioceptive_observations": True,
+    "depth_max_distance": 1.0,
 }
 GRASP_PLANETARY_KWARGS_SIM: Dict[str, any] = {
     "physics_rate": 500.0,
@@ -1335,6 +1434,21 @@ register(
     },
 )
 register(
+    id="GraspPlanetary-RGBDPointNetWithColor-v0",
+    entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "task_cls": tasks.GraspPlanetaryPointCloud,
+        **GRASP_PLANETARY_KWARGS,
+        **GRASP_PLANETARY_KWARGS_CURRICULUM,
+        **GRASP_PLANETARY_KWARGS_RGBD_POINTCLOUD,
+        "num_points": 1024,
+        "pointcloud_include_normals": False,
+        "pointcloud_include_color": True,
+        "pointcloud_include_intensity": False,
+    },
+)
+register(
     id="GraspPlanetary-PointNet2WithColor-v0",
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
     max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
@@ -1528,6 +1642,20 @@ register(
     max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
     kwargs={
         "env": "GraspPlanetary-PointNetWithColor-v0",
+        **GRASP_PLANETARY_KWARGS_SIM,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER,
+        **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,
+        "camera_type": "rgbd_camera",
+        # "camera_image_format": "L8",
+        "camera_publish_points": True,
+    },
+)
+register(
+    id="GraspPlanetary-PointNetWithColor-Gazebo-v0",
+    entry_point=GRASP_PLANETARY_RANDOMIZER,
+    max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
+    kwargs={
+        "env": "GraspPlanetary-RGBDPointNetWithColor-v0",
         **GRASP_PLANETARY_KWARGS_SIM,
         **GRASP_PLANETARY_KWARGS_RANDOMIZER,
         **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,

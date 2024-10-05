@@ -27,6 +27,7 @@ ROBOT_MODEL="lunalab_summit_xl_gen"
 # ENV="Reach-PointNet2WithIntensity-Gazebo-v0"
 # ENV="Reach-OctreeWithColor-Gazebo-v0"
 # ENV="Reach-PointNetWithColor-Gazebo-v0"
+# ENV="Reach-RGBDPointNetWithColor-Gazebo-v0"
 # ENV="Reach-PointNet2WithColor-Gazebo-v0"
 ## Grasp
 # ENV="Grasp-Gazebo-v0"
@@ -38,6 +39,7 @@ ROBOT_MODEL="lunalab_summit_xl_gen"
 # ENV="Grasp-PointNet2WithIntensity-Gazebo-v0"
 # ENV="Grasp-OctreeWithColor-Gazebo-v0"
 # ENV="Grasp-PointNetWithColor-Gazebo-v0"
+# ENV="Grasp-RGBDPointNetWithColor-Gazebo-v0"
 # ENV="Grasp-PointNet2WithColor-Gazebo-v0"
 ## GraspPlanetary
 # ENV="GraspPlanetary-Gazebo-v0"
@@ -54,6 +56,7 @@ ENV="GraspPlanetary-PointNet-Gazebo-v0"
 # ENV="GraspPlanetary-PointNet2WithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-OctreeWithColor-Gazebo-v0"
 # ENV="GraspPlanetary-PointNetWithColor-Gazebo-v0"
+# ENV="GraspPlanetary-RGBDPointNetWithColor-Gazebo-v0"
 # ENV="GraspPlanetary-PointNet2WithColor-Gazebo-v0"
 
 ## Selection of RL algorithm
