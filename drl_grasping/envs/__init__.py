@@ -985,7 +985,7 @@ register(
     },
 )
 register(
-    id="Grasp-PointNetWithColor-Gazebo-v0",
+    id="Grasp-RGBDPointNetWithColor-Gazebo-v0",
     entry_point=GRASP_RANDOMIZER,
     max_episode_steps=GRASP_MAX_EPISODE_STEPS,
     kwargs={
@@ -1651,7 +1651,7 @@ register(
     },
 )
 register(
-    id="GraspPlanetary-PointNetWithColor-Gazebo-v0",
+    id="GraspPlanetary-RGBDPointNetWithColor-Gazebo-v0",
     entry_point=GRASP_PLANETARY_RANDOMIZER,
     max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
     kwargs={
