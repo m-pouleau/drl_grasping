@@ -117,7 +117,7 @@ REACH_KWARGS_RGBD_POINTCLOUD: Dict[str, any] = {
     "pointcloud_min_bound": (0.45 - 0.25, 0.0 - 0.25, 0.25 - 0.25),
     "pointcloud_max_bound": (0.45 + 0.25, 0.0 + 0.25, 0.25 + 0.25),
     "pointcloud_n_stacked": 2,
-    "depth_max_distance": 1.0,
+    "depth_max_distance": 5.0,
 }
 REACH_KWARGS_SIM: Dict[str, any] = {
     "physics_rate": 200.0,
@@ -311,7 +311,7 @@ register(
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
     max_episode_steps=REACH_MAX_EPISODE_STEPS,
     kwargs={
-        "task_cls": tasks.ReachPointCloud,
+        "task_cls": tasks.ReachRGBDPointCloud,
         **REACH_KWARGS,
         **REACH_KWARGS_RGBD_POINTCLOUD,
         "num_points": 1024,
@@ -502,7 +502,8 @@ register(
         **REACH_KWARGS_RANDOMIZER,
         **REACH_KWARGS_RANDOMIZER_CAMERA,
         "camera_type": "rgbd_camera",
-        "camera_publish_points": True,
+        "camera_publish_depth": True,
+        "camera_publish_color": True,
     },
 )
 register(
@@ -590,7 +591,7 @@ GRASP_KWARGS_RGBD_POINTCLOUD: Dict[str, any] = {
     ),
     "pointcloud_n_stacked": 3,
     "proprioceptive_observations": True,
-    "depth_max_distance": 1.0,
+    "depth_max_distance": 5.0,
 }
 
 GRASP_KWARGS_SIM: Dict[str, any] = {
@@ -832,7 +833,7 @@ register(
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
     max_episode_steps=GRASP_MAX_EPISODE_STEPS,
     kwargs={
-        "task_cls": tasks.GraspPointCloud,
+        "task_cls": tasks.GraspRGBDPointCloud,
         **GRASP_KWARGS,
         **GRASP_KWARGS_CURRICULUM,
         **GRASP_KWARGS_RGBD_POINTCLOUD,
@@ -995,7 +996,8 @@ register(
         **GRASP_KWARGS_RANDOMIZER_CAMERA,
         "terrain_type": "random_flat",
         "camera_type": "rgbd_camera",
-        "camera_publish_points": True,
+        "camera_publish_depth": True,
+        "camera_publish_color": True,
     },
 )
 register(
@@ -1101,7 +1103,7 @@ GRASP_PLANETARY_KWARGS_RGBD_POINTCLOUD: Dict[str, any] = {
     ),
     "pointcloud_n_stacked": 2,
     "proprioceptive_observations": True,
-    "depth_max_distance": 1.0,
+    "depth_max_distance": 5.0,
 }
 GRASP_PLANETARY_KWARGS_SIM: Dict[str, any] = {
     "physics_rate": 500.0,
@@ -1438,7 +1440,7 @@ register(
     entry_point=DRL_GRASPING_TASK_ENTRYPOINT,
     max_episode_steps=GRASP_PLANETARY_MAX_EPISODE_STEPS,
     kwargs={
-        "task_cls": tasks.GraspPlanetaryPointCloud,
+        "task_cls": tasks.GraspPlanetaryRGBDPointCloud,
         **GRASP_PLANETARY_KWARGS,
         **GRASP_PLANETARY_KWARGS_CURRICULUM,
         **GRASP_PLANETARY_KWARGS_RGBD_POINTCLOUD,
@@ -1660,8 +1662,8 @@ register(
         **GRASP_PLANETARY_KWARGS_RANDOMIZER,
         **GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA,
         "camera_type": "rgbd_camera",
-        # "camera_image_format": "L8",
-        "camera_publish_points": True,
+        "camera_publish_depth": True,
+        "camera_publish_color": True,
     },
 )
 register(

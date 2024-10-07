@@ -25,7 +25,7 @@ class GraspPlanetaryRGBDPointCloud(GraspPlanetary, abc.ABC):
         proprioceptive_observations: bool,
         num_points: int = 1024,
         camera_type: str = "rgbd_camera",
-        depth_max_distance: float = 1.0,
+        depth_max_distance: float = 5.0,
         camera_width: int = 128,
         camera_height: int = 128,
         camera_horizontal_fov: float = np.pi / 3.0,
@@ -91,6 +91,8 @@ class GraspPlanetaryRGBDPointCloud(GraspPlanetary, abc.ABC):
         self._pointcloud_n_stacked = pointcloud_n_stacked
         self._num_points = num_points
         self._aux_dim = 10
+        self._pointcloud_include_color = pointcloud_include_color
+        self._pointcloud_include_intensity = pointcloud_include_intensity
         # Define number of channels depending on color & normal features
         self._num_pc_channels = 6
         if pointcloud_include_color:

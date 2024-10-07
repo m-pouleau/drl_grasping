@@ -13,7 +13,7 @@ class RGBDPointCloudCreator:
         node: Node,
         tf2_listener: Tf2Listener,
         reference_frame_id: str,
-        depth_max_distance: float = 1.0,
+        depth_max_distance: float = 5.0,
         img_height: int = 128,
         img_width: int = 128,
         camera_horizontal_fov: float = np.pi / 3.0,
@@ -52,6 +52,7 @@ class RGBDPointCloudCreator:
         self._depth_max_distance = depth_max_distance
         self._img_height = img_height
         self._img_width = img_width
+        self._num_pixels = img_width * img_height
         self._fx = img_width / (2 * np.tan(camera_horizontal_fov / 2))  # focal length x
         self._fy = img_height / (2 * np.tan(camera_vertical_fov / 2))  # focal length y
         self._cx = img_width / 2  # principal point x
@@ -81,7 +82,7 @@ class RGBDPointCloudCreator:
             color_image_flat = np.ndarray(
                     buffer=color_image_msg.data,
                     dtype=np.uint8,
-                    shape=(3 * self._num_pixels,),
+                    shape=(self._num_pixels, 3),
                 )
             if self._include_intensity:
                 # Use only the first channel as the intensity observation

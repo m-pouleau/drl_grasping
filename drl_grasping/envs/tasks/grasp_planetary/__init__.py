@@ -3,3 +3,4 @@ from .grasp_planetary_color_image import GraspPlanetaryColorImage
 from .grasp_planetary_depth_image import GraspPlanetaryDepthImage
 from .grasp_planetary_octree import GraspPlanetaryOctree
 from .grasp_planetary_pointcloud import GraspPlanetaryPointCloud
+from .grasp_planetary_rgbd_pointcloud import GraspPlanetaryRGBDPointCloud

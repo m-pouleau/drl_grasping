@@ -21,12 +21,15 @@ SupportedTasks = Union[
     tasks.ReachDepthImage,
     tasks.ReachOctree,
     tasks.ReachPointCloud,
+    tasks.ReachRGBDPointCloud,
     tasks.Grasp,
     tasks.GraspOctree,
     tasks.GraspPointCloud,
+    tasks.GraspRGBDPointCloud,
     tasks.GraspPlanetary,
     tasks.GraspPlanetaryOctree,
     tasks.GraspPlanetaryPointCloud,
+    tasks.GraspPlanetaryRGBDPointCloud,
 ]
 
 
