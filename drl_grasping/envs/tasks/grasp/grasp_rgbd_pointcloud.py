@@ -28,8 +28,8 @@ class GraspRGBDPointCloud(Grasp, abc.ABC):
         depth_max_distance: float = 5.0,
         camera_width: int = 128,
         camera_height: int = 128,
-        camera_horizontal_fov: float = np.pi / 3.0,
-        camera_vertical_fov: float = np.pi / 3.0,
+        camera_horizontal_fov: float = np.pi / 4.0,
+        camera_vertical_fov: float = np.pi / 4.0,
         **kwargs,
     ):
 

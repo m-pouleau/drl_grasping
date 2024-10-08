@@ -98,6 +98,26 @@ REACH_KWARGS: Dict[str, any] = {
     "required_accuracy": 0.05,
     "num_threads": 3,
 }
+REACH_KWARGS_RANDOMIZER_CAMERA: Dict[str, any] = {
+    "camera_enable": True,
+    "camera_width": 64,
+    "camera_height": 64,
+    "camera_update_rate": 1.2 * REACH_KWARGS["agent_rate"],
+    "camera_horizontal_fov": np.pi / 3.0,
+    "camera_vertical_fov": np.pi / 3.0,
+    "camera_noise_mean": 0.0,
+    "camera_noise_stddev": 0.001,
+    "camera_relative_to": "base_link",
+    "camera_spawn_position": (0.85, -0.4, 0.45),
+    "camera_spawn_quat_xyzw": (-0.0402991, -0.0166924, 0.9230002, 0.3823192),
+    "camera_random_pose_rollouts_num": 0,
+    "camera_random_pose_mode": "orbit",
+    "camera_random_pose_orbit_distance": 1.0,
+    "camera_random_pose_orbit_height_range": (0.1, 0.7),
+    "camera_random_pose_orbit_ignore_arc_behind_robot": np.pi / 8,
+    "camera_random_pose_select_position_options": [],
+    "camera_random_pose_focal_point_z_offset": 0.0,
+}
 REACH_KWARGS_OCTREE: Dict[str, any] = {
     "octree_reference_frame_id": "world",
     "octree_min_bound": (0.45 - 0.25, 0.0 - 0.25, 0.25 - 0.25),
@@ -118,6 +138,8 @@ REACH_KWARGS_RGBD_POINTCLOUD: Dict[str, any] = {
     "pointcloud_max_bound": (0.45 + 0.25, 0.0 + 0.25, 0.25 + 0.25),
     "pointcloud_n_stacked": 2,
     "depth_max_distance": 5.0,
+    "camera_horizontal_fov": REACH_KWARGS_RANDOMIZER_CAMERA["camera_horizontal_fov"],
+    "camera_vertical_fov": REACH_KWARGS_RANDOMIZER_CAMERA["camera_vertical_fov"],
 }
 REACH_KWARGS_SIM: Dict[str, any] = {
     "physics_rate": 200.0,
@@ -160,26 +182,6 @@ REACH_KWARGS_RANDOMIZER: Dict[str, any] = {
     "object_random_spawn_volume": (0.3, 0.3, 0.3),
     "object_models_rollouts_num": 0,
     "underworld_collision_plane": False,
-}
-REACH_KWARGS_RANDOMIZER_CAMERA: Dict[str, any] = {
-    "camera_enable": True,
-    "camera_width": 64,
-    "camera_height": 64,
-    "camera_update_rate": 1.2 * REACH_KWARGS["agent_rate"],
-    "camera_horizontal_fov": np.pi / 3.0,
-    "camera_vertical_fov": np.pi / 3.0,
-    "camera_noise_mean": 0.0,
-    "camera_noise_stddev": 0.001,
-    "camera_relative_to": "base_link",
-    "camera_spawn_position": (0.85, -0.4, 0.45),
-    "camera_spawn_quat_xyzw": (-0.0402991, -0.0166924, 0.9230002, 0.3823192),
-    "camera_random_pose_rollouts_num": 0,
-    "camera_random_pose_mode": "orbit",
-    "camera_random_pose_orbit_distance": 1.0,
-    "camera_random_pose_orbit_height_range": (0.1, 0.7),
-    "camera_random_pose_orbit_ignore_arc_behind_robot": np.pi / 8,
-    "camera_random_pose_select_position_options": [],
-    "camera_random_pose_focal_point_z_offset": 0.0,
 }
 
 # Task
@@ -545,6 +547,35 @@ GRASP_KWARGS: Dict[str, any] = {
     "gripper_dead_zone": 0.0,
     "num_threads": 3,
 }
+GRASP_KWARGS_RANDOMIZER_CAMERA: Dict[str, any] = {
+    "camera_enable": True,
+    "camera_width": 256,
+    "camera_height": 256,
+    "camera_update_rate": 4.0 * GRASP_KWARGS["agent_rate"],
+    "camera_horizontal_fov": np.pi / 4.0,
+    "camera_vertical_fov": np.pi / 4.0,
+    "camera_noise_mean": 0.0,
+    "camera_noise_stddev": 0.001,
+    "camera_relative_to": "base_link",
+    "camera_spawn_position": (
+        1.0054652820235743,
+        -0.80636443067215891,
+        0.72881734178675539,
+    ),
+    "camera_spawn_quat_xyzw": (
+        -0.28270992102080017,
+        0.19612786858776488,
+        0.7714710414897703,
+        0.5352021971762847,
+    ),
+    "camera_random_pose_rollouts_num": 1,
+    "camera_random_pose_mode": "orbit",
+    "camera_random_pose_orbit_distance": 1.0,
+    "camera_random_pose_orbit_height_range": (0.1, 0.7),
+    "camera_random_pose_orbit_ignore_arc_behind_robot": np.pi / 6,
+    "camera_random_pose_select_position_options": [],
+    "camera_random_pose_focal_point_z_offset": 0.0,
+}
 GRASP_KWARGS_OCTREE: Dict[str, any] = {
     "octree_reference_frame_id": "arm_base_link",
     "octree_min_bound": (
@@ -592,6 +623,8 @@ GRASP_KWARGS_RGBD_POINTCLOUD: Dict[str, any] = {
     "pointcloud_n_stacked": 3,
     "proprioceptive_observations": True,
     "depth_max_distance": 5.0,
+    "camera_horizontal_fov": GRASP_KWARGS_RANDOMIZER_CAMERA["camera_horizontal_fov"],
+    "camera_vertical_fov": GRASP_KWARGS_RANDOMIZER_CAMERA["camera_vertical_fov"],
 }
 
 GRASP_KWARGS_SIM: Dict[str, any] = {
@@ -639,35 +672,6 @@ GRASP_KWARGS_RANDOMIZER: Dict[str, any] = {
     "object_models_rollouts_num": 2,
     "underworld_collision_plane": True,
     "boundary_collision_walls": True,
-}
-GRASP_KWARGS_RANDOMIZER_CAMERA: Dict[str, any] = {
-    "camera_enable": True,
-    "camera_width": 256,
-    "camera_height": 256,
-    "camera_update_rate": 4.0 * GRASP_KWARGS["agent_rate"],
-    "camera_horizontal_fov": np.pi / 4.0,
-    "camera_vertical_fov": np.pi / 4.0,
-    "camera_noise_mean": 0.0,
-    "camera_noise_stddev": 0.001,
-    "camera_relative_to": "base_link",
-    "camera_spawn_position": (
-        1.0054652820235743,
-        -0.80636443067215891,
-        0.72881734178675539,
-    ),
-    "camera_spawn_quat_xyzw": (
-        -0.28270992102080017,
-        0.19612786858776488,
-        0.7714710414897703,
-        0.5352021971762847,
-    ),
-    "camera_random_pose_rollouts_num": 1,
-    "camera_random_pose_mode": "orbit",
-    "camera_random_pose_orbit_distance": 1.0,
-    "camera_random_pose_orbit_height_range": (0.1, 0.7),
-    "camera_random_pose_orbit_ignore_arc_behind_robot": np.pi / 6,
-    "camera_random_pose_select_position_options": [],
-    "camera_random_pose_focal_point_z_offset": 0.0,
 }
 GRASP_KWARGS_CURRICULUM: Dict[str, any] = {
     "stages_base_reward": 1.0,
@@ -1040,6 +1044,56 @@ GRASP_PLANETARY_KWARGS: Dict[str, any] = {
     "gripper_dead_zone": 0.0,
     "num_threads": 3,
 }
+GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA: Dict[str, any] = {
+    "camera_enable": True,
+    "camera_width": 128,
+    "camera_height": 128,
+    "camera_update_rate": 4.0 * GRASP_PLANETARY_KWARGS["agent_rate"],
+    "camera_horizontal_fov": np.pi / 2.0,
+    "camera_vertical_fov": np.pi / 2.0,
+    "camera_noise_mean": 0.0,
+    "camera_noise_stddev": 0.001,
+    "camera_relative_to": "arm_base_link",
+    # # Pole-mount
+    # "camera_relative_to": "arm_base_link",
+    # "camera_spawn_position": (-0.4, 0, 0.65),
+    # "camera_spawn_quat_xyzw": (0, 0.258819, 0, 0.9659258),
+    # # Bumper-mount
+    # "camera_relative_to": "arm_base_link",
+    # "camera_spawn_position": (0.05, 0, 0.15),
+    # "camera_spawn_quat_xyzw": (0, 0.2164396, 0, 0.976296),
+    # # End-effector
+    # "camera_relative_to": "end_effector",
+    # "camera_spawn_position": (0, 0.07, -0.05),
+    # "camera_spawn_quat_xyzw": (0, -0.707107, 0, 0.707107),
+    "camera_random_pose_rollouts_num": 1,
+    "camera_random_pose_mode": "select_random",
+    "camera_random_pose_orbit_distance": 1.0,
+    "camera_random_pose_orbit_height_range": (0.1, 0.7),
+    "camera_random_pose_orbit_ignore_arc_behind_robot": np.pi / 6,
+    "camera_random_pose_select_position_options": [
+        # (-0.4, 0.05, 0.65),
+        # (-0.4, -0.05, 0.65),
+        # (-0.45, 0, 0.65),
+        # (-0.35, 0, 0.65),
+        # (-0.45, 0.05, 0.65),
+        # (-0.45, -0.05, 0.65),
+        # (-0.35, 0.05, 0.65),
+        # (-0.35, -0.05, 0.65),
+        # (-0.1, 0.25, 0.2),
+        # (-0.1, -0.25, 0.2),
+        (0.13, 0, 0.11 - 0.04),
+        (0.13, 0.05, 0.11 - 0.04),
+        (0.13, -0.05, 0.11 - 0.04),
+        (0.13, 0, 0.12 - 0.04),
+        (0.13, 0.05, 0.12 - 0.04),
+        (0.13, -0.05, 0.12 - 0.04),
+        (0.13, 0, 0.1 - 0.04),
+        (0.13, 0.05, 0.1 - 0.04),
+        (0.13, -0.05, 0.1 - 0.04),
+    ],
+    "camera_random_pose_focal_point_z_offset": 0.0,
+}
 GRASP_PLANETARY_KWARGS_DEPTH_IMAGE: Dict[str, any] = {
     "depth_max_distance": 1.0,
     "image_n_stacked": 2,
@@ -1104,6 +1158,8 @@ GRASP_PLANETARY_KWARGS_RGBD_POINTCLOUD: Dict[str, any] = {
     "pointcloud_n_stacked": 2,
     "proprioceptive_observations": True,
     "depth_max_distance": 5.0,
+    "camera_horizontal_fov": GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA["camera_horizontal_fov"],
+    "camera_vertical_fov": GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA["camera_vertical_fov"],
 }
 GRASP_PLANETARY_KWARGS_SIM: Dict[str, any] = {
     "physics_rate": 500.0,
@@ -1162,56 +1218,6 @@ GRASP_PLANETARY_KWARGS_RANDOMIZER: Dict[str, any] = {
     "object_models_rollouts_num": 1,
     "underworld_collision_plane": True,
     "boundary_collision_walls": True,
-}
-GRASP_PLANETARY_KWARGS_RANDOMIZER_CAMERA: Dict[str, any] = {
-    "camera_enable": True,
-    "camera_width": 128,
-    "camera_height": 128,
-    "camera_update_rate": 4.0 * GRASP_PLANETARY_KWARGS["agent_rate"],
-    "camera_horizontal_fov": np.pi / 2.0,
-    "camera_vertical_fov": np.pi / 2.0,
-    "camera_noise_mean": 0.0,
-    "camera_noise_stddev": 0.001,
-    "camera_relative_to": "arm_base_link",
-    # # Pole-mount
-    # "camera_relative_to": "arm_base_link",
-    # "camera_spawn_position": (-0.4, 0, 0.65),
-    # "camera_spawn_quat_xyzw": (0, 0.258819, 0, 0.9659258),
-    # # Bumper-mount
-    # "camera_relative_to": "arm_base_link",
-    # "camera_spawn_position": (0.05, 0, 0.15),
-    # "camera_spawn_quat_xyzw": (0, 0.2164396, 0, 0.976296),
-    # # End-effector
-    # "camera_relative_to": "end_effector",
-    # "camera_spawn_position": (0, 0.07, -0.05),
-    # "camera_spawn_quat_xyzw": (0, -0.707107, 0, 0.707107),
-    "camera_random_pose_rollouts_num": 1,
-    "camera_random_pose_mode": "select_random",
-    "camera_random_pose_orbit_distance": 1.0,
-    "camera_random_pose_orbit_height_range": (0.1, 0.7),
-    "camera_random_pose_orbit_ignore_arc_behind_robot": np.pi / 6,
-    "camera_random_pose_select_position_options": [
-        # (-0.4, 0.05, 0.65),
-        # (-0.4, -0.05, 0.65),
-        # (-0.45, 0, 0.65),
-        # (-0.35, 0, 0.65),
-        # (-0.45, 0.05, 0.65),
-        # (-0.45, -0.05, 0.65),
-        # (-0.35, 0.05, 0.65),
-        # (-0.35, -0.05, 0.65),
-        # (-0.1, 0.25, 0.2),
-        # (-0.1, -0.25, 0.2),
-        (0.13, 0, 0.11 - 0.04),
-        (0.13, 0.05, 0.11 - 0.04),
-        (0.13, -0.05, 0.11 - 0.04),
-        (0.13, 0, 0.12 - 0.04),
-        (0.13, 0.05, 0.12 - 0.04),
-        (0.13, -0.05, 0.12 - 0.04),
-        (0.13, 0, 0.1 - 0.04),
-        (0.13, 0.05, 0.1 - 0.04),
-        (0.13, -0.05, 0.1 - 0.04),
-    ],
-    "camera_random_pose_focal_point_z_offset": 0.0,
 }
 GRASP_PLANETARY_KWARGS_CURRICULUM: Dict[str, any] = {
     "stages_base_reward": 1.0,

@@ -98,13 +98,14 @@ class RGBDPointCloudCreator:
             # Combined mask
             valid_mask = valid_depth_mask & valid_colors_mask
             # Apply the mask to get valid points and colors
-            Z = depth_image_flat[valid_mask]
+            X = depth_image_flat[valid_mask]
             x_2D = self._x_flat[valid_mask]
             y_2D = self._y_flat[valid_mask]
             color_image = color_image_flat[valid_mask]
             # Calculate 3D coordinates with broadcasting
-            X = (x_2D - self._cx) * Z / self._fx
-            Y = (y_2D - self._cy) * Z / self._fy
+            # -> Convention: X forward, Y left & Z up in image (not the classical camera coordinates)
+            Y = -(x_2D - self._cx) * X / self._fx
+            Z = -(y_2D - self._cy) * X / self._fy
             # Stack to create a (N, 3) array of points
             points = np.stack((X, Y, Z), axis=-1).astype(dtype=np.float32)
             # Normalize color
@@ -114,12 +115,12 @@ class RGBDPointCloudCreator:
             # Filter points based on clip_min and clip_max for depth
             valid_depth_mask = (depth_image_flat <= self._depth_max_distance) & (depth_image_flat > 0)
             # Apply the mask to get valid points and colors
-            Z = depth_image_flat[valid_depth_mask]
+            X = depth_image_flat[valid_depth_mask]
             x_2D = self._x_flat[valid_depth_mask]
             y_2D = self._y_flat[valid_depth_mask]
             # Calculate 3D coordinates with broadcasting
-            X = (x_2D - self._cx) * Z / self._fx
-            Y = (y_2D - self._cy) * Z / self._fy
+            Y = -(x_2D - self._cx) * X / self._fx
+            Z = -(y_2D - self._cy) * X / self._fy
             # Stack to create a (N, 3) array of points
             points = np.stack((X, Y, Z), axis=-1).astype(dtype=np.float32)
             colors = None
