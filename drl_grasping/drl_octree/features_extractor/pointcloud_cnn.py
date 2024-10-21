@@ -5,6 +5,7 @@ from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 
 from drl_grasping.drl_octree.features_extractor.pointnet import *
 from drl_grasping.drl_octree.features_extractor.pointnet2 import *
+from drl_grasping.drl_octree.features_extractor.diffusion_policy_3D import *
 from drl_grasping.drl_octree.features_extractor.modules import LinearRelu
 
 
@@ -68,6 +69,8 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
         elif extractor_backbone == "PointNet2":
             weights_file_path = f"{script_directory}/weights/pointnet2_msg_{prefix}pretrained.pth"
             self._extractor_backbone = PointNet2FeatureExtractor(num_channels=num_channels, features_dim=features_dim, file_path=weights_file_path, device=DEVICE)
+        elif extractor_backbone == "DP3":
+            self._extractor_backbone = DP3Extractor(color_channels=image_channels, num_channels=num_channels, features_dim=features_dim, device=DEVICE)
 
         # One linear layer for auxiliary observations
         if self._aux_obs_dim != 0:

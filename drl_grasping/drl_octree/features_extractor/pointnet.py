@@ -88,7 +88,7 @@ class STNkd(nn.Module):
 
 
 class PointNetEncoder(nn.Module):
-    def __init__(self, global_feat=True, feature_transform=True, k=3):
+    def __init__(self, point_feat=False, feature_transform=True, k=3):
         super(PointNetEncoder, self).__init__()
         self.stn = STN3d(k=k)
         self.conv1 = torch.nn.Conv1d(k, 64, 1)
@@ -97,7 +97,7 @@ class PointNetEncoder(nn.Module):
         self.bn1 = nn.BatchNorm1d(64)
         self.bn2 = nn.BatchNorm1d(128)
         self.bn3 = nn.BatchNorm1d(1024)
-        self.global_feat = global_feat
+        self.point_feat = point_feat
         self.feature_transform = feature_transform
         if self.feature_transform:
             self.fstn = STNkd(k=64)
@@ -128,11 +128,11 @@ class PointNetEncoder(nn.Module):
         x = self.bn3(self.conv3(x))
         x = torch.max(x, 2, keepdim=True)[0]
         x = x.view(-1, 1024)
-        if self.global_feat:
-            return x, trans, trans_feat
+        if self.point_feat:
+            x_tile = x.view(-1, 1024, 1).repeat(1, 1, N)
+            return torch.cat([x_tile, pointfeat], 1), x, pointfeat
         else:
-            x = x.view(-1, 1024, 1).repeat(1, 1, N)
-            return torch.cat([x, pointfeat], 1), trans, trans_feat
+            return x, trans, trans_feat
 
 
 class PointNetCls(nn.Module):
@@ -142,7 +142,7 @@ class PointNetCls(nn.Module):
             self.channel = 6
         else:
             self.channel = 3
-        self.feat = PointNetEncoder(global_feat=True, feature_transform=True, k=self.channel)
+        self.feat = PointNetEncoder(point_feat=False, feature_transform=True, k=self.channel)
         self.fc1 = nn.Linear(1024, 512)
         self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, num_classes)
@@ -162,7 +162,7 @@ class PointNetSeg(nn.Module):
     def __init__(self, num_classes=13):
         super(PointNetSeg, self).__init__()
         self.k = num_classes
-        self.feat = PointNetEncoder(global_feat=False, feature_transform=True, k=9)
+        self.feat = PointNetEncoder(point_feat=True, feature_transform=True, k=9)
         self.conv1 = torch.nn.Conv1d(1088, 512, 1)
         self.conv2 = torch.nn.Conv1d(512, 256, 1)
         self.conv3 = torch.nn.Conv1d(256, 128, 1)
@@ -174,7 +174,7 @@ class PointNetSeg(nn.Module):
     def forward(self, x):
         batchsize = x.size()[0]
         n_pts = x.size()[2]
-        x, trans, trans_feat = self.feat(x)
+        x, _, _ = self.feat(x)
         x = F.relu(self.bn1(self.conv1(x)))
         x = F.relu(self.bn2(self.conv2(x)))
         x = F.relu(self.bn3(self.conv3(x)))
@@ -182,14 +182,14 @@ class PointNetSeg(nn.Module):
         x = x.transpose(2,1).contiguous()
         x = F.log_softmax(x.view(-1,self.k), dim=-1)
         x = x.view(batchsize, n_pts, self.k)
-        return x, trans_feat
+        return x
 
 
 class PointNetFeatureExtractorSimple(nn.Module):
     def __init__(self, num_channels=9, features_dim=248, device='cpu', file_path=".."):
         super(PointNetFeatureExtractorSimple, self).__init__()
         self.channel = num_channels
-        self.feat = PointNetEncoder(global_feat=True, feature_transform=True, k=self.channel)    
+        self.feat = PointNetEncoder(point_feat=False, feature_transform=True, k=self.channel)    
         # load weight dictionary remove unexpected / unused prefixes & items
         state_dict = torch.load(file_path, map_location=torch.device(device))['model_state_dict']
         state_dict = delete_items_without_prefix(state_dict, "feat.")
@@ -215,7 +215,7 @@ class PointNetFeatureExtractor(nn.Module):
     def __init__(self, num_channels=9, features_dim=248, device='cpu', file_path=".."):
         super(PointNetFeatureExtractor, self).__init__()
         self.channel = num_channels
-        self.feat = PointNetEncoder(global_feat=False, feature_transform=True, k=self.channel)    
+        self.feat = PointNetEncoder(point_feat=True, feature_transform=True, k=self.channel)    
         # load weight dictionary remove unexpected / unused prefixes & items
         state_dict = torch.load(file_path, map_location=torch.device(device))['model_state_dict']
         state_dict = delete_items_without_prefix(state_dict, "feat.")
@@ -227,35 +227,49 @@ class PointNetFeatureExtractor(nn.Module):
 
         ## Additional unfrozen linear layers ##
         # Point-wise fully connected layer before pooling
-        self.pointwise_fc = nn.Linear(1091, 512)
-        
+        if self.channel == 9:
+            self.pointwise_fc = nn.Linear(70, 64) #TODO: change to (70, 128)
+        else:
+            self.pointwise_fc = nn.Linear(67, 64) #TODO: change to (67, 128)
+        self.ln_pw = nn.LayerNorm(64) #TODO: change to (128)
+
+        # Fully connected layer for global features
+        self.global_fc = nn.Linear(1024, 384) #TODO: change to (1024, 256)
+        self.ln_gl = nn.LayerNorm(384) #TODO: change to (256)
+
         # Learnable layers after pooling
-        self.fc2 = nn.Linear(1024, 512)  # Max pool + Avg pool -> (512 + 512) = 1024
-        self.fc3 = nn.Linear(512, features_dim)   # Final layer to reduce to 248 features
-        self.bn = nn.BatchNorm1d(512)
+        self.fc3 = nn.Linear(512, features_dim)  # Max pool + Avg pool + Global -> 512 | # Final layer to reduce to 248 features
 
     def forward(self, x_obs):
     	# Extracting point-wise feature like in segmentation network
         x = x_obs.permute(0, 2, 1)[:, :self.channel, :]
         xyz_coords = x_obs.permute(0, 2, 1)[:, self.channel:, :] # xyz_coords is of shape (k, n, 3) - XYZ coordinates of points
-        x, _, _ = self.feat(x) # x is of shape (k, n, 1088) - PointNet output
+        if self.channel == 9:
+            rgb_colors = x_obs.permute(0, 2, 1)[:, 3:6, :] # rgb_colors is of shape (k, n, 3) - RGB color values of points
+
+        _, global_x, pointwise_x = self.feat(x) # x is of shape (k, 1024) & (k, 64, n) - PointNet output
+
+        # Fully connected layer for global features
+        global_x = F.relu(self.ln_gl(self.global_fc(global_x)))  # Shape: (k, 256)
 
         # Concatenate the XYZ coordinates to the PointNet output
-        x = torch.cat([x, xyz_coords], dim=1).permute(0, 2, 1)  # Shape: (k, n, 1091)
+        if self.channel == 9:
+            pointwise_x = torch.cat([pointwise_x, xyz_coords, rgb_colors], dim=1).permute(0, 2, 1)  # Shape: (k, n, 70)
+        else:
+            pointwise_x = torch.cat([pointwise_x, xyz_coords], dim=1).permute(0, 2, 1)  # Shape: (k, n, 67)
 
         # Point-wise fully connected layer
-        x = F.relu(self.pointwise_fc(x))  # Shape: (k, n, 512)
+        pointwise_x = F.relu(self.ln_pw(self.pointwise_fc(pointwise_x)))  # Shape: (k, n, 128)
 
         # Max Pooling over points -> get strongest local features (good for edge detection)
-        max_pool, _ = torch.max(x, dim=1)  # Shape: (k, 512)
+        max_pool, _ = torch.max(pointwise_x, dim=1)  # Shape: (k, 128)
         # Average Pooling over points -> get understanding of global features (overall understanding of scene)
-        avg_pool = torch.mean(x, dim=1)  # Shape: (k, 512)
-        # Concatenate max pooled and average pooled features along the last dimension
-        x = torch.cat([max_pool, avg_pool], dim=1)  # Shape: (k, 1024)
+        avg_pool = torch.mean(pointwise_x, dim=1)  # Shape: (k, 128)
 
-        # Apply learnable layers after pooling
-        x = F.relu(self.bn(self.fc2(x)))  # Shape: (k, 512)
-                
+        # Concatenate max pooled and average pooled features, as well as global features, along the last dimension
+        x = torch.cat([max_pool, avg_pool, global_x], dim=1)  # Shape: (k, 512)
+
+        # Apply learnable layer after pooling                
         x = self.fc3(x)  # Shape: (k, 248)
 
         return x
@@ -302,7 +316,7 @@ if __name__ == '__main__':
     else:
         segmenter = PointNetSeg(num_classes=13).to(DEVICE)
         segmenter.load_state_dict(state_dict)
-        out, _ = segmenter(sim_data_kd)
+        out = segmenter(sim_data_kd)
         print('Point Classes: ', out.size())
 
     # Getting global features from pretrained base model
@@ -318,7 +332,7 @@ if __name__ == '__main__':
     print('Global Features:', glob.size())
     
     # Getting point features and local features
-    pointfeat = PointNetEncoder(global_feat=False, k=NUM_CHANNELS).to(DEVICE)
+    pointfeat = PointNetEncoder(point_feat=True, k=NUM_CHANNELS).to(DEVICE)
     points, _, _ = pointfeat(sim_data_kd)
     print('Point Features:', points.size())
 
