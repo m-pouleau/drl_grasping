@@ -228,14 +228,14 @@ class PointNetFeatureExtractor(nn.Module):
         ## Additional unfrozen linear layers ##
         # Point-wise fully connected layer before pooling
         if self.channel == 9:
-            self.pointwise_fc = nn.Linear(70, 64) #TODO: change to (70, 128)
+            self.pointwise_fc = nn.Linear(70, 128)
         else:
-            self.pointwise_fc = nn.Linear(67, 64) #TODO: change to (67, 128)
-        self.ln_pw = nn.LayerNorm(64) #TODO: change to (128)
+            self.pointwise_fc = nn.Linear(67, 128)
+        self.ln_pw = nn.LayerNorm(128)
 
         # Fully connected layer for global features
-        self.global_fc = nn.Linear(1024, 384) #TODO: change to (1024, 256)
-        self.ln_gl = nn.LayerNorm(384) #TODO: change to (256)
+        self.global_fc = nn.Linear(1024, 256)
+        self.ln_gl = nn.LayerNorm(256)
 
         # Learnable layers after pooling
         self.fc3 = nn.Linear(512, features_dim)  # Max pool + Avg pool + Global -> 512 | # Final layer to reduce to 248 features

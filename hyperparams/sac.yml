@@ -133,6 +133,34 @@ Reach-PointNet2-Gazebo-v0:
   use_sde: False
   optimize_memory_usage: True
 
+Reach-DP3-Gazebo-v0:
+  policy: "PointCloudCnnPolicy"
+  policy_kwargs:
+    features_extractor_kwargs:
+      extractor_backbone: "DP3"
+      normal_channels: False
+      image_channels: 0
+      features_dim: 64
+      aux_obs_dim: 0
+    n_critics: 2
+    net_arch: [128, 128]
+    share_features_extractor: True
+  n_timesteps: 50000
+  buffer_size: 25000
+  learning_starts: 5000
+  batch_size: 32
+  learning_rate: lin_0.0002
+  gamma: 0.95
+  tau: 0.0005
+  ent_coef: "auto_0.1"
+  target_entropy: "auto"
+  train_freq: [1, "episode"]
+  gradient_steps: 100
+  noise_type: "normal"
+  noise_std: 0.025
+  use_sde: False
+  optimize_memory_usage: True
+
 Reach-OctreeWithIntensity-Gazebo-v0:
   policy: "OctreeCnnPolicy"
   policy_kwargs:
@@ -202,6 +230,34 @@ Reach-PointNet2WithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
+      normal_channels: False
+      image_channels: 1
+      features_dim: 64
+      aux_obs_dim: 0
+    n_critics: 2
+    net_arch: [128, 128]
+    share_features_extractor: True
+  n_timesteps: 50000
+  buffer_size: 25000
+  learning_starts: 5000
+  batch_size: 32
+  learning_rate: lin_0.0002
+  gamma: 0.95
+  tau: 0.0005
+  ent_coef: "auto_0.1"
+  target_entropy: "auto"
+  train_freq: [1, "episode"]
+  gradient_steps: 100
+  noise_type: "normal"
+  noise_std: 0.025
+  use_sde: False
+  optimize_memory_usage: True
+
+Reach-DP3WithIntensity-Gazebo-v0:
+  policy: "PointCloudCnnPolicy"
+  policy_kwargs:
+    features_extractor_kwargs:
+      extractor_backbone: "DP3"
       normal_channels: False
       image_channels: 1
       features_dim: 64
@@ -322,6 +378,62 @@ Reach-PointNet2WithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
+      normal_channels: False
+      image_channels: 3
+      features_dim: 64
+      aux_obs_dim: 0
+    n_critics: 2
+    net_arch: [128, 128]
+    share_features_extractor: True
+  n_timesteps: 50000
+  buffer_size: 25000
+  learning_starts: 5000
+  batch_size: 32
+  learning_rate: lin_0.0002
+  gamma: 0.95
+  tau: 0.0005
+  ent_coef: "auto_0.1"
+  target_entropy: "auto"
+  train_freq: [1, "episode"]
+  gradient_steps: 100
+  noise_type: "normal"
+  noise_std: 0.025
+  use_sde: False
+  optimize_memory_usage: True
+
+Reach-DP3WithColor-Gazebo-v0:
+  policy: "PointCloudCnnPolicy"
+  policy_kwargs:
+    features_extractor_kwargs:
+      extractor_backbone: "DP3"
+      normal_channels: False
+      image_channels: 3
+      features_dim: 64
+      aux_obs_dim: 0
+    n_critics: 2
+    net_arch: [128, 128]
+    share_features_extractor: True
+  n_timesteps: 50000
+  buffer_size: 25000
+  learning_starts: 5000
+  batch_size: 32
+  learning_rate: lin_0.0002
+  gamma: 0.95
+  tau: 0.0005
+  ent_coef: "auto_0.1"
+  target_entropy: "auto"
+  train_freq: [1, "episode"]
+  gradient_steps: 100
+  noise_type: "normal"
+  noise_std: 0.025
+  use_sde: False
+  optimize_memory_usage: True
+
+Reach-RGBD-DP3WithColor-Gazebo-v0:
+  policy: "PointCloudCnnPolicy"
+  policy_kwargs:
+    features_extractor_kwargs:
+      extractor_backbone: "DP3"
       normal_channels: False
       image_channels: 3
       features_dim: 64
@@ -470,6 +582,37 @@ Grasp-PointNet2-Gazebo-v0:
   use_sde: False
   optimize_memory_usage: True
 
+Grasp-DP3-Gazebo-v0:
+  callback:
+    - drl_grasping.utils.callbacks.CurriculumLoggerCallback
+  policy: "PointCloudCnnPolicy"
+  policy_kwargs:
+    features_extractor_kwargs:
+      extractor_backbone: "DP3"
+      normal_channels: False
+      image_channels: 0
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
+    n_critics: 2
+    net_arch: [512, 512]
+    share_features_extractor: True
+  n_timesteps: 500000
+  buffer_size: 50000
+  learning_starts: 10000
+  batch_size: 64
+  learning_rate: lin_0.0002
+  gamma: 0.99
+  tau: 0.00004
+  ent_coef: "auto_0.5"
+  target_entropy: "auto"
+  train_freq: [1, "episode"]
+  gradient_steps: 100
+  noise_type: "normal"
+  noise_std: 0.025
+  use_sde: False
+  optimize_memory_usage: True
+
 Grasp-OctreeWithIntensity-Gazebo-v0:
   callback:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
@@ -547,6 +690,37 @@ Grasp-PointNet2WithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
+      normal_channels: False
+      image_channels: 1
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
+    n_critics: 2
+    net_arch: [512, 512]
+    share_features_extractor: True
+  n_timesteps: 500000
+  buffer_size: 50000
+  learning_starts: 10000
+  batch_size: 64
+  learning_rate: lin_0.0002
+  gamma: 0.99
+  tau: 0.00004
+  ent_coef: "auto_0.5"
+  target_entropy: "auto"
+  train_freq: [1, "episode"]
+  gradient_steps: 100
+  noise_type: "normal"
+  noise_std: 0.025
+  use_sde: False
+  optimize_memory_usage: True
+
+Grasp-DP3WithIntensity-Gazebo-v0:
+  callback:
+    - drl_grasping.utils.callbacks.CurriculumLoggerCallback
+  policy: "PointCloudCnnPolicy"
+  policy_kwargs:
+    features_extractor_kwargs:
+      extractor_backbone: "DP3"
       normal_channels: False
       image_channels: 1
       features_dim: 248
@@ -679,6 +853,68 @@ Grasp-PointNet2WithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
+      normal_channels: False
+      image_channels: 3
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
+    n_critics: 2
+    net_arch: [512, 512]
+    share_features_extractor: True
+  n_timesteps: 500000
+  buffer_size: 50000
+  learning_starts: 10000
+  batch_size: 64
+  learning_rate: lin_0.0002
+  gamma: 0.99
+  tau: 0.00004
+  ent_coef: "auto_0.5"
+  target_entropy: "auto"
+  train_freq: [1, "episode"]
+  gradient_steps: 100
+  noise_type: "normal"
+  noise_std: 0.025
+  use_sde: False
+  optimize_memory_usage: True
+
+Grasp-DP3WithColor-Gazebo-v0:
+  callback:
+    - drl_grasping.utils.callbacks.CurriculumLoggerCallback
+  policy: "PointCloudCnnPolicy"
+  policy_kwargs:
+    features_extractor_kwargs:
+      extractor_backbone: "DP3"
+      normal_channels: False
+      image_channels: 3
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
+    n_critics: 2
+    net_arch: [512, 512]
+    share_features_extractor: True
+  n_timesteps: 500000
+  buffer_size: 50000
+  learning_starts: 10000
+  batch_size: 64
+  learning_rate: lin_0.0002
+  gamma: 0.99
+  tau: 0.00004
+  ent_coef: "auto_0.5"
+  target_entropy: "auto"
+  train_freq: [1, "episode"]
+  gradient_steps: 100
+  noise_type: "normal"
+  noise_std: 0.025
+  use_sde: False
+  optimize_memory_usage: True
+
+Grasp-RGBD-DP3WithColor-Gazebo-v0:
+  callback:
+    - drl_grasping.utils.callbacks.CurriculumLoggerCallback
+  policy: "PointCloudCnnPolicy"
+  policy_kwargs:
+    features_extractor_kwargs:
+      extractor_backbone: "DP3"
       normal_channels: False
       image_channels: 3
       features_dim: 248
@@ -936,6 +1172,37 @@ GraspPlanetary-PointNet2-Gazebo-v0:
   use_sde: False
   optimize_memory_usage: True
 
+GraspPlanetary-DP3-Gazebo-v0:
+  callback:
+    - drl_grasping.utils.callbacks.CurriculumLoggerCallback
+  policy: "PointCloudCnnPolicy"
+  policy_kwargs:
+    features_extractor_kwargs:
+      extractor_backbone: "DP3"
+      normal_channels: False
+      image_channels: 0
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
+    n_critics: 2
+    net_arch: [512, 512]
+    share_features_extractor: True
+  n_timesteps: 500000
+  buffer_size: 50000
+  learning_starts: 20000
+  batch_size: 64
+  learning_rate: lin_0.0002
+  gamma: 0.99
+  tau: 0.00004
+  ent_coef: "auto_1.0"
+  target_entropy: "auto"
+  train_freq: [1, "episode"]
+  gradient_steps: 100
+  noise_type: "normal"
+  noise_std: 0.025
+  use_sde: False
+  optimize_memory_usage: True
+
 GraspPlanetary-OctreeWithIntensity-Gazebo-v0:
   callback:
     - drl_grasping.utils.callbacks.CurriculumLoggerCallback
@@ -1013,6 +1280,37 @@ GraspPlanetary-PointNet2WithIntensity-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
+      normal_channels: False
+      image_channels: 1
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
+    n_critics: 2
+    net_arch: [512, 512]
+    share_features_extractor: True
+  n_timesteps: 500000
+  buffer_size: 50000
+  learning_starts: 20000
+  batch_size: 64
+  learning_rate: lin_0.0002
+  gamma: 0.99
+  tau: 0.00004
+  ent_coef: "auto_1.0"
+  target_entropy: "auto"
+  train_freq: [1, "episode"]
+  gradient_steps: 100
+  noise_type: "normal"
+  noise_std: 0.025
+  use_sde: False
+  optimize_memory_usage: True
+
+GraspPlanetary-DP3WithIntensity-Gazebo-v0:
+  callback:
+    - drl_grasping.utils.callbacks.CurriculumLoggerCallback
+  policy: "PointCloudCnnPolicy"
+  policy_kwargs:
+    features_extractor_kwargs:
+      extractor_backbone: "DP3"
       normal_channels: False
       image_channels: 1
       features_dim: 248
@@ -1145,6 +1443,68 @@ GraspPlanetary-PointNet2WithColor-Gazebo-v0:
   policy_kwargs:
     features_extractor_kwargs:
       extractor_backbone: "PointNet2"
+      normal_channels: False
+      image_channels: 3
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
+    n_critics: 2
+    net_arch: [512, 512]
+    share_features_extractor: True
+  n_timesteps: 500000
+  buffer_size: 50000
+  learning_starts: 20000
+  batch_size: 64
+  learning_rate: lin_0.0002
+  gamma: 0.99
+  tau: 0.00004
+  ent_coef: "auto_1.0"
+  target_entropy: "auto"
+  train_freq: [1, "episode"]
+  gradient_steps: 100
+  noise_type: "normal"
+  noise_std: 0.025
+  use_sde: False
+  optimize_memory_usage: True
+
+GraspPlanetary-DP3WithColor-Gazebo-v0:
+  callback:
+    - drl_grasping.utils.callbacks.CurriculumLoggerCallback
+  policy: "PointCloudCnnPolicy"
+  policy_kwargs:
+    features_extractor_kwargs:
+      extractor_backbone: "DP3"
+      normal_channels: False
+      image_channels: 3
+      features_dim: 248
+      aux_obs_dim: 10
+      aux_obs_features_dim: 8
+    n_critics: 2
+    net_arch: [512, 512]
+    share_features_extractor: True
+  n_timesteps: 500000
+  buffer_size: 50000
+  learning_starts: 20000
+  batch_size: 64
+  learning_rate: lin_0.0002
+  gamma: 0.99
+  tau: 0.00004
+  ent_coef: "auto_1.0"
+  target_entropy: "auto"
+  train_freq: [1, "episode"]
+  gradient_steps: 100
+  noise_type: "normal"
+  noise_std: 0.025
+  use_sde: False
+  optimize_memory_usage: True
+
+GraspPlanetary-RGBD-DP3WithColor-Gazebo-v0:
+  callback:
+    - drl_grasping.utils.callbacks.CurriculumLoggerCallback
+  policy: "PointCloudCnnPolicy"
+  policy_kwargs:
+    features_extractor_kwargs:
+      extractor_backbone: "DP3"
       normal_channels: False
       image_channels: 3
       features_dim: 248
