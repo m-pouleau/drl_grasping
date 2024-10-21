@@ -62,8 +62,6 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
         # Get relative path of directory for pretrained models
         script_directory = os.path.dirname(os.path.abspath(__file__))
 
-        extractor_backbone = "DP3" #TODO: remove
-
         # Initialize the right feature extractor
         if extractor_backbone == "PointNet":
             weights_file_path = f"{script_directory}/weights/pointnet_{prefix}pretrained.pth"
@@ -93,7 +91,6 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
     def forward(self, obs):
 
         data = obs[0]
-        print("Data is cuda: ", data.is_cuda, flush=True)
         aux_obs = obs[1]
 
         # Pass the data through the pointnet-based feature extractor backbone
