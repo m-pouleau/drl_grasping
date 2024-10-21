@@ -97,7 +97,7 @@
 2. Set local folder Variable:
  $ export TENSORBOARD_LOG=/root/drl_grasping_training/train/<ENV>/tensorboard_logs/<ENV>/<ALGO>
  For example:
- export TENSORBOARD_LOG=/root/drl_grasping_training/train/GraspPlanetary-OctreeWithIntensity-Gazebo-v0/tensorboard_logs/GraspPlanetary-OctreeWithIntensity-Gazebo-v0/TQC_1
+  export TENSORBOARD_LOG=/root/drl_grasping_training/train/GraspPlanetary-PointNetWithColor-Gazebo-v0/tensorboard_logs/GraspPlanetary-PointNetWithColor-Gazebo-v0/TQC_1
 3. Visualize Tensorboard:
  $ tensorboard --logdir ${TENSORBOARD_LOG}
 4. Export tensorboard log data to csv file:
