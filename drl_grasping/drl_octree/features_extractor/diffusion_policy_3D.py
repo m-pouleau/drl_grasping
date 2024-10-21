@@ -8,11 +8,10 @@ import torch.utils.data
 from torch.autograd import Variable
 
 class DP3Extractor(nn.Module):
-    def __init__(self, color_channels=3, num_channels=9, features_dim=248, device='cpu'):
+    def __init__(self, color_channels=3, num_channels=9, features_dim=248):
         super(DP3Extractor, self).__init__()
         self.used_channels = 6 if color_channels == 3 else 3
         self.num_channels = num_channels
-        print(self.block_channels)
         self.block_channels = [64, 128, 256, 512]
         self.use_layernorm = True
 
@@ -39,11 +38,11 @@ class DP3Extractor(nn.Module):
 
     def forward(self, x_obs):
     	# Extracting point-wise feature like in segmentation network
-        xyz_coords = x_obs[:, self.num_channels:, :] # xyz_coords is of shape (k, n, 3) - XYZ coordinates of points
+        xyz_coords = x_obs[:, :, self.num_channels:] # xyz_coords is of shape (k, n, 3) - XYZ coordinates of points
         if self.used_channels == 6:
-            rgb_colors = x_obs[:, 3:6, :] # rgb_colors is of shape (k, n, 3) - RGB color values of points
+            rgb_colors = x_obs[:, :, 3:6] # rgb_colors is of shape (k, n, 3) - RGB color values of points
             # Concatenate the XYZ coordinates with RGB channels from observation
-            x = torch.cat([xyz_coords, rgb_colors], dim=1)  # Shape: (k, n, 6)
+            x = torch.cat([xyz_coords, rgb_colors], dim=2)  # Shape: (k, n, 6)
         else:
             x = xyz_coords  # Shape: (k, n, 3)
 
@@ -82,6 +81,6 @@ if __name__ == '__main__':
     print('Input Data: ', pointcloud.size(), "   CUDA: ", pointcloud.is_cuda)
 
     # Getting drl-features from observation space input
-    feat_drl = DP3Extractor(color_channels=COLOR_CHANNELS, features_dim=256, device=DEVICE).to(DEVICE)
+    feat_drl = DP3Extractor(color_channels=COLOR_CHANNELS, features_dim=256).to(DEVICE)
     out = feat_drl(pointcloud)
     print('Feature Extractor: ', out.size())
