@@ -228,14 +228,14 @@ class PointNetFeatureExtractor(nn.Module):
         ## Additional unfrozen linear layers ##
         # Point-wise fully connected layer before pooling
         if self.channel == 9:
-            self.pointwise_fc = nn.Linear(70, 128)
+            self.pointwise_fc = nn.Linear(70, 96)
         else:
-            self.pointwise_fc = nn.Linear(67, 128)
-        self.ln_pw = nn.LayerNorm(128)
+            self.pointwise_fc = nn.Linear(67, 96)
+        self.ln_pw = nn.LayerNorm(96)
 
         # Fully connected layer for global features
-        self.global_fc = nn.Linear(1024, 256)
-        self.ln_gl = nn.LayerNorm(256)
+        self.global_fc = nn.Linear(1024, 320)
+        self.ln_gl = nn.LayerNorm(320)
 
         # Learnable layers after pooling
         self.fc3 = nn.Linear(512, features_dim)  # Max pool + Avg pool + Global -> 512 | # Final layer to reduce to 248 features
@@ -250,7 +250,7 @@ class PointNetFeatureExtractor(nn.Module):
         _, global_x, pointwise_x = self.feat(x) # x is of shape (k, 1024) & (k, 64, n) - PointNet output
 
         # Fully connected layer for global features
-        global_x = F.relu(self.ln_gl(self.global_fc(global_x)))  # Shape: (k, 256)
+        global_x = F.relu(self.ln_gl(self.global_fc(global_x)))  # Shape: (k, 320)
 
         # Concatenate the XYZ coordinates to the PointNet output
         if self.channel == 9:
@@ -259,12 +259,12 @@ class PointNetFeatureExtractor(nn.Module):
             pointwise_x = torch.cat([pointwise_x, xyz_coords], dim=1).permute(0, 2, 1)  # Shape: (k, n, 67)
 
         # Point-wise fully connected layer
-        pointwise_x = F.relu(self.ln_pw(self.pointwise_fc(pointwise_x)))  # Shape: (k, n, 128)
+        pointwise_x = F.relu(self.ln_pw(self.pointwise_fc(pointwise_x)))  # Shape: (k, n, 96)
 
         # Max Pooling over points -> get strongest local features (good for edge detection)
-        max_pool, _ = torch.max(pointwise_x, dim=1)  # Shape: (k, 128)
+        max_pool, _ = torch.max(pointwise_x, dim=1)  # Shape: (k, 96)
         # Average Pooling over points -> get understanding of global features (overall understanding of scene)
-        avg_pool = torch.mean(pointwise_x, dim=1)  # Shape: (k, 128)
+        avg_pool = torch.mean(pointwise_x, dim=1)  # Shape: (k, 96)
 
         # Concatenate max pooled and average pooled features, as well as global features, along the last dimension
         x = torch.cat([max_pool, avg_pool, global_x], dim=1)  # Shape: (k, 512)
