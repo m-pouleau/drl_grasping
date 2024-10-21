@@ -62,7 +62,7 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
         # Get relative path of directory for pretrained models
         script_directory = os.path.dirname(os.path.abspath(__file__))
 
-        extractor_backbone = "DP3"
+        extractor_backbone = "DP3" #TODO: remove
 
         # Initialize the right feature extractor
         if extractor_backbone == "PointNet":
@@ -72,7 +72,6 @@ class PointCloudCnnFeaturesExtractor(BaseFeaturesExtractor):
             weights_file_path = f"{script_directory}/weights/pointnet2_msg_{prefix}pretrained.pth"
             self._extractor_backbone = PointNet2FeatureExtractor(num_channels=num_channels, features_dim=features_dim, file_path=weights_file_path, device=DEVICE)
         elif extractor_backbone == "DP3":
-            print("EXTRACTOR IS DP3 !!!", flush=True)
             self._extractor_backbone = DP3Extractor(color_channels=image_channels, num_channels=num_channels, features_dim=features_dim)
 
         # One linear layer for auxiliary observations
