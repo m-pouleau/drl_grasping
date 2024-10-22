@@ -76,11 +76,11 @@ class PointCloudCreator:
                 point_show_normal=True,
             )
 
+        # Adjust size of pointcloud to fitting number of points
+        open3d_point_cloud = self.adjust_pointcloud_size(open3d_point_cloud, self._num_points, mode='random')
+
         # Convert open3d point cloud into numpy pointcloud & normalize xyz points to current workspace
         np_pointcloud = self.open3d_pointcloud_to_numpy_pointcloud(open3d_point_cloud=open3d_point_cloud)
-
-        # Sample to fitting number of points
-        np_pointcloud = self.adjust_pointcloud_size(np_pointcloud, self._num_points)
 
         return np_pointcloud
 
@@ -175,22 +175,31 @@ class PointCloudCreator:
         return np_pointcloud
 
 
-    def adjust_pointcloud_size(self, pointcloud, desired_num_points=1024):
+    def adjust_pointcloud_size(self, open3d_point_cloud, desired_num_points=1024, mode='random'):
         '''
         Sample pointcloud, so that it fits the specified number of points
+        Modes: farthest point sampling & random sampling
         '''
-        current_num_points, features = pointcloud.shape
+        # Check if pointcloud needs to be sampled or padded
+        downsample_ratio = desired_num_points / len(open3d_point_cloud.points)
+        if downsample_ratio < 1:
+            # use farthest point sampling to reduce size
+            if mode == 'fps':
+                open3d_point_cloud = open3d_point_cloud.farthest_point_down_sample(desired_num_points)
+            # use random sampling to reduce size
+            elif mode == 'random':
+                # fix rounding error so number of points always ends up exactly desired_num_points
+                expected_num_points = int(downsample_ratio * len(open3d_point_cloud.points))
+                if expected_num_points < desired_num_points:
+                    downsample_ratio = (desired_num_points + 0.5) / len(open3d_point_cloud.points)
+                open3d_point_cloud = open3d_point_cloud.random_down_sample(downsample_ratio)
+        # Padd pointcloud with zero entries if pointcloud is too small
+        elif downsample_ratio > 1:
+            padding_points = np.zeros((desired_num_points - len(open3d_point_cloud.points), 3))
+            updated_points = np.vstack((np.asarray(open3d_point_cloud.points), padding_points))
+            open3d_point_cloud.points = open3d.utility.Vector3dVector(updated_points)
         
-        if current_num_points > desired_num_points:
-            # Randomly sample 1024 rows without replacement
-            sampled_indices = np.random.choice(current_num_points, desired_num_points, replace=False)
-            pointcloud = pointcloud[sampled_indices]
-        elif current_num_points < desired_num_points:
-            # Pad with zeros to make up the difference
-            padding = np.zeros((desired_num_points - current_num_points, features))
-            pointcloud = np.vstack((pointcloud, padding))
-        
-        return pointcloud
+        return open3d_point_cloud
 
 
     def get_workspace_center_and_radius(self):
