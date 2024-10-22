@@ -214,7 +214,7 @@ bash -c "$(wget -qO - https://raw.githubusercontent.com/AndrejOrsula/drl_graspin
 
 ### Clone a Prebuilt Docker Image
 
-Prebuilt Docker images of `drl_grasping` can be pulled directly from [Docker Hub](https://hub.docker.com/repository/docker/andrejorsula/drl_grasping) without needing to build them locally. You can use the following command to manually pull the latest image or one of the previous tagged [Releases](https://github.com/AndrejOrsula/drl_grasping/releases). The average size of images is 25GB (including datasets).
+Prebuilt Docker images of `drl_grasping` can be pulled directly from [Docker Hub](https://hub.docker.com/repository/docker/mpouleau/drl_grasping) without needing to build them locally. You can use the following command to manually pull the latest image or one of the previous tagged [Releases](https://github.com/AndrejOrsula/drl_grasping/releases). The average size of images is 26GB (including datasets).
 
 ```bash
 docker pull mpouleau/drl_grasping:${TAG:-latest}
@@ -269,7 +269,7 @@ Clone this repository recursively and import VCS dependencies. Then install depe
 
 ```bash
 # Clone this repository into your favourite ROS 2 workspace
-git clone --recursive https://github.com/AndrejOrsula/drl_grasping.git
+git clone --recursive https://github.com/mpouleau/drl_grasping.git
 # Install Python requirements
 pip3 install -r drl_grasping/python_requirements.txt
 # Import dependencies

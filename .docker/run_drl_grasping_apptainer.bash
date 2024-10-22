@@ -24,7 +24,7 @@ CUSTOM_VOLUMES=()
 CUSTOM_VOLUMES+=("/etc/localtime:/etc/localtime:ro")
 # Persistent storage of logs
 CUSTOM_VOLUMES+=("$(dirname "${PWD}")/drl_grasping_training_docker:/root/drl_grasping_training")
-# Add directories from AndrejOrsula/drl_grasping
+# Add directories from mpouleau/drl_grasping
 CUSTOM_VOLUMES+=("/tmp/.ignition:/root/.ignition")
 CUSTOM_VOLUMES+=("/tmp/.pcg:/root/.pcg")
 CUSTOM_VOLUMES+=("/tmp/.ros:/root/.ros")
