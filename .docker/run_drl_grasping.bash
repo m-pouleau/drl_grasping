@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TAG="andrejorsula/drl_grasping:latest"
+TAG="mpouleau/drl_grasping:latest"
 
 ## Forward custom volumes and environment variables
 CUSTOM_VOLUMES=()
@@ -62,7 +62,7 @@ GUI_ENVS=(
 CUSTOM_VOLUMES+=("/etc/localtime:/etc/localtime:ro")
 # Persistent storage of logs
 CUSTOM_VOLUMES+=("$(dirname "${PWD}")/drl_grasping_training_docker:/root/drl_grasping_training")
-# Add directories from AndrejOrsula/drl_grasping
+# Add directories from mpouleau/drl_grasping
 CUSTOM_VOLUMES+=("${PWD}/visualizations:/root/visualizations")
 CUSTOM_VOLUMES+=("${PWD}/scripts:/root/ws/src/drl_grasping/scripts")
 CUSTOM_VOLUMES+=("${PWD}/launch:/root/ws/src/drl_grasping/launch")

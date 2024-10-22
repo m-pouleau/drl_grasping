@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: andrejorsula/drl_grasping:latest
+From: mpouleau/drl_grasping:latest
 
 %post
   # Ensure the entrypoint script is in place and executable

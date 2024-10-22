@@ -217,7 +217,7 @@ bash -c "$(wget -qO - https://raw.githubusercontent.com/AndrejOrsula/drl_graspin
 Prebuilt Docker images of `drl_grasping` can be pulled directly from [Docker Hub](https://hub.docker.com/repository/docker/andrejorsula/drl_grasping) without needing to build them locally. You can use the following command to manually pull the latest image or one of the previous tagged [Releases](https://github.com/AndrejOrsula/drl_grasping/releases). The average size of images is 25GB (including datasets).
 
 ```bash
-docker pull andrejorsula/drl_grasping:${TAG:-latest}
+docker pull mpouleau/drl_grasping:${TAG:-latest}
 ```
 
 ### (Optional) Build a New Image
@@ -230,16 +230,14 @@ It is also possible to build the Docker image locally using the included [Docker
 
 ### Run a Docker Container
 
-For simplicity, please run `drl_grasping` Docker containers using the included [`run.bash`](./.docker/run.bash) script shown below (arguments are optional). It enables NVIDIA GPUs and GUI interface while automatically mounting the necessary volumes (e.g. persistent logging) and setting environment variables (e.g. synchronization of middleware communication with the host). This script will always print the corresponding low-level `docker run ...` command for your reference.
+For simplicity, please run `drl_grasping` Docker containers using the included [`run_drl_grasping.bash`](./.docker/run_drl_grasping.bash) script shown below (arguments are optional). It enables NVIDIA GPUs and GUI interface while automatically mounting the necessary volumes (e.g. persistent logging) and setting environment variables (e.g. synchronization of middleware communication with the host). This script will always print the corresponding low-level `docker run ...` command for your reference.
 
 ```bash
 # Execute script inside a cloned repository
-.docker/run.bash ${TAG:-latest} ${CMD}
-# (Alternative) Execute script from URL
-bash -c "$(wget -qO - https://raw.githubusercontent.com/AndrejOrsula/drl_grasping/master/.docker/run.bash)" -- ${TAG:-latest} ${CMD}
+.docker/run_drl_grasping.bash ${TAG:-latest} ${CMD}
 ```
 
-The network communication of `drl_grasping` within this Docker container is configured based on the ROS 2 [`ROS_DOMAIN_ID`](https://docs.ros.org/en/galactic/Concepts/About-Domain-ID.html) environment variable, which can be set via `ROS_DOMAIN_ID={0...101} .docker/run.bash ${TAG:-latest} ${CMD}`. By default (`ROS_DOMAIN_ID=0`), external communication is restricted and multicast is disabled. With `ROS_DOMAIN_ID=42`, the communication remains restricted to `localhost` with multicast enabled, enabling monitoring of communication outside the container but within the same system. Using `ROS_DOMAIN_ID=69` will use the default network interface and multicast settings, which can enable monitoring of communication within the same LAN. All other `ROS_DOMAIN_ID`s share the default behaviour and can be employed to enable communication partitioning for running of multiple `drl_grasping` instances.
+The network communication of `drl_grasping` within this Docker container is configured based on the ROS 2 [`ROS_DOMAIN_ID`](https://docs.ros.org/en/galactic/Concepts/About-Domain-ID.html) environment variable, which can be set via `ROS_DOMAIN_ID={0...101} .docker/run_drl_grasping.bash ${TAG:-latest} ${CMD}`. By default (`ROS_DOMAIN_ID=0`), external communication is restricted and multicast is disabled. With `ROS_DOMAIN_ID=42`, the communication remains restricted to `localhost` with multicast enabled, enabling monitoring of communication outside the container but within the same system. Using `ROS_DOMAIN_ID=69` will use the default network interface and multicast settings, which can enable monitoring of communication within the same LAN. All other `ROS_DOMAIN_ID`s share the default behaviour and can be employed to enable communication partitioning for running of multiple `drl_grasping` instances.
 
 </details>
 
