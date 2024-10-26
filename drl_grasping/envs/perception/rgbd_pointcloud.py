@@ -278,7 +278,10 @@ class RGBDPointCloudCreator:
             padding_points = np.zeros((desired_num_points - len(open3d_point_cloud.points), 3))
             updated_points = np.vstack((np.asarray(open3d_point_cloud.points), padding_points))
             open3d_point_cloud.points = open3d.utility.Vector3dVector(updated_points)
-        
+            if self._include_color or self._include_intensity:
+                updated_colors = np.vstack((np.asarray(open3d_point_cloud.colors), padding_points))
+                open3d_point_cloud.colors = open3d.utility.Vector3dVector(updated_colors)
+
         return open3d_point_cloud
 
 
