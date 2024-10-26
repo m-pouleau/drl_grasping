@@ -101,6 +101,9 @@ class PointCloudCreator:
             self._node.get_logger().warn(
                 "Point cloud has no points. Pre-processing skipped."
             )
+            open3d_point_cloud.points = open3d.utility.Vector3dVector(np.zeros((self._num_points, 3)))
+            open3d_point_cloud.colors = open3d.utility.Vector3dVector(np.zeros((self._num_points, 3)))
+
             return open3d_point_cloud
 
         # Get transformation from camera to robot and use it to transform point
@@ -124,6 +127,9 @@ class PointCloudCreator:
             self._node.get_logger().warn(
                 "Point cloud has no points after cropping it to the workspace volume."
             )
+            open3d_point_cloud.points = open3d.utility.Vector3dVector(np.zeros((self._num_points, 3)))
+            open3d_point_cloud.colors = open3d.utility.Vector3dVector(np.zeros((self._num_points, 3)))
+
             return open3d_point_cloud
 
         # Estimate normal vector for each cloud point and orient these towards the camera
