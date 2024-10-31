@@ -60,10 +60,10 @@ ROBOT_MODEL="lunalab_summit_xl_gen"
 # ENV="GraspPlanetary-PointNet2WithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-DP3WithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-OctreeWithColor-Gazebo-v0"
-ENV="GraspPlanetary-PointNetWithColor-Gazebo-v0"
+# ENV="GraspPlanetary-PointNetWithColor-Gazebo-v0"
 # ENV="GraspPlanetary-RGBDPointNetWithColor-Gazebo-v0"
 # ENV="GraspPlanetary-PointNet2WithColor-Gazebo-v0"
-# ENV="GraspPlanetary-DP3WithColor-Gazebo-v0"
+ENV="GraspPlanetary-DP3WithColor-Gazebo-v0"
 # ENV="GraspPlanetary-RGBD-DP3WithColor-Gazebo-v0"
 
 ## Selection of RL algorithm

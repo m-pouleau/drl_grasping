@@ -12,21 +12,20 @@ class DP3Extractor(nn.Module):
         super(DP3Extractor, self).__init__()
         self.used_channels = 6 if color_channels == 3 else 3
         self.num_channels = num_channels
-        self.block_channels = [64, 128, 256, 512]
+        self.block_channels = [64, 128, 256] # TODO: add 512
         self.use_layernorm = True
 
-        self.mlp = nn.Sequential(
-            nn.Linear(self.used_channels, self.block_channels[0]),
-            nn.LayerNorm(self.block_channels[0]) if self.use_layernorm else nn.Identity(),
-            nn.ReLU(),
-            nn.Linear(self.block_channels[0], self.block_channels[1]),
-            nn.LayerNorm(self.block_channels[1]) if self.use_layernorm else nn.Identity(),
-            nn.ReLU(),
-            nn.Linear(self.block_channels[1], self.block_channels[2]),
-            nn.LayerNorm(self.block_channels[2]) if self.use_layernorm else nn.Identity(),
-            nn.ReLU(),
-            nn.Linear(self.block_channels[2], self.block_channels[3]),
-        )
+        layers = []
+        input_dim = self.used_channels
+
+        for output_dim in self.block_channels:
+            layers.append(nn.Linear(input_dim, output_dim))
+            if self.use_layernorm:
+                layers.append(nn.LayerNorm(output_dim))
+            layers.append(nn.ReLU())
+            input_dim = output_dim  # Update input_dim for the next layer
+
+        self.mlp = nn.Sequential(*layers)
 
         if self.use_layernorm:
             self.final_projection = nn.Sequential(
