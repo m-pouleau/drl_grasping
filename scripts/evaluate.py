@@ -145,7 +145,7 @@ def main(args: Dict):
                 successes.append(infos[0].get("is_success", False))
                 if infos[0].get("is_success"):
                     success_episode_lengths.append(ep_len)
-                print(f"Current success rate: {100 * np.mean(successes):.2f}%")
+                print(f"Current success rate: {100 * np.mean(successes):.2f}%", flush=True)
             episode_reward = 0.0
             ep_len = 0
             state = None

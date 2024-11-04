@@ -60,10 +60,10 @@ ROBOT_MODEL="lunalab_summit_xl_gen"
 # ENV="GraspPlanetary-PointNet2WithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-DP3WithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-OctreeWithColor-Gazebo-v0"
-ENV="GraspPlanetary-PointNetWithColor-Gazebo-v0"
+# ENV="GraspPlanetary-PointNetWithColor-Gazebo-v0"
 # ENV="GraspPlanetary-RGBDPointNetWithColor-Gazebo-v0"
 # ENV="GraspPlanetary-PointNet2WithColor-Gazebo-v0"
-# ENV="GraspPlanetary-DP3WithColor-Gazebo-v0"
+ENV="GraspPlanetary-DP3WithColor-Gazebo-v0"
 # ENV="GraspPlanetary-RGBD-DP3WithColor-Gazebo-v0"
 
 ## Selection of RL algorithm
@@ -91,8 +91,8 @@ LAUNCH_ARGS=(
     "stochastic:=false"
     "n_episodes:=200"
     "load_best:=false"
-    "enable_rviz:=true"
-    "no_render:=true"
+    "enable_rviz:=false"
+    "no_render:=false"
     "log_level:=error"
 )
 if [[ -n ${LOAD_CHECKPOINT} ]]; then

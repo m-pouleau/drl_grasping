@@ -12,7 +12,7 @@ class DP3Extractor(nn.Module):
         super(DP3Extractor, self).__init__()
         self.used_channels = 6 if color_channels == 3 else 3
         self.num_channels = num_channels
-        self.block_channels = [64, 128, 256] # TODO: add 512
+        self.block_channels = [64, 128, 256, 512]
         self.use_layernorm = True
 
         layers = []
