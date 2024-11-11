@@ -49,6 +49,8 @@ class GraspCurriculum(
         lift_required_height_min: Optional[float] = None,
         lift_required_height_max: Optional[float] = None,
         lift_required_height_max_threshold: Optional[float] = None,
+        growing_persistent_reward: bool = False,
+        persistent_reward_doubling_frequency: int = None,
         **kwargs,
     ):
 
@@ -158,8 +160,17 @@ class GraspCurriculum(
                 target_value=lift_required_height_max,
                 target_value_threshold=lift_required_height_max_threshold,
             )
+        self.__growing_persistent_reward = growing_persistent_reward
+        if self.__growing_persistent_reward:
+            self.__persistent_reward_counter = 0
+            self.__persistent_reward_doubling_frequency = persistent_reward_doubling_frequency
 
     def get_reward(self) -> Reward:
+
+        if self.__growing_persistent_reward:
+            self.__persistent_reward_counter += 1
+            if self.__persistent_reward_counter % self.__persistent_reward_doubling_frequency == 0:
+                self.__persistent_reward_each_step *= 2
 
         if self.__enable_stage_reward_curriculum:
             # Try to get reward from each stage
