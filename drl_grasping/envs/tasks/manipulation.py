@@ -221,6 +221,8 @@ class Manipulation(Task, Node, abc.ABC):
         self.__task_parameter_overrides: Dict[str, any] = {}
         self._randomizer_parameter_overrides: Dict[str, any] = {}
 
+        self._current_mode = 'training'
+
     def create_spaces(self) -> Tuple[ActionSpace, ObservationSpace]:
 
         action_space = self.create_action_space()
@@ -712,3 +714,13 @@ class Manipulation(Task, Node, abc.ABC):
                 )
 
         self.__task_parameter_overrides.clear()
+
+    @property    
+    def get_mode(self):
+        """Get the mode of the environment ('training' or 'evaluation')"""
+        return self._current_mode
+
+    @get_mode.setter
+    def set_mode(self, mode):
+        """Set the mode of the environment ('training' or 'evaluation')"""
+        self._current_mode = mode

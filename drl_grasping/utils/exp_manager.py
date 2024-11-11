@@ -44,6 +44,7 @@ from drl_grasping.utils.callbacks import (
     CheckpointCallbackWithReplayBuffer,
     SaveVecNormalizeCallback,
     TrialEvalCallback,
+    CustomEvalCallback
 )
 from drl_grasping.utils.hyperparams_opt import HYPERPARAMS_SAMPLER
 from drl_grasping.utils.utils import (
@@ -491,7 +492,7 @@ class ExperimentManager(object):
             save_vec_normalize = SaveVecNormalizeCallback(
                 save_freq=1, save_path=self.params_path
             )
-            eval_callback = EvalCallback(
+            eval_callback = CustomEvalCallback(
                 eval_env=self._env,
                 # TODO: Use separate environment(s) for evaluation
                 # self.create_envs(self.n_eval_envs, eval_env=True),

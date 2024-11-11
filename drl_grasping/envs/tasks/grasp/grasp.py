@@ -36,9 +36,14 @@ class Grasp(Manipulation, abc.ABC):
             **kwargs,
         )
 
-        self.curriculum = GraspCurriculum(
+        self.train_curriculum = GraspCurriculum(
             task=self,
             **kwargs,
+        )
+        eval_kwargs = {**kwargs, 'persistent_reward_each_step': -2.0}
+        self.eval_curriculum = GraspCurriculum(
+            task=self,
+            **eval_kwargs,
         )
 
         # Additional parameters
@@ -218,16 +223,22 @@ class Grasp(Manipulation, abc.ABC):
         return observation
 
     def get_reward(self) -> Reward:
-
-        return self.curriculum.get_reward()
+        if self._current_mode == 'training':
+            return self.train_curriculum.get_reward()
+        else:
+            return self.eval_curriculum.get_reward()
 
     def is_done(self) -> bool:
-
-        return self.curriculum.is_done()
+        if self._current_mode == 'training':
+            return self.train_curriculum.is_done()
+        else:
+            return self.eval_curriculum.is_done()
 
     def get_info(self) -> Dict:
-
-        info = self.curriculum.get_info()
+        if self._current_mode == 'training':
+            info = self.train_curriculum.get_info()
+        else:
+            info = self.eval_curriculum.get_info()
 
         if self.__preload_replay_buffer:
             info.update({"actual_actions": self.__actual_actions})
@@ -237,7 +248,10 @@ class Grasp(Manipulation, abc.ABC):
     def reset_task(self):
 
         Manipulation.reset_task(self)
-        self.curriculum.reset_task()
+        if self._current_mode == 'training':
+            return self.train_curriculum.reset_task()
+        else:
+            return self.eval_curriculum.reset_task()
 
     # Helper functions #
     def get_touched_objects(self) -> List[str]:

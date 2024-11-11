@@ -296,3 +296,27 @@ class CurriculumLoggerCallback(BaseCallback):
                     else:
                         exclude = None
                     self.logger.record(key=info_key, value=info_value, exclude=exclude)
+
+
+class CustomEvalCallback(EvalCallback):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.base_env = self.eval_env.envs[0]
+        while hasattr(self.base_env, 'env'):
+            self.base_env = self.base_env.env
+        self.base_env = self.base_env.task
+
+    def _on_step(self) -> bool:
+        # Evaluate the model after the required steps
+        if self.eval_freq > 0 and self.n_calls % self.eval_freq == 0:
+            # Switch to evaluation mode at the start of evaluation
+            self.base_env.set_mode = 'evaluation'
+            # Call the original eval logic to evaluate the agent
+            continue_training = super()._on_step()
+            # Switch back to training mode at the end of evaluation
+            self.base_env.set_mode = 'training'
+
+        else:
+            continue_training = super()._on_step()
+        
+        return continue_training
