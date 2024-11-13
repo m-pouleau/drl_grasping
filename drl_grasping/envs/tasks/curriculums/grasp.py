@@ -146,7 +146,6 @@ class GraspCurriculum(
         lift_required_height += task.robot_model_class.BASE_LINK_Z_OFFSET
         lift_required_height_min += task.robot_model_class.BASE_LINK_Z_OFFSET
         lift_required_height_max += task.robot_model_class.BASE_LINK_Z_OFFSET
-        lift_required_height_max_threshold += task.robot_model_class.BASE_LINK_Z_OFFSET
 
         self.__lift_required_height_curriculum_enabled = (
             not lift_required_height_min == lift_required_height_max
@@ -274,6 +273,7 @@ class GraspCurriculum(
                 f"[Curriculum] Touched objects: {touched_objects}"
             )
             self.stages_completed_this_episode[GraspStage.TOUCH] = True
+            self._episode_first_touched_objects.extend(touched_objects)
             return self.__stages_base_reward
         else:
             return 0.0
@@ -281,13 +281,15 @@ class GraspCurriculum(
     def get_reward_GRASP(self, grasped_objects: List[str], **kwargs) -> float:
 
         if grasped_objects:
-            self.__task.get_logger().info(
-                f"[Curriculum] Grasped objects: {grasped_objects}"
-            )
-            self.stages_completed_this_episode[GraspStage.GRASP] = True
-            return self.__stages_base_reward
-        else:
-            return 0.0
+            for item in self._episode_first_touched_objects:
+                if item in set(grasped_objects):
+                    self.__task.get_logger().info(f"[Curriculum] Grasped objects: {grasped_objects}")
+                    self.stages_completed_this_episode[GraspStage.GRASP] = True
+                    self._episode_first_grasped_objects.append(item)
+            if self.stages_completed_this_episode[GraspStage.GRASP]:
+                return self.__stages_base_reward
+
+        return 0.0
 
     def get_reward_LIFT(
         self,
@@ -300,17 +302,18 @@ class GraspCurriculum(
             return 0.0
 
         for grasped_object in grasped_objects:
-            grasped_object_height = object_positions[grasped_object][2]
+            if grasped_object in self._episode_first_grasped_objects:
+                grasped_object_height = object_positions[grasped_object][2]
 
-            self.__task.get_logger().debug(
-                f"[Curriculum] Height of grasped object '{grasped_objects}': {grasped_object_height}"
-            )
-            if grasped_object_height > self.lift_required_height:
-                self.__task.get_logger().info(
-                    f"[Curriculum] Lifted object: {grasped_object}"
+                self.__task.get_logger().debug(
+                    f"[Curriculum] Height of grasped object '{grasped_objects}': {grasped_object_height}"
                 )
-                self.stages_completed_this_episode[GraspStage.LIFT] = True
-                return self.__stages_base_reward
+                if grasped_object_height > self.lift_required_height:
+                    self.__task.get_logger().info(
+                        f"[Curriculum] Lifted object: {grasped_object}"
+                    )
+                    self.stages_completed_this_episode[GraspStage.LIFT] = True
+                    return self.__stages_base_reward
 
         return 0.0
 

@@ -96,6 +96,8 @@ class StageRewardCurriculum:
 
         self.__episode_succeeded: bool = False
         self.__episode_failed: bool = False
+        self._episode_first_touched_objects = []
+        self._episode_first_grasped_objects = []
 
     def get_reward(self, only_last_stage: bool = False, **kwargs) -> Reward:
 
@@ -208,6 +210,8 @@ class StageRewardCurriculum:
             self.__stages_rewards_this_episode, 0.0
         )
         self.__stages_rewards_this_episode[self.PERSISTENT_ID] = 0.0
+        self._episode_first_touched_objects = []
+        self._episode_first_grasped_objects = []
         self.__episode_succeeded = False
         self.__episode_failed = False
 
@@ -672,10 +676,7 @@ class AttributeCurriculum:
 
         scale = min(
             1.0,
-            max(
-                self.__initial_value,
-                self.__success_rate_impl.success_rate / self.__target_value_threshold,
-            ),
+            self.__success_rate_impl.success_rate / self.__target_value_threshold,
         )
 
         self.__current_value = self.__initial_value + (scale * self.__value_diff)
