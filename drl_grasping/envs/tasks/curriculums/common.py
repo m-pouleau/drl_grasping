@@ -96,6 +96,7 @@ class StageRewardCurriculum:
 
         self.__episode_succeeded: bool = False
         self.__episode_failed: bool = False
+        self._episode_first_reached_objects = []
         self._episode_first_touched_objects = []
         self._episode_first_grasped_objects = []
 
@@ -210,6 +211,7 @@ class StageRewardCurriculum:
             self.__stages_rewards_this_episode, 0.0
         )
         self.__stages_rewards_this_episode[self.PERSISTENT_ID] = 0.0
+        self._episode_first_reached_objects = []
         self._episode_first_touched_objects = []
         self._episode_first_grasped_objects = []
         self.__episode_succeeded = False

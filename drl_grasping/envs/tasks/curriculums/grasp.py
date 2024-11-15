@@ -250,18 +250,14 @@ class GraspCurriculum(
         if not object_positions:
             return 0.0
 
-        nearest_object_distance = distance_to_nearest_point(
-            origin=ee_position, points=list(object_positions.values())
-        )
+        reached_objects = self.__task.get_reached_objects(unique_reached_object=False)
 
-        self.__task.get_logger().debug(
-            f"[Curriculum] Distance to nearest object: {nearest_object_distance}"
-        )
-        if nearest_object_distance < self.reach_required_distance:
+        if reached_objects:
             self.__task.get_logger().info(
                 f"[Curriculum] An object is now closer than the required distance of {self.reach_required_distance}"
             )
             self.stages_completed_this_episode[GraspStage.REACH] = True
+            self._episode_first_reached_objects.extend(reached_objects)
             return self.__stages_base_reward
         else:
             return 0.0
@@ -269,14 +265,15 @@ class GraspCurriculum(
     def get_reward_TOUCH(self, touched_objects: List[str], **kwargs) -> float:
 
         if touched_objects:
-            self.__task.get_logger().info(
-                f"[Curriculum] Touched objects: {touched_objects}"
-            )
-            self.stages_completed_this_episode[GraspStage.TOUCH] = True
-            self._episode_first_touched_objects.extend(touched_objects)
-            return self.__stages_base_reward
-        else:
-            return 0.0
+            for item in self._episode_first_reached_objects:
+                if item in set(touched_objects):
+                    self.__task.get_logger().info(f"[Curriculum] Touched objects: {touched_objects}")
+                    self.stages_completed_this_episode[GraspStage.TOUCH] = True
+                    self._episode_first_touched_objects.append(item)
+            if self.stages_completed_this_episode[GraspStage.TOUCH]:
+                return self.__stages_base_reward
+
+        return 0.0
 
     def get_reward_GRASP(self, grasped_objects: List[str], **kwargs) -> float:
 
@@ -298,7 +295,7 @@ class GraspCurriculum(
         **kwargs,
     ) -> float:
 
-        if not (grasped_objects or object_positions):
+        if not object_positions:
             return 0.0
 
         for grasped_object in grasped_objects:
