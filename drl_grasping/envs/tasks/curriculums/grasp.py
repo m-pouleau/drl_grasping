@@ -51,8 +51,16 @@ class GraspCurriculum(
         lift_required_height_max_threshold: Optional[float] = None,
         growing_persistent_reward: bool = False,
         persistent_reward_doubling_frequency: int = None,
+        incremental_lift_reward: bool = True, #TODO: add to __init__.py file
+        lift_required_height_ratio: Optional[float] = 0.4, # ratio between first threshold height & max required lift height -> TODO: add to __init__.py file
         **kwargs,
     ):
+        if incremental_lift_reward:
+            # set reward function for incremental case
+            self.get_reward_LIFT = self.get_reward_LIFT_incremental
+        else:
+            # set reward function for non-incremental case
+            self.get_reward_LIFT = self.get_reward_LIFT_plain
 
         StageRewardCurriculum.__init__(self, curriculum_stage=GraspStage, **kwargs)
         SuccessRateImpl.__init__(self, **kwargs)
@@ -148,7 +156,7 @@ class GraspCurriculum(
         lift_required_height_max += task.robot_model_class.BASE_LINK_Z_OFFSET
 
         self.__lift_required_height_curriculum_enabled = (
-            not lift_required_height_min == lift_required_height_max
+            not lift_required_height_min == lift_required_height_max and not incremental_lift_reward
         )
         if self.__lift_required_height_curriculum_enabled:
             self.__lift_required_height_curriculum = AttributeCurriculum(
@@ -159,6 +167,23 @@ class GraspCurriculum(
                 target_value=lift_required_height_max,
                 target_value_threshold=lift_required_height_max_threshold,
             )
+
+        # Set variables for incremental LIFT reward (if enabled) & assign correct LIFT function
+        if incremental_lift_reward:
+            # number of incremental steps (set so that increment every 10% of max required lift height)
+            lift_n_incremental_steps = int(10 * (1 - lift_required_height_ratio))
+            # set height required for episode success to maximal height
+            self.lift_required_height = lift_required_height_max
+            # height of first reward threshold
+            lift_start_increment_height = lift_required_height_ratio * (lift_required_height_max -  task.robot_model_class.BASE_LINK_Z_OFFSET)
+            lift_start_increment_height += task.robot_model_class.BASE_LINK_Z_OFFSET
+            # define thresholds of heights, for the different reward increments
+            self.height_thresholds = [lift_start_increment_height + i * (lift_required_height_max - lift_start_increment_height) / (lift_n_incremental_steps) for i in range(lift_n_incremental_steps+1)]
+            # set reward for reaching first height increment
+            self.lift_min_height_reward = self.__stages_base_reward * lift_required_height_ratio
+            # set reward for every following increment
+            self.lift_increment_reward = self.__stages_base_reward * (1 - lift_required_height_ratio) / (lift_n_incremental_steps)
+
         self.__growing_persistent_reward = growing_persistent_reward
         if self.__growing_persistent_reward:
             self.__persistent_reward_counter = 0
@@ -240,6 +265,7 @@ class GraspCurriculum(
 
         self.update_success_rate(is_success=False)
 
+
     def get_reward_REACH(
         self,
         object_positions: Dict[str, Tuple[float, float, float]],
@@ -257,6 +283,7 @@ class GraspCurriculum(
         else:
             return 0.0
 
+
     def get_reward_TOUCH(self, touched_objects: List[str], **kwargs) -> float:
 
         if touched_objects:
@@ -269,6 +296,7 @@ class GraspCurriculum(
                 return self.__stages_base_reward
 
         return 0.0
+
 
     def get_reward_GRASP(self, grasped_objects: List[str], **kwargs) -> float:
 
@@ -283,7 +311,8 @@ class GraspCurriculum(
 
         return 0.0
 
-    def get_reward_LIFT(
+
+    def get_reward_LIFT_plain(
         self,
         object_positions: Dict[str, Tuple[float, float, float]],
         grasped_objects: List[str],
@@ -308,6 +337,51 @@ class GraspCurriculum(
                     return self.__stages_base_reward
 
         return 0.0
+
+
+    def get_reward_LIFT_incremental(
+        self,
+        object_positions: Dict[str, Tuple[float, float, float]],
+        grasped_objects: List[str],
+        **kwargs,
+    ) -> float:
+
+        reward = 0.0
+
+        if not object_positions:
+            return reward
+
+        for grasped_object in grasped_objects:
+            if grasped_object in self._episode_first_grasped_objects:
+                grasped_object_height = object_positions[grasped_object][2]
+
+                self.__task.get_logger().debug(
+                    f"[Curriculum] Height of grasped object '{grasped_objects}': {grasped_object_height}"
+                )
+
+                # Iterate through thresholds to check for newly reached ones
+                for i, threshold in enumerate(self.height_thresholds):
+                    if grasped_object_height >= threshold:
+                        if i not in self._attained_thresholds:
+                            if i == 0:
+                                reward += self.lift_min_height_reward
+                            else:
+                                reward += self.lift_increment_reward
+                            # Mark the threshold as reached
+                            self._attained_thresholds.add(i)
+                            self.__task.get_logger().info(f"[Curriculum] Threshold {threshold}m reached for object: {grasped_object}")
+                    else:
+                        # Break early if the current threshold not reached
+                        break
+
+                if grasped_object_height > self.lift_required_height:
+                    self.__task.get_logger().info(
+                        f"[Curriculum] Lifted object: {grasped_object}"
+                    )
+                    self.stages_completed_this_episode[GraspStage.LIFT] = True
+
+        return reward
+
 
     def get_persistent_reward(
         self, object_positions: Dict[str, Tuple[float, float, float]], **kwargs
