@@ -50,9 +50,9 @@ class GraspCurriculum(
         lift_required_height_max: Optional[float] = None,
         lift_required_height_max_threshold: Optional[float] = None,
         growing_persistent_reward: bool = False,
-        persistent_reward_doubling_frequency: int = None,
-        incremental_lift_reward: bool = True, #TODO: add to __init__.py file
-        lift_required_height_ratio: Optional[float] = 0.4, # ratio between first threshold height & max required lift height -> TODO: add to __init__.py file
+        persistent_reward_doubling_frequency: Optional[int] = None,
+        incremental_lift_reward: bool = False,
+        lift_required_height_ratio: Optional[float] = None,
         **kwargs,
     ):
         if incremental_lift_reward:

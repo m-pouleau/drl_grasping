@@ -812,6 +812,10 @@ GRASP_KWARGS_CURRICULUM: Dict[str, any] = {
     "max_object_count_success_rate_threshold": 0.6,
     "arm_stuck_n_steps": 20,
     "arm_stuck_min_joint_difference_norm": np.pi / 32,
+    "growing_persistent_reward": False, #TODO: change to True
+    "persistent_reward_doubling_frequency": 125000,
+    "incremental_lift_reward": True,
+    "lift_required_height_ratio": 0.4, # ratio between first threshold height & max required lift height
 }
 
 # Task
@@ -1478,6 +1482,10 @@ GRASP_PLANETARY_KWARGS_CURRICULUM: Dict[str, any] = {
     "max_object_count_success_rate_threshold": 0.33,
     "arm_stuck_n_steps": 20,
     "arm_stuck_min_joint_difference_norm": np.pi / 32,
+    "growing_persistent_reward": False, #TODO: change to True
+    "persistent_reward_doubling_frequency": None, #TODO: change to 125000
+    "incremental_lift_reward": True,
+    "lift_required_height_ratio": 0.4, # ratio between first threshold height & max required lift height
 }
 
 # Task

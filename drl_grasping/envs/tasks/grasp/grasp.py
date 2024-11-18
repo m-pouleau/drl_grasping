@@ -1,7 +1,7 @@
 import abc
 import itertools
 from collections import deque
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import gym
 import numpy as np
@@ -27,6 +27,8 @@ class Grasp(Manipulation, abc.ABC):
         full_3d_orientation: bool,
         obs_n_stacked: int = 1,
         preload_replay_buffer: bool = False,
+        growing_persistent_reward: bool = False,
+        persistent_reward_doubling_frequency: Optional[int] = None,
         **kwargs,
     ):
 
@@ -38,8 +40,8 @@ class Grasp(Manipulation, abc.ABC):
 
         self.train_curriculum = GraspCurriculum(
             task=self,
-            growing_persistent_reward = True,
-            persistent_reward_doubling_frequency = 125000,
+            growing_persistent_reward = growing_persistent_reward,
+            persistent_reward_doubling_frequency = persistent_reward_doubling_frequency,
             **kwargs,
         )
         self.eval_curriculum = GraspCurriculum(
