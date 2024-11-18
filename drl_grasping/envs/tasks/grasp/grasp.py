@@ -255,7 +255,7 @@ class Grasp(Manipulation, abc.ABC):
             return self.eval_curriculum.reset_task()
 
     # Helper functions #
-    def get_reached_objects(self, unique_reached_object=False) -> List[str]:
+    def get_reached_objects(self) -> List[str]:
         """
         Returns list of all objects that are in reach of the gripper center. -> for now unused, can be easily implemented
         """
@@ -267,20 +267,13 @@ class Grasp(Manipulation, abc.ABC):
         ee_position=self.get_ee_position()
         object_positions=self.get_object_positions()
 
-        if unique_reached_object:
-            # Get nearest distance to gripper center
-            nearest_object_distance = distance_to_nearest_point(origin=ee_position, points=list(object_positions.values()))
-            # check if distance is under threshold
-            if nearest_object_distance < self.train_curriculum.reach_required_distance:
-                # get indice of nearest point and add it to list of reached objects
-                nearest_object_indice = index_of_nearest_point(origin=ee_position, points=list(object_positions.values()))
-                reached_objects.append(self.object_names[nearest_object_indice])
-        else:
-            # get distances of objects to gripper center 
-            distance_to_ee = get_distances_to_point(origin=ee_position, points=list(object_positions.values()))
-            # get indices of objects in reaching range and add their names to list of reached objects
-            reached_objects_indices = np.where(distance_to_ee < self.train_curriculum.reach_required_distance)[0]
-            reached_objects.extend([self.object_names[idx] for idx in reached_objects_indices])
+        # Get nearest distance to gripper center
+        nearest_object_distance = distance_to_nearest_point(origin=ee_position, points=list(object_positions.values()))
+        # check if distance is under threshold
+        if nearest_object_distance < self.train_curriculum.reach_required_distance:
+            # get indice of nearest point and add it to list of reached objects
+            nearest_object_indice = index_of_nearest_point(origin=ee_position, points=list(object_positions.values()))
+            reached_objects.append(self.object_names[nearest_object_indice])
 
         return reached_objects
 

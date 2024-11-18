@@ -175,8 +175,8 @@ class GraspCurriculum(
             # Try to get reward from each stage
             return StageRewardCurriculum.get_reward(
                 self,
-                ee_position=self.__task.get_ee_position(),
                 object_positions=self.__task.get_object_positions(),
+                reached_objects=self.__task.get_reached_objects(),
                 touched_objects=self.__task.get_touched_objects(),
                 grasped_objects=self.__task.get_grasped_objects(),
             )
@@ -242,17 +242,12 @@ class GraspCurriculum(
 
     def get_reward_REACH(
         self,
-        ee_position: Tuple[float, float, float],
         object_positions: Dict[str, Tuple[float, float, float]],
+        reached_objects: List[str],
         **kwargs,
     ) -> float:
 
-        if not object_positions:
-            return 0.0
-
-        reached_objects = self.__task.get_reached_objects(unique_reached_object=False)
-
-        if reached_objects:
+        if reached_objects and object_positions:
             self.__task.get_logger().info(
                 f"[Curriculum] An object is now closer than the required distance of {self.reach_required_distance}"
             )
