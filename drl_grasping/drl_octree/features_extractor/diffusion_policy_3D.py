@@ -29,7 +29,7 @@ class DP3Extractor(nn.Module):
 
         if self.use_layernorm:
             self.final_projection = nn.Sequential(
-                nn.Linear(self.block_channels[-1], features_dim),
+                nn.Linear(self.block_channels[-1]*2, features_dim),
                 nn.LayerNorm(features_dim)
             )
         else:
