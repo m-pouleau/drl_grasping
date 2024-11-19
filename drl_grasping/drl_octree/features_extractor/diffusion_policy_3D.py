@@ -12,7 +12,7 @@ class DP3Extractor(nn.Module):
         super(DP3Extractor, self).__init__()
         self.used_channels = 6 if color_channels == 3 else 3
         self.num_channels = num_channels
-        self.block_channels = [64, 128, 256, 512]
+        self.block_channels = [64, 128, 256]
         self.use_layernorm = True
 
         layers = []
@@ -33,7 +33,7 @@ class DP3Extractor(nn.Module):
                 nn.LayerNorm(features_dim)
             )
         else:
-            self.final_projection = nn.Linear(self.block_channels[-1], features_dim)
+            self.final_projection = nn.Linear(self.block_channels[-1]*2, features_dim)
 
     def forward(self, x_obs):
     	# Extracting point-wise feature like in segmentation network
@@ -49,7 +49,11 @@ class DP3Extractor(nn.Module):
         x = self.mlp(x) # Shape: (k, n, 512)
 
         # Max Pooling over points -> get strongest local features (good for edge detection)
-        x = torch.max(x, dim=1)[0]  # Shape: (k, 512)
+        max_pool = torch.max(x, dim=1)[0]  # Shape: (k, 256)
+        # Average Pooling over points -> get understanding of global features (overall understanding of scene)
+        avg_pool = torch.mean(x, dim=1)  # Shape: (k, 256)
+        # Concatenate max pooled and average pooled features along the last dimension
+        x = torch.cat([max_pool, avg_pool], dim=1)  # Shape: (k, 512)
 
         # Apply final layer after pooling                
         x = self.final_projection(x)  # Shape: (k, 248)
