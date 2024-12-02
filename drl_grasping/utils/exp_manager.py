@@ -136,6 +136,11 @@ class ExperimentManager(object):
         self.continue_training = trained_agent.endswith(".zip") and os.path.isfile(
             trained_agent
         )
+        if self.continue_training:
+            timesteps = int(trained_agent.split('/')[-1].split('_')[2])
+            self.env_kwargs['Starting_Timestep'] = timesteps
+        else:
+            self.env_kwargs['Starting_Timestep'] = 0
         self.truncate_last_trajectory = truncate_last_trajectory
 
         self.preload_replay_buffer = preload_replay_buffer

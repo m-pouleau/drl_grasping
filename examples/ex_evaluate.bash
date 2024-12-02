@@ -60,10 +60,10 @@ ROBOT_MODEL="lunalab_summit_xl_gen"
 # ENV="GraspPlanetary-PointNet2WithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-DP3WithIntensity-Gazebo-v0"
 # ENV="GraspPlanetary-OctreeWithColor-Gazebo-v0"
-# ENV="GraspPlanetary-PointNetWithColor-Gazebo-v0"
+ENV="GraspPlanetary-PointNetWithColor-Gazebo-v0"
 # ENV="GraspPlanetary-RGBDPointNetWithColor-Gazebo-v0"
 # ENV="GraspPlanetary-PointNet2WithColor-Gazebo-v0"
-ENV="GraspPlanetary-DP3WithColor-Gazebo-v0"
+# ENV="GraspPlanetary-DP3WithColor-Gazebo-v0"
 # ENV="GraspPlanetary-RGBD-DP3WithColor-Gazebo-v0"
 
 ## Selection of RL algorithm
@@ -78,7 +78,7 @@ LOG_FOLDER="${PWD}/drl_grasping_training/train/${ENV}/logs"
 REWARD_LOG="${PWD}/drl_grasping_training/evaluate/${ENV}"
 
 ## Load checkpoint instead of last model (# steps)
-LOAD_CHECKPOINT="500000"
+LOAD_CHECKPOINT="125000"
 
 ### Arguments
 LAUNCH_ARGS=(

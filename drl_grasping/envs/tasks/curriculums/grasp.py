@@ -94,6 +94,7 @@ class GraspCurriculum(
             enable_object_spawn_volume_scale_curriculum
         )
         self.__enable_object_count_curriculum = enable_object_count_curriculum
+        self.__growing_persistent_reward = growing_persistent_reward
 
         # Make sure that the persistent rewards for each step are negative
         if self.__persistent_reward_each_step > 0.0:
@@ -184,10 +185,10 @@ class GraspCurriculum(
             # set reward for every following increment
             self.lift_increment_reward = self.__stages_base_reward * (1 - lift_required_height_ratio) / (lift_n_incremental_steps)
 
-        self.__growing_persistent_reward = growing_persistent_reward
         if self.__growing_persistent_reward:
-            self.__persistent_reward_counter = 0 # TODO: set to first timestep (e.g. 325000, or 0) and adapt initial persistent reward
+            self.__persistent_reward_counter = kwargs['Starting_Timestep']
             self.__persistent_reward_doubling_frequency = persistent_reward_doubling_frequency
+            self.__persistent_reward_each_step *=  2 ** (self.__persistent_reward_counter // self.__persistent_reward_doubling_frequency)
 
     def get_reward(self) -> Reward:
 
