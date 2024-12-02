@@ -186,7 +186,7 @@ class GraspCurriculum(
 
         self.__growing_persistent_reward = growing_persistent_reward
         if self.__growing_persistent_reward:
-            self.__persistent_reward_counter = 0
+            self.__persistent_reward_counter = 0 # TODO: set to first timestep (e.g. 325000, or 0) and adapt initial persistent reward
             self.__persistent_reward_doubling_frequency = persistent_reward_doubling_frequency
 
     def get_reward(self) -> Reward:

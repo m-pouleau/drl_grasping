@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ENV = "GraspPlanetary-OctreeWithColor-Gazebo-v0"
-ALGO = "TQC_1"
+ALGO = "TQC_3"
 WINDOW_SIZE = 1
 
 def moving_average(data, window_size):

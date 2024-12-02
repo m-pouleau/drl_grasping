@@ -38,14 +38,17 @@ class Grasp(Manipulation, abc.ABC):
             **kwargs,
         )
 
+        self.eval_curriculum = GraspCurriculum(
+            task=self,
+            growing_persistent_reward = False,
+            **kwargs,
+        )
+        if growing_persistent_reward:
+            kwargs["persistent_reward_each_step"] = -0.1 # TODO: make it flexible & adapt it to starting time-step
         self.train_curriculum = GraspCurriculum(
             task=self,
             growing_persistent_reward = growing_persistent_reward,
             persistent_reward_doubling_frequency = persistent_reward_doubling_frequency,
-            **kwargs,
-        )
-        self.eval_curriculum = GraspCurriculum(
-            task=self,
             **kwargs,
         )
 

@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 TASK = "GraspPlanetary"
-ENV = "Pointcloud"
+ENV = "Octree"
 WINDOW_SIZE = 1
 
 def moving_average(data, window_size):

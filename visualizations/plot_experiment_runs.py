@@ -7,11 +7,13 @@ EXP_LIST = [
     # "PointNet with Intensity - Training Plain Network",
     # "Octree without Color - OCNN",
     # "PointNet without Color - Using Pretrained Classification Network",
-    "Octree with Color - OCNN",
-    "PointNet with Color - Using Pretrained Segmentation Network",
-    "PointNet with Color - Using Pretrained Segmentation Network with Pointwise Features",
+    # "Octree with Color - OCNN",
+    # "PointNet with Color - Using Pretrained Segmentation Network",
+    # "PointNet with Color - Using Pretrained Segmentation Network with Pointwise Features",
+    "Octree - Dynamic Lift Threshold",
+    "Octree - Incremental Lift Reward",
     ]
-SMOOTHING_VALUES = [1, 1, 1]
+SMOOTHING_VALUES = [1, 1]
 
 def moving_average(data, window_size):
     """Apply centered moving average filter to data with padding."""
