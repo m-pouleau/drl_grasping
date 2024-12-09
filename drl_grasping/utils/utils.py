@@ -222,6 +222,7 @@ def create_test_env(
     if "env_wrapper" in hyperparams.keys():
         del hyperparams["env_wrapper"]
 
+    env_kwargs['Starting_Timestep'] = 0
     vec_env_kwargs = {}
     vec_env_cls = DummyVecEnv
     if n_envs > 1 or (ExperimentManager.is_bullet(env_id) and should_render):
