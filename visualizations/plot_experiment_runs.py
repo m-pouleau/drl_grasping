@@ -10,9 +10,9 @@ EXP_LIST = [
     # "Octree with Color - OCNN",
     # "PointNet with Color - Using Pretrained Segmentation Network",
     # "PointNet with Color - Using Pretrained Segmentation Network with Pointwise Features",
-    "Octree - Dynamic Lift Threshold - Constant Timestep Penalty",
-    "Octree - Incremental Lift Reward - Constant Timestep Penalty",
-    "Octree - Incremental Lift Reward - Exponentially Growing Timestep Penalty",
+    "O-CNN - Dynamic Lift Threshold - Constant Timestep Penalty",
+    "O-CNN - Incremental Lift Reward - Constant Timestep Penalty",
+    "O-CNN - Incremental Lift Reward - Exponentially Growing Timestep Penalty",
     ]
 SMOOTHING_VALUES = [1, 1, 1]
 
@@ -46,11 +46,11 @@ for i in range(len(EXP_LIST)):
 plt.figure(figsize=(10, 6))
 for i in range(len(EXP_LIST)):
     plt.plot(SMOOTHED_STEPS[i], SMOOTHED_MEAN_REWARD[i], linestyle='-', label=f'{EXP_LIST[i]}')
-plt.xlabel('Step')
-plt.ylabel('Mean Reward')
-plt.title('Learning Curve of trained agents - Evalution of Mean Reward')
+plt.xlabel('Step', fontsize=14)
+plt.ylabel('Mean Reward', fontsize=14)
+plt.title('Learning Curve of trained agents - Evalution of Mean Reward', fontsize=16)
 plt.grid(True)
-plt.legend()
+plt.legend(fontsize=12)
 plt.savefig(f'Comparison Learning Curve - Mean Reward.png')
 plt.close()
 
@@ -58,11 +58,11 @@ plt.close()
 plt.figure(figsize=(10, 6))
 for i in range(len(EXP_LIST)):
     plt.plot(SMOOTHED_STEPS[i], SMOOTHED_SUCCESS_RATE[i], linestyle='-', label=f'{EXP_LIST[i]}')
-plt.xlabel('Step')
-plt.ylabel('Mean Reward')
-plt.title('Learning Curve of trained agents - Evalution of Success Rate')
+plt.xlabel('Step', fontsize=14)
+plt.ylabel('Mean Reward', fontsize=14)
+plt.title('Learning Curve of trained agents - Evalution of Success Rate', fontsize=16)
 plt.grid(True)
-plt.legend()
+plt.legend(fontsize=12)
 plt.savefig(f'Comparison Learning Curve - Success Rate.png')
 plt.close()
 
