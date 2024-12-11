@@ -3,16 +3,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 EXP_LIST = [
-    # "Octree with Intensity - OCNN",
-    # "PointNet with Intensity - Training Plain Network",
-    # "Octree without Color - OCNN",
-    # "PointNet without Color - Using Pretrained Classification Network",
-    # "Octree with Color - OCNN",
-    # "PointNet with Color - Using Pretrained Segmentation Network",
-    # "PointNet with Color - Using Pretrained Segmentation Network with Pointwise Features",
-    "O-CNN - Dynamic Lift Threshold - Constant Timestep Penalty",
+    # "PoinNet Feature Extractor (with Colors) - No Pre-Training",
+    # "PointNet - Pretrained Classification - XYZ channels",
+    # "PointNet - Pretrained Sem Segmentation - XYZRGB channels",
+    # "O-CNN Feature Extractor (baseline)",
+    # "O-CNN - Dynamic Lift Threshold - Constant Timestep Penalty",
     "O-CNN - Incremental Lift Reward - Constant Timestep Penalty",
     "O-CNN - Incremental Lift Reward - Exponentially Growing Timestep Penalty",
+    "O-CNN - Incremental Lift Reward - Linearly Growing Timestep Penalty",
     ]
 SMOOTHING_VALUES = [1, 1, 1]
 
@@ -59,7 +57,7 @@ plt.figure(figsize=(10, 6))
 for i in range(len(EXP_LIST)):
     plt.plot(SMOOTHED_STEPS[i], SMOOTHED_SUCCESS_RATE[i], linestyle='-', label=f'{EXP_LIST[i]}')
 plt.xlabel('Step', fontsize=14)
-plt.ylabel('Mean Reward', fontsize=14)
+plt.ylabel('Success Rate', fontsize=14)
 plt.title('Learning Curve of trained agents - Evalution of Success Rate', fontsize=16)
 plt.grid(True)
 plt.legend(fontsize=12)
