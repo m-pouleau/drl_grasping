@@ -37,6 +37,14 @@ combined_df = pd.concat(dataframes).reset_index(drop=True)
 # Group by 'Step' and calculate the mean for each step
 averaged_df = combined_df.groupby('Step').mean().reset_index()
 
+# Print out the average variances of the evaluation sequences
+variance_df = combined_df.groupby('Step').var().reset_index().iloc[1:21]
+mean_reward_variance_avg = variance_df["eval/mean_reward"].mean()
+success_rate_variance_avg = variance_df["eval/success_rate"].mean()
+formatted_success_rate_variance_avg = (f"{success_rate_variance_avg:.2e}" if success_rate_variance_avg < 1 else success_rate_variance_avg)
+print(f"Average Variance of eval/mean_reward: {mean_reward_variance_avg}")
+print(f"Average Variance of eval/success_rate: {formatted_success_rate_variance_avg}")
+
 # Define the output file path and save new dataframe to a CSV file
 output_file_path = os.path.join(f'/root/drl_grasping_training/training_data/{TASK}/', f"{ENV}_merged_tensorboard_training_data.csv")
 averaged_df.to_csv(output_file_path, index=False)
