@@ -186,16 +186,17 @@ class GraspCurriculum(
             self.lift_increment_reward = self.__stages_base_reward * (1 - lift_required_height_ratio) / (lift_n_incremental_steps)
 
         if self.__growing_persistent_reward:
+            self.__persistent_reward_each_step_BASE = self.__persistent_reward_each_step
             self.__persistent_reward_counter = kwargs['Starting_Timestep']
             self.__persistent_reward_doubling_frequency = persistent_reward_doubling_frequency
-            self.__persistent_reward_each_step *=  2 ** (self.__persistent_reward_counter // self.__persistent_reward_doubling_frequency)
+            self.__persistent_reward_each_step = (1 + self.__persistent_reward_counter // self.__persistent_reward_doubling_frequency) * self.__persistent_reward_each_step_BASE
 
     def get_reward(self) -> Reward:
 
         if self.__growing_persistent_reward:
             self.__persistent_reward_counter += 1
             if self.__persistent_reward_counter % self.__persistent_reward_doubling_frequency == 0:
-                self.__persistent_reward_each_step *= 2
+                self.__persistent_reward_each_step += self.__persistent_reward_each_step_BASE
 
         if self.__enable_stage_reward_curriculum:
             # Try to get reward from each stage
@@ -279,7 +280,6 @@ class GraspCurriculum(
                 f"[Curriculum] An object is now closer than the required distance of {self.reach_required_distance}"
             )
             self.stages_completed_this_episode[GraspStage.REACH] = True
-            self._episode_first_reached_objects.extend(reached_objects)
             return self.__stages_base_reward
         else:
             return 0.0
@@ -288,29 +288,25 @@ class GraspCurriculum(
     def get_reward_TOUCH(self, touched_objects: List[str], **kwargs) -> float:
 
         if touched_objects:
-            for item in self._episode_first_reached_objects:
-                if item in set(touched_objects):
-                    self.__task.get_logger().info(f"[Curriculum] Touched objects: {touched_objects}")
-                    self.stages_completed_this_episode[GraspStage.TOUCH] = True
-                    self._episode_first_touched_objects.append(item)
-            if self.stages_completed_this_episode[GraspStage.TOUCH]:
-                return self.__stages_base_reward
-
-        return 0.0
+            self.__task.get_logger().info(
+                f"[Curriculum] Touched objects: {touched_objects}"
+            )
+            self.stages_completed_this_episode[GraspStage.TOUCH] = True
+            return self.__stages_base_reward
+        else:
+            return 0.0
 
 
     def get_reward_GRASP(self, grasped_objects: List[str], **kwargs) -> float:
 
         if grasped_objects:
-            for item in self._episode_first_touched_objects:
-                if item in set(grasped_objects):
-                    self.__task.get_logger().info(f"[Curriculum] Grasped objects: {grasped_objects}")
-                    self.stages_completed_this_episode[GraspStage.GRASP] = True
-                    self._episode_first_grasped_objects.append(item)
-            if self.stages_completed_this_episode[GraspStage.GRASP]:
-                return self.__stages_base_reward
-
-        return 0.0
+            self.__task.get_logger().info(
+                f"[Curriculum] Grasped objects: {grasped_objects}"
+            )
+            self.stages_completed_this_episode[GraspStage.GRASP] = True
+            return self.__stages_base_reward
+        else:
+            return 0.0
 
 
     def get_reward_LIFT_plain(
@@ -324,18 +320,17 @@ class GraspCurriculum(
             return 0.0
 
         for grasped_object in grasped_objects:
-            if grasped_object in self._episode_first_grasped_objects:
-                grasped_object_height = object_positions[grasped_object][2]
+            grasped_object_height = object_positions[grasped_object][2]
 
-                self.__task.get_logger().debug(
-                    f"[Curriculum] Height of grasped object '{grasped_objects}': {grasped_object_height}"
+            self.__task.get_logger().debug(
+                f"[Curriculum] Height of grasped object '{grasped_objects}': {grasped_object_height}"
+            )
+            if grasped_object_height > self.lift_required_height:
+                self.__task.get_logger().info(
+                    f"[Curriculum] Lifted object: {grasped_object}"
                 )
-                if grasped_object_height > self.lift_required_height:
-                    self.__task.get_logger().info(
-                        f"[Curriculum] Lifted object: {grasped_object}"
-                    )
-                    self.stages_completed_this_episode[GraspStage.LIFT] = True
-                    return self.__stages_base_reward
+                self.stages_completed_this_episode[GraspStage.LIFT] = True
+                return self.__stages_base_reward
 
         return 0.0
 
@@ -353,33 +348,32 @@ class GraspCurriculum(
             return reward
 
         for grasped_object in grasped_objects:
-            if grasped_object in self._episode_first_grasped_objects:
-                grasped_object_height = object_positions[grasped_object][2]
+            grasped_object_height = object_positions[grasped_object][2]
 
-                self.__task.get_logger().debug(
+            self.__task.get_logger().debug(
                     f"[Curriculum] Height of grasped object '{grasped_objects}': {grasped_object_height}"
                 )
 
-                # Iterate through thresholds to check for newly reached ones
-                for i, threshold in enumerate(self.height_thresholds):
-                    if grasped_object_height >= threshold:
-                        if i not in self._attained_thresholds:
-                            if i == 0:
-                                reward += self.lift_min_height_reward
-                            else:
-                                reward += self.lift_increment_reward
+            # Iterate through thresholds to check for newly reached ones
+            for i, threshold in enumerate(self.height_thresholds):
+                if grasped_object_height >= threshold:
+                    if i not in self._attained_thresholds:
+                        if i == 0:
+                            reward += self.lift_min_height_reward
+                        else:
+                            reward += self.lift_increment_reward
                             # Mark the threshold as reached
-                            self._attained_thresholds.add(i)
-                            self.__task.get_logger().info(f"[Curriculum] Threshold {threshold}m reached for object: {grasped_object}")
-                    else:
-                        # Break early if the current threshold not reached
-                        break
+                        self._attained_thresholds.add(i)
+                        self.__task.get_logger().info(f"[Curriculum] Threshold {threshold}m reached for object: {grasped_object}")
+                else:
+                    # Break early if the current threshold not reached
+                    break
 
-                if grasped_object_height > self.lift_required_height:
-                    self.__task.get_logger().info(
-                        f"[Curriculum] Lifted object: {grasped_object}"
-                    )
-                    self.stages_completed_this_episode[GraspStage.LIFT] = True
+            if grasped_object_height > self.lift_required_height:
+                self.__task.get_logger().info(
+                    f"[Curriculum] Lifted object: {grasped_object}"
+                )
+                self.stages_completed_this_episode[GraspStage.LIFT] = True
 
         return reward
 
