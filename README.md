@@ -235,9 +235,9 @@ The known limitations of this repository are listed below for your convenience.
 
 ## Instructions
 
-Setup-wise, there are two options when using this repository. **Option A – Docker** is recommended when trying this repository due to its simplicity. Otherwise, **Option B – Local Installation** can be used if a local setup is preferred. Both of these options are equal for the usage of this repository; however, pre-built Docker images come with all the required datasets while enabling isolation of runs.
+For the setup, it is recommended to use the pre-built Docker imagae, due to its simplicity, as well the fact that it comes with all the required datasets while enabling isolation of runs.
 
-<details><summary><b>Option A – Docker</b></summary>
+<details><summary><b>Docker Installation</b></summary>
 
 ### Hardware Requirements
 
@@ -250,13 +250,11 @@ First, ensure your system has a setup for using Docker with NVIDIA GPUs. You can
 ```bash
 # Execute script inside a cloned repository
 .docker/host/install_docker_with_nvidia.bash
-# (Alternative) Execute script from URL
-bash -c "$(wget -qO - https://raw.githubusercontent.com/AndrejOrsula/drl_grasping/master/.docker/host/install_docker_with_nvidia.bash)"
 ```
 
 ### Clone a Prebuilt Docker Image
 
-Prebuilt Docker images of `drl_grasping` can be pulled directly from [Docker Hub](https://hub.docker.com/repository/docker/mpouleau/drl_grasping) without needing to build them locally. You can use the following command to manually pull the latest image or one of the previous tagged [Releases](https://github.com/AndrejOrsula/drl_grasping/releases). The average size of images is 26GB (including datasets).
+Prebuilt Docker images of `drl_grasping` can be pulled directly from [Docker Hub](https://hub.docker.com/repository/docker/mpouleau/drl_grasping) without needing to build them locally. You can use the following command to manually pull the latest image or one of the previous tagged [Releases](https://github.com/m-pouleau/drl_grasping/releases). The average size of images is 29GB (including datasets).
 
 ```bash
 docker pull mpouleau/drl_grasping:${TAG:-latest}
@@ -280,62 +278,6 @@ For simplicity, please run `drl_grasping` Docker containers using the included [
 ```
 
 The network communication of `drl_grasping` within this Docker container is configured based on the ROS 2 [`ROS_DOMAIN_ID`](https://docs.ros.org/en/galactic/Concepts/About-Domain-ID.html) environment variable, which can be set via `ROS_DOMAIN_ID={0...101} .docker/run_drl_grasping.bash ${TAG:-latest} ${CMD}`. By default (`ROS_DOMAIN_ID=0`), external communication is restricted and multicast is disabled. With `ROS_DOMAIN_ID=42`, the communication remains restricted to `localhost` with multicast enabled, enabling monitoring of communication outside the container but within the same system. Using `ROS_DOMAIN_ID=69` will use the default network interface and multicast settings, which can enable monitoring of communication within the same LAN. All other `ROS_DOMAIN_ID`s share the default behaviour and can be employed to enable communication partitioning for running of multiple `drl_grasping` instances.
-
-</details>
-
-<details><summary><b>Option B – Local Installation</b></summary>
-
-### Hardware Requirements
-
-- **CUDA GPU –** CUDA-enabled GPU is required for hardware-accelerated processing of octree observations. Everything else should also be functional on the CPU.
-
-### Dependencies
-
-> Ubuntu 20.04 (Focal Fossa) is the recommended OS for local installation. Other Linux distributions might work but require most dependencies to be built from the source.
-
-These are the primary dependencies required to use this project that must be installed on your system.
-
-- [Python 3.8](https://python.org/downloads)
-- ROS 2 [Galactic](https://docs.ros.org/en/galactic/Installation.html)
-- Gazebo [Fortress](https://gazebosim.org/docs/fortress)
-- [Gym-Ignition](https://github.com/robotology/gym-ignition)
-  - Please use [AndrejOrsula/gym-ignition](https://github.com/AndrejOrsula/gym-ignition) fork in order to ensure compatibility (default branch – [`drl_grasping`](https://github.com/AndrejOrsula/gym-ignition/tree/drl_grasping)).
-- [O-CNN](https://github.com/microsoft/O-CNN)
-  - Please use [AndrejOrsula/O-CNN](https://github.com/AndrejOrsula/O-CNN) fork in order to ensure compatibility (default branch – [`master`](https://github.com/AndrejOrsula/O-CNN/tree/master)).
-
-All additional dependencies are either pulled via [vcstool](https://wiki.ros.org/vcstool) ([drl_grasping.repos](./drl_grasping.repos)) or installed via [pip](https://pip.pypa.io/en/stable/installation) ([python_requirements.txt](./python_requirements.txt)) and [rosdep](https://wiki.ros.org/rosdep) during the building process below.
-
-### Building
-
-Clone this repository recursively and import VCS dependencies. Then install dependencies and build with [colcon](https://colcon.readthedocs.io).
-
-```bash
-# Clone this repository into your favourite ROS 2 workspace
-git clone --recursive https://github.com/mpouleau/drl_grasping.git
-# Install Python requirements
-pip3 install -r drl_grasping/python_requirements.txt
-# Import dependencies
-vcs import < drl_grasping/drl_grasping.repos
-# Install dependencies
-IGNITION_VERSION=fortress rosdep install -y -r -i --rosdistro ${ROS_DISTRO} --from-paths .
-# Build
-colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release"
-```
-
-### Sourcing
-
-Before utilizing this project via local installation, remember to source the ROS 2 workspace.
-
-```bash
-source install/local_setup.bash
-```
-
-This enables:
-
-- Use of `drl_grasping` Python module
-- Execution of binaries, scripts and examples via `ros2 run drl_grasping <executable>`
-- Launching of setup scripts via `ros2 launch drl_grasping <launch_script>`
-- Discoverability of shared resources
 
 </details>
 
@@ -387,37 +329,12 @@ After running the example script, the underlying `ros2 launch drl_grasping train
 ros2 launch drl_grasping train.launch.py seed:=42 robot_model:=panda env:=Grasp-OctreeWithColor-Gazebo-v0 algo:=tqc log_folder:=/root/drl_grasping_training/train/Grasp-OctreeWithColor-Gazebo-v0/logs tensorboard_log:=/root/drl_grasping_training/train/Grasp-OctreeWithColor-Gazebo-v0/tensorboard_logs save_freq:=10000 save_replay_buffer:=true log_interval:=-1 eval_freq:=10000 eval_episodes:=20 enable_rviz:=false log_level:=fatal
 ```
 
-#### Remote Visualization
-
-To visualize the agent while training, separate RViz 2 and Gazebo client instances can be opened. For the Docker setup, these commands can be executed in a new `drl_grasping` container with the same `ROS_DOMAIN_ID`.
-
-```bash
-# RViz 2 (Note: Visualization of robot model will not be loaded using this approach)
-rviz2 -d $(ros2 pkg prefix --share drl_grasping)/rviz/drl_grasping.rviz
-# Gazebo client
-ign gazebo -g
-```
-
 #### TensorBoard
 
 TensorBoard logs will be generated during training in a directory specified by the `tensorboard_log:=${TENSORBOARD_LOG}` argument. You can open them in your web browser using the following command.
 
 ```bash
 tensorboard --logdir ${TENSORBOARD_LOG}
-```
-
-#### (Experimental) Train with Dreamer V2
-
-You can also try to train some agents using the model-based Dreamer V2 algorithm. To begin the training, run the following example. By default, headless mode is used during the training to reduce computational load.
-
-```bash
-ros2 run drl_grasping ex_train_dreamerv2.bash
-```
-
-After running the example script, the underlying `ros2 launch drl_grasping train_dreamerv2.launch.py ...` command with all arguments will always be printed for your reference (example shown below). If desired, you can launch this command directly with custom arguments.
-
-```bash
-ros2 launch drl_grasping train_dreamerv2.launch.py seed:=42 robot_model:=lunalab_summit_xl_gen env:=GraspPlanetary-ColorImage-Gazebo-v0 log_folder:=/root/drl_grasping_training/train/GraspPlanetary-ColorImage-Gazebo-v0/logs eval_freq:=10000 enable_rviz:=false log_level:=fatal
 ```
 
 </details>
@@ -434,22 +351,6 @@ After running the example script, the underlying `ros2 launch drl_grasping evalu
 
 ```bash
 ros2 launch drl_grasping evaluate.launch.py seed:=77 robot_model:=panda env:=Grasp-Octree-Gazebo-v0 algo:=tqc log_folder:=/root/drl_grasping_training/train/Grasp-Octree-Gazebo-v0/logs reward_log:=/root/drl_grasping_training/evaluate/Grasp-Octree-Gazebo-v0 stochastic:=false n_episodes:=200 load_best:=false enable_rviz:=true log_level:=warn
-```
-
-</details>
-
-<details><summary><b>Optimize Hyperparameters</b></summary>
-
-The default hyperparameters for training agents with TD3, SAC and TQC can be found under the [hyperparams](./hyperparams) directory. [Optuna](https://optuna.org) can be employed to autotune some of these parameters. To get started, run the following example. By default, headless mode is used during hyperparameter optimization to reduce computational load.
-
-```bash
-ros2 run drl_grasping ex_optimize.bash
-```
-
-After running the example script, the underlying `ros2 launch drl_grasping train.launch.py ...` command with all arguments will always be printed for your reference (example shown below). If desired, you can launch this command directly with custom arguments.
-
-```bash
-ros2 launch drl_grasping optimize.launch.py seed:=69 robot_model:=panda env:=Grasp-Octree-Gazebo-v0 algo:=tqc log_folder:=/root/drl_grasping_training/optimize/Grasp-Octree-Gazebo-v0/logs tensorboard_log:=/root/drl_grasping_training/optimize/Grasp-Octree-Gazebo-v0/tensorboard_logs n_timesteps:=1000000 sampler:=tpe pruner:=median n_trials:=20 n_startup_trials:=5 n_evaluations:=4 eval_episodes:=20 log_interval:=-1 enable_rviz:=true log_level:=fatal
 ```
 
 </details>
