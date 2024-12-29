@@ -1,6 +1,6 @@
-# Deep Reinforcement Learning for Robotic Grasping from Octrees
+# Deep Reinforcement Learning for Robotic Grasping in an Unstructured Environment
 
-This project focuses on applying deep reinforcement learning to acquire a robust policy that allows robots to grasp diverse objects from compact 3D observations in the form of octrees.
+This project focuses on applying deep reinforcement learning to acquire a robust policy that allows robots to grasp diverse objects from compact 3D observations in the form of octrees. It builds on the work of Orsula et al., from the  [following paper](https://arxiv.org/abs/2208.00818), and the [following repo](https://github.com/AndrejOrsula/drl_grasping).
 
 <p align="center" float="middle">
   <a href="https://www.youtube.com/watch?v=1-cudiW4eaU">
@@ -207,9 +207,7 @@ All external models can be automatically configured and randomized in several wa
 
 <details><summary><b>End-to-End Learning from 3D Octree Observations</b></summary>
 
-TODO: DO THE SAME FOR POINTNET ans DP3 !!!
-
-This project initially investigated how 3D visual observations can be leveraged to improve end-to-end learning of manipulation skills. Octrees were selected for this purpose due to their efficiently organized structure compared to other 3D representations.
+In the project of the base paper from Andrej Orsula, it was initially investigated how 3D visual observations can be leveraged to improve end-to-end learning of manipulation skills. Octrees were selected for this purpose due to their efficiently organized structure compared to other 3D representations.
 
 To enable the extraction of abstract features from 3D octree observations, an octree-based 3D CNN is employed. The network module that accomplishes such feature extraction is implemented in the form of [`OctreeCnnFeaturesExtractor`](./drl_grasping/drl_octree/features_extractor/octree_cnn.py) (PyTorch). This features extractor is part of the `OctreeCnnPolicy` policy implemented for TD3, SAC and TQC algorithms. Internally, the feature extractor utilizes [O-CNN](https://github.com/microsoft/O-CNN) implementation to benefit from hardware acceleration on NVIDIA GPUs.
 
@@ -220,6 +218,11 @@ To enable the extraction of abstract features from 3D octree observations, an oc
   <em>Illustration of the end-to-end actor-critic network architecture with octree-based 3D CNN feature extractor.</em>
 </p>
 
+</details>
+
+<details><summary><b>End-to-End Learning from 3D Point-Cloud Observations (pending)</b></summary>
+TODO: DO THE SAME FOR POINTNET ans DP3 as for O-CNN in this section !!!
+...
 </details>
 
 <details><summary><b>Limitations</b></summary>
