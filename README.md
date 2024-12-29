@@ -51,9 +51,9 @@ This project focuses on applying deep reinforcement learning to acquire a robust
   </a>
 </p>
 
-This repository contains multiple RL environments for robotic manipulation, focusing on robotic grasping using continuous actions in Cartesian space. All environments have several observation variants that enable direct comparison (RGB images, depth maps, octrees, ...). Each task is coupled with a simulation environment that can be used to train RL agents. These agents can subsequently be evaluated on real robots that integrate [ros2_control](https://control.ros.org) (or [ros_control](https://wiki.ros.org/ros_control) via [ros1_bridge](https://github.com/ros2/ros1_bridge)).
+This repository contains multiple RL environments for robotic manipulation, focusing on robotic grasping using continuous actions in Cartesian space. All environments have several observation variants that enable direct comparison (RGB images, depth maps, octrees, point-clouds, ...). Each task is coupled with a simulation environment that can be used to train RL agents. These agents can subsequently be evaluated on real robots that integrate [ros2_control](https://control.ros.org) (or [ros_control](https://wiki.ros.org/ros_control) via [ros1_bridge](https://github.com/ros2/ros1_bridge)).
 
-End-to-end model-free actor-critic algorithms have been tested on these environments ([TD3](https://arxiv.org/abs/1802.09477), [SAC](https://arxiv.org/abs/1801.01290) and [TQC](https://arxiv.org/abs/2005.04269) | [SB3 PyTorch implementation](https://github.com/DLR-RM/stable-baselines3)). A setup for experimenting with model-based algorithm ([DreamerV2](https://arxiv.org/abs/2010.02193) | [original TensorFlow implementation](https://github.com/danijar/dreamerv2)) is also provided, however, it is currently limited to RGB image observations. Interoperability of environments with most algorithms and their implementations should be possible due to compatibility with the [Gym](https://www.gymlibrary.ml) API.
+End-to-end model-free actor-critic algorithms have been tested on these environments ([TD3](https://arxiv.org/abs/1802.09477), [SAC](https://arxiv.org/abs/1801.01290) and [TQC](https://arxiv.org/abs/2005.04269) | [SB3 PyTorch implementation](https://github.com/DLR-RM/stable-baselines3)).
 
 <details open><summary><b>List of Environments</b></summary>
 
@@ -122,6 +122,21 @@ If you are interested in configuring these environments, first take a look at th
     <td>GraspPlanetary-Octree-v0</td>
   </tr>
   <tr>
+    <td>Reach-PointNet-v0</td>
+    <td>Grasp-PointNet-v0</td>
+    <td>GraspPlanetary-PointNet-v0</td>
+  </tr>
+  <tr>
+    <td>Reach-PointNet2-v0</td>
+    <td>Grasp-PointNet2-v0</td>
+    <td>GraspPlanetary-PointNet2-v0</td>
+  </tr>
+  <tr>
+    <td>Reach-DP3-v0</td>
+    <td>Grasp-DP3-v0</td>
+    <td>GraspPlanetary-DP3-v0</td>
+  </tr>
+  <tr>
     <td>Reach-OctreeWithIntensity-v0</td>
     <td>Grasp-OctreeWithIntensity-v0</td>
     <td>GraspPlanetary-OctreeWithIntensity-v0</td>
@@ -130,6 +145,31 @@ If you are interested in configuring these environments, first take a look at th
     <td>Reach-OctreeWithColor-v0</td>
     <td>Grasp-OctreeWithColor-v0</td>
     <td>GraspPlanetary-OctreeWithColor-v0</td>
+  </tr>
+  <tr>
+    <td>Reach-PointNetWithColor-v0</td>
+    <td>Grasp-PoinNetWithColor-v0</td>
+    <td>GraspPlanetary-PointNetWithColor-v0</td>
+  </tr>
+  <tr>
+    <td>Reach-RGBDPointNetWithColor-v0</td>
+    <td>Grasp-RGBDPoinNetWithColor-v0</td>
+    <td>GraspPlanetary-RGBDPointNetWithColor-v0</td>
+  </tr>
+  <tr>
+    <td>Reach-PointNet2WithColor-v0</td>
+    <td>Grasp-PointNet2WithColor-v0</td>
+    <td>GraspPlanetary-PointNet2WithColor-v0</td>
+  </tr>
+  <tr>
+    <td>Reach-DP3WithColor-v0</td>
+    <td>Grasp-DP3WithColor-v0</td>
+    <td>GraspPlanetary-DP3WithColor-v0</td>
+  </tr>
+  <tr>
+    <td>Reach-RGBD-DP3WithColor-v0</td>
+    <td>Grasp-RGBD-DP3WithColor-v0</td>
+    <td>GraspPlanetary-RGBD-DP3WithColor-v0</td>
   </tr>
 </tbody>
 </table>
@@ -166,6 +206,8 @@ All external models can be automatically configured and randomized in several wa
 </details>
 
 <details><summary><b>End-to-End Learning from 3D Octree Observations</b></summary>
+
+TODO: DO THE SAME FOR POINTNET ans DP3 !!!
 
 This project initially investigated how 3D visual observations can be leveraged to improve end-to-end learning of manipulation skills. Octrees were selected for this purpose due to their efficiently organized structure compared to other 3D representations.
 
@@ -412,21 +454,6 @@ ros2 launch drl_grasping optimize.launch.py seed:=69 robot_model:=panda env:=Gra
 
 </details>
 
-## Citation
-
-Please use the following citation if you use `drl_grasping` in your work.
-
-```bibtex
-@inproceedings{orsula_learning_2022,
-  author    = {Andrej Orsula and Simon B{\o}gh and Miguel Olivares-Mendez and Carol Martinez},
-  title     = {{Learning} to {Grasp} on the {Moon} from {3D} {Octree} {Observations} with {Deep} {Reinforcement} {Learning}},
-  year      = {2022},
-  booktitle = {2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
-  pages     = {4112--4119},
-  doi       = {10.1109/IROS47612.2022.9981661}
-}
-```
-
 ## Directory Structure
 
 ```bash
@@ -445,6 +472,7 @@ Please use the following citation if you use `drl_grasping` in your work.
 │   └── utils/           # [dir] Submodule for training and evaluation scripts boilerplate (using SB3)
 ├── examples/            # [dir] Examples for training and evaluating RL agents
 ├── hyperparams/         # [dir] Default hyperparameters for training RL agents
+├── visualizations/      # [dir] Directory to access scripts to visualize tensorboard data
 ├── launch/              # [dir] ROS 2 launch scripts that can be used to interact with this repository
 ├── pretrained_agents/   # [dir] Collection of pre-trained agents
 ├── rviz/                # [dir] RViz2 config for visualization
