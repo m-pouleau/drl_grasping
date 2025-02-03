@@ -1,6 +1,6 @@
 # Deep Reinforcement Learning for Robotic Grasping in an Unstructured Environment
 
-This project focuses on applying deep reinforcement learning to acquire a robust policy that allows robots to grasp diverse objects from compact 3D observations in the form of octrees. It builds on the work of Orsula et al., from the  [following paper](https://arxiv.org/abs/2208.00818), and the [following repo](https://github.com/AndrejOrsula/drl_grasping).
+This project focuses on applying deep reinforcement learning to acquire a robust policy that allows robots to grasp diverse objects from compact 3D observations in the form of octrees or point clouds. It builds on the work of Orsula et al., from the  [following paper](https://arxiv.org/abs/2208.00818), and the [following repo](https://github.com/AndrejOrsula/drl_grasping).
 
 <p align="center" float="middle">
   <a href="https://www.youtube.com/watch?v=1-cudiW4eaU">
@@ -220,9 +220,24 @@ To enable the extraction of abstract features from 3D octree observations, an oc
 
 </details>
 
-<details><summary><b>End-to-End Learning from 3D Point-Cloud Observations (pending)</b></summary>
-TODO: DO THE SAME FOR POINTNET ans DP3 as for O-CNN in this section !!!
-...
+<details><summary><b>End-to-End Learning from 3D Point-Cloud Observations</b></summary>
+Another approach is to directly utilize the point-cloud data and use an point-cloud encoder network, such as the PointNet-based encoder and the DP3-based encoder (more details on this in the Master Thesis Document). The following two figure show the architector of both approaches:
+<br>
+<br>
+
+<p align="center" float="middle">
+  <a href="[./drl_grasping/drl_octree/features_extractor/octree_cnn.py](https://private-user-images.githubusercontent.com/150341612/409142018-a309908c-f421-45bc-aced-6d4138d317c6.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Mzg1OTI4MzksIm5iZiI6MTczODU5MjUzOSwicGF0aCI6Ii8xNTAzNDE2MTIvNDA5MTQyMDE4LWEzMDk5MDhjLWY0MjEtNDViYy1hY2VkLTZkNDEzOGQzMTdjNi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjAzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIwM1QxNDIyMTlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1iY2UxNzE0MDdhMzA0MTc3MWFiYWY0NWQzMjFkODNjNGI5N2ZkZTUxOWQzNzk2ODBkYWZlYTdlNDIzMGU0YzYxJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.4q-HDpUMTfuXmW35KURlDHHhdq2YvupB2eyUcuKGffc)">
+    <img width="100.0%" src="https://private-user-images.githubusercontent.com/150341612/409142018-a309908c-f421-45bc-aced-6d4138d317c6.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Mzg1OTI4MzksIm5iZiI6MTczODU5MjUzOSwicGF0aCI6Ii8xNTAzNDE2MTIvNDA5MTQyMDE4LWEzMDk5MDhjLWY0MjEtNDViYy1hY2VkLTZkNDEzOGQzMTdjNi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjAzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIwM1QxNDIyMTlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1iY2UxNzE0MDdhMzA0MTc3MWFiYWY0NWQzMjFkODNjNGI5N2ZkZTUxOWQzNzk2ODBkYWZlYTdlNDIzMGU0YzYxJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.4q-HDpUMTfuXmW35KURlDHHhdq2YvupB2eyUcuKGffc"/>
+  </a>
+  <em>Illustration of the end-to-end actor-critic network architecture with PointNet-based 3D feature extractor.</em>
+</p>
+<p align="center" float="middle">
+  <a href="https://private-user-images.githubusercontent.com/150341612/409142054-6ff210ef-382b-4077-9461-ed2855f7ad21.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Mzg1OTI4MzksIm5iZiI6MTczODU5MjUzOSwicGF0aCI6Ii8xNTAzNDE2MTIvNDA5MTQyMDU0LTZmZjIxMGVmLTM4MmItNDA3Ny05NDYxLWVkMjg1NWY3YWQyMS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjAzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIwM1QxNDIyMTlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT05ZGE5NzdhMjdhOWI4MzRmOTBlMzcyNGM4MzliZDc5ZjI5OWE1YzgxZDFmYmEwNmZmNjI2NmE5NWIwNTBjZjQ5JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.hJvcg79QA9UbrctMUP2GYRt4slTk_wCYJB__ovQVRv8">
+    <img width="100.0%" src="https://private-user-images.githubusercontent.com/150341612/409142054-6ff210ef-382b-4077-9461-ed2855f7ad21.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Mzg1OTI4MzksIm5iZiI6MTczODU5MjUzOSwicGF0aCI6Ii8xNTAzNDE2MTIvNDA5MTQyMDU0LTZmZjIxMGVmLTM4MmItNDA3Ny05NDYxLWVkMjg1NWY3YWQyMS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjAzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIwM1QxNDIyMTlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT05ZGE5NzdhMjdhOWI4MzRmOTBlMzcyNGM4MzliZDc5ZjI5OWE1YzgxZDFmYmEwNmZmNjI2NmE5NWIwNTBjZjQ5JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.hJvcg79QA9UbrctMUP2GYRt4slTk_wCYJB__ovQVRv8"/>
+  </a>
+  <em>Illustration of the end-to-end actor-critic network architecture with 3D-Diffusion-Policy-based feature extractor.</em>
+</p>
+  
 </details>
 
 <details><summary><b>Limitations</b></summary>
